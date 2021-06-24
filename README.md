@@ -1,6 +1,6 @@
 # MusicBERT
 
-* [MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training](https://arxiv.org/pdf/2106.05630.pdf)
+* The paper: [MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training](https://arxiv.org/pdf/2106.05630.pdf)
 
 ## Preparing environment for MusicBERT
 
@@ -28,8 +28,6 @@
 
 ## Preparing dataset for pre-training and downstream tasks
 
-### Pre-training
-
 * Patch fairseq binarizer (`fairseq/fairseq/binarizer.py`) because preprocessed data already contain eos tokens (`</s>`)
 
   ```python
@@ -39,7 +37,9 @@
           append_eos = False  # add this line to always disable append_eos functionality of binarizer
   ```
 
-* Prepare a zip of midi files for pre-training (say `lmd_full.zip`)
+### Pre-training
+
+* Prepare a zip of midi files for pre-training (say `manymidi.zip`)
 
 * Run the script (`preprocessing.py`)
 
@@ -47,22 +47,22 @@
   python -u preprocessing
   ```
 
-* The script should prompt you to input midi zip path and OctupleMIDI output path
+* The script should prompt you to input the path of the midi zip and the path for OctupleMIDI output
 
   ```
-  Dataset zip path: /xxx/xxx/MusicBERT/lmd_full.zip
-  OctupleMIDI output path: lmd_data_raw
-  SUCCESS: lmd_full/6/689c4bf6e5302a2f383f335c26b6ab9b.mid
-  SUCCESS: lmd_full/3/3b18722086892cfe521b905f2a4f6ee0.mid
-  SUCCESS: lmd_full/3/3f5b77901be8f20ffa6425bc7cad5fed.mid
-  SUCCESS: lmd_full/e/eb1289f4b642c83de3c155ff7f4234c3.mid
+  Dataset zip path: /xxx/xxx/MusicBERT/manymidi.zip
+  OctupleMIDI output path: manymidi_data_raw
+  SUCCESS: manymidi/a/0000.mid
+  SUCCESS: manymidi/b/0001.mid
+  SUCCESS: manymidi/c/0002.mid
+  SUCCESS: manymidi/d/0005.mid
   ......
   ```
 
-* Binarize raw text format (this script will read lmd_data_raw folder and output lmd_data_bin)
+* Binarize the raw text format dataset (this script will read `manymidi_data_raw` folder and output `manymidi_data_bin`)
 
   ```bash
-  bash binarize_pretrain.sh lmd
+  bash binarize_pretrain.sh manymidi
   ```
 
 ### Melody completion task and accompaniment suggestion task
@@ -72,7 +72,9 @@
 
 ### Genre and style classification task
 
-* Get TOPMAGD and MASD midi to genre mapping [midi_genre_map](https://github.com/andrebola/patterns-genres/blob/master/data/midi_genre_map.json) from "On large-scale genre classification in symbolically encoded music by automatic identification of repeating patterns" (https://github.com/andrebola/patterns-genres) (DLfM 2018)
+* Prepare [The Lakh MIDI Dataset](https://colinraffel.com/projects/lmd/) in zip format (say `lmd_full.zip`)
+
+* Get TOPMAGD and MASD midi to genre mapping [midi_genre_map](https://github.com/andrebola/patterns-genres/blob/master/data/midi_genre_map.json) from "On large-scale genre classification in symbolically encoded music by automatic identification of repeating patterns" (DLfM 2018) (https://github.com/andrebola/patterns-genres)
 * Generate these two datasets in OctupleMIDI format using the midi to genre mapping file
 
 ## Contributing
