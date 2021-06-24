@@ -1,5 +1,7 @@
 # MusicBERT
 
+* [MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training](https://arxiv.org/pdf/2106.05630.pdf)
+
 ## Preparing environment for MusicBERT
 
 * Download Anaconda install script and install it on current directory
