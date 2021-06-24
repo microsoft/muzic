@@ -67,7 +67,13 @@
 
 ### Melody completion task and accompaniment suggestion task
 
+* Follow "PiRhDy: Learning Pitch-, Rhythm-, and Dynamics-aware Embeddings for Symbolic Music" (ACM MM 2020 BEST PAPER) (https://github.com/mengshor/PiRhDy) to generate datasets for melody completion task and accompaniment suggestion task
+* Convert these two datasets to OctupleMIDI format
+
 ### Genre and style classification task
+
+* Get TOPMAGD and MASD midi to genre mapping [midi_genre_map](https://github.com/andrebola/patterns-genres/blob/master/data/midi_genre_map.json) from "On large-scale genre classification in symbolically encoded music by automatic identification of repeating patterns" (https://github.com/andrebola/patterns-genres) (DLfM 2018)
+* Generate these two datasets in OctupleMIDI format using the midi to genre mapping file
 
 ## Contributing
 
