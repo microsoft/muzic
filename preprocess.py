@@ -8,9 +8,7 @@ import random
 import time
 import math
 import signal
-import pickle
 import hashlib
-from itertools import product
 from multiprocessing import Pool, Lock, Manager
 
 
