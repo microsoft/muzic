@@ -1,14 +1,71 @@
-# Project
+# MusicBERT
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+## Preparing environment for MusicBERT
 
-As the maintainer of this project, please make a few updates:
+* Download Anaconda install script and install it on current directory
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+```
+wget https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh
+bash Anaconda3-2020.07-Linux-x86_64.sh -b -p anaconda3
+anaconda3/bin/conda create --name musicbert python=3.7 -y
+anaconda3/bin/activate musicbert
+conda install pytorch=1.4.0 cudatoolkit=10.0 -c pytorch -y
+pip install sklearn miditoolkit matplotlib
+```
+
+* Install fairseq (version 336942734c85791a90baa373c212d27e7c722662)
+
+```
+git clone https://github.com/pytorch/fairseq
+cd fairseq
+git checkout 336942734c85791a90baa373c212d27e7c722662
+pip install --editable ./
+```
+
+* Install apex for faster training (optional)
+
+## Preparing dataset for pre-training and downstream tasks
+
+### Pre-training
+
+* Patch fairseq binarizer (`fairseq/fairseq/binarizer.py`) because preprocessed data already contain eos tokens (`</s>`)
+
+  ```
+  class Binarizer:
+      @staticmethod
+      def binarize(...):
+  		append_eos = False  # add this line to always disable append_eos functionality of binarizer
+  ```
+
+* Prepare a zip of midi files for pre-training (say `lmd_full.zip`)
+
+* Run the script `preprocessing.py`
+
+  ```
+  python -u preprocessing
+  ```
+
+* The script should prompt you to input midi zip path and OctupleMIDI output path
+
+  ```
+  Dataset zip path: /xxx/xxx/MusicBERT/lmd_full.zip
+  OctupleMIDI output path: lmd_data_raw
+  SUCCESS: lmd_full/6/689c4bf6e5302a2f383f335c26b6ab9b.mid
+  SUCCESS: lmd_full/3/3b18722086892cfe521b905f2a4f6ee0.mid
+  SUCCESS: lmd_full/3/3f5b77901be8f20ffa6425bc7cad5fed.mid
+  SUCCESS: lmd_full/e/eb1289f4b642c83de3c155ff7f4234c3.mid
+  ......
+  ```
+
+* Binarize raw text format (this script will read lmd_data_raw folder and output lmd_data_bin)
+
+  ```
+  bash binarize_pretrain.sh lmd
+  ```
+
+### Melody completion task and accompaniment suggestion task
+
+### Genre and style classification task
 
 ## Contributing
 
