@@ -6,23 +6,23 @@
 
 * Download Anaconda install script and install it on current directory
 
-```
-wget https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh
-bash Anaconda3-2020.07-Linux-x86_64.sh -b -p anaconda3
-anaconda3/bin/conda create --name musicbert python=3.7 -y
-anaconda3/bin/activate musicbert
-conda install pytorch=1.4.0 cudatoolkit=10.0 -c pytorch -y
-pip install sklearn miditoolkit matplotlib
-```
+  ```bash
+  wget https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh
+  bash Anaconda3-2020.07-Linux-x86_64.sh -b -p anaconda3
+  anaconda3/bin/conda create --name musicbert python=3.7 -y
+  anaconda3/bin/activate musicbert
+  conda install pytorch=1.4.0 cudatoolkit=10.0 -c pytorch -y
+  pip install sklearn miditoolkit matplotlib
+  ```
 
 * Install fairseq (version 336942734c85791a90baa373c212d27e7c722662)
 
-```
-git clone https://github.com/pytorch/fairseq
-cd fairseq
-git checkout 336942734c85791a90baa373c212d27e7c722662
-pip install --editable ./
-```
+  ```bash
+  git clone https://github.com/pytorch/fairseq
+  cd fairseq
+  git checkout 336942734c85791a90baa373c212d27e7c722662
+  pip install --editable ./
+  ```
 
 * Install apex for faster training (optional)
 
@@ -32,18 +32,18 @@ pip install --editable ./
 
 * Patch fairseq binarizer (`fairseq/fairseq/binarizer.py`) because preprocessed data already contain eos tokens (`</s>`)
 
-  ```
+  ```python
   class Binarizer:
       @staticmethod
       def binarize(...):
-  		append_eos = False  # add this line to always disable append_eos functionality of binarizer
+          append_eos = False  # add this line to always disable append_eos functionality of binarizer
   ```
 
 * Prepare a zip of midi files for pre-training (say `lmd_full.zip`)
 
-* Run the script `preprocessing.py`
+* Run the script (`preprocessing.py`)
 
-  ```
+  ```bash
   python -u preprocessing
   ```
 
@@ -61,7 +61,7 @@ pip install --editable ./
 
 * Binarize raw text format (this script will read lmd_data_raw folder and output lmd_data_bin)
 
-  ```
+  ```bash
   bash binarize_pretrain.sh lmd
   ```
 
