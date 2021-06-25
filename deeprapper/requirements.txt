@@ -1,4 +1,4 @@
-torch
-transformers
-pypinyin
-jieba
+torch==1.7.1
+transformers==3.5.1
+pypinyin==0.39.1
+jieba==0.42.1
