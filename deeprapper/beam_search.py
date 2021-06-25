@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Author  : 22, 33 
+
+
 import math
 from tqdm import trange
 import torch
