@@ -2,7 +2,7 @@
 
 * The paper: [MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training](https://arxiv.org/pdf/2106.05630.pdf)
 
-## Preparing environment for MusicBERT
+## Preparing environment
 
 * Download Anaconda install script and install it on current directory
 
@@ -26,7 +26,7 @@
 
 * Install apex for faster training (optional)
 
-## Preparing dataset for pre-training and downstream tasks
+## Preparing datasets
 
 * Patch fairseq binarizer (`fairseq/fairseq/binarizer.py`) because preprocessed data already contain eos tokens (`</s>`)
 
@@ -122,25 +122,28 @@
   sequence length: 1000
   ```
 
+## Training
 
-## Contributing
+### Pre-training
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+```bash
+bash train_mask.sh
+```
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+### Melody completion task and accompaniment suggestion task
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+```bash
+bash train_nsp.sh
+```
 
-## Trademarks
+### Genre and style classification task
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+```bash
+bash train_genre.sh
+```
+
+## Evaluation
+
+### Melody completion task and accompaniment suggestion task
+
+### Genre and style classification task
