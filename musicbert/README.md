@@ -82,21 +82,23 @@
   python -u gen_nsp.py
   ```
 
-* The script should prompt you to input which downstream task to process (next for melody task and acc for accompaniment task)
+* The script should prompt you to input which downstream task to process (**next** for melody task and **acc** for accompaniment task)
 
   ```
   task = next
   ```
 
-  ```
-  task = acc
+* Binarize the raw text format dataset (this script will read `next_data_raw` folder and output `next_data_bin`)
+
+  ```bash
+  bash binarize_nsp.sh next
   ```
 
 ### Genre and style classification task
 
 * Prepare [The Lakh MIDI Dataset](https://colinraffel.com/projects/lmd/) (**LMD-full**) in zip format (say `lmd_full.zip`)
 
-  ```
+  ```bash
   wget http://hog.ee.columbia.edu/craffel/lmd/lmd_full.tar.gz
   tar -xzvf lmd_full.tar.gz
   zip -r lmd_full.zip lmd_full
@@ -104,7 +106,7 @@
 
 * Get TOPMAGD and MASD midi to genre mapping [midi_genre_map](https://github.com/andrebola/patterns-genres/blob/master/data/midi_genre_map.json) from "On large-scale genre classification in symbolically encoded music by automatic identification of repeating patterns" (DLfM 2018) (https://github.com/andrebola/patterns-genres)
 
-  ```
+  ```bash
   wget https://raw.githubusercontent.com/andrebola/patterns-genres/master/data/midi_genre_map.json
   ```
 
@@ -114,12 +116,18 @@
   python -u gen_genre.py
   ```
 
-* The script should prompt you to input which downstream task to process (topmagd for genre task and masd for style task)
+* The script should prompt you to input which downstream task to process (**topmagd** for genre task and **masd** for style task)
 
   ```bash
   subset: topmagd
   LMD dataset zip path: lmd_full.zip
   sequence length: 1000
+  ```
+
+* Binarize the raw text format dataset (this script will read `topmagd_data_raw` folder and output `topmagd_data_bin`)
+
+  ```bash
+  bash binarize_genre.sh topmagd
   ```
 
 ## Training
@@ -133,17 +141,34 @@ bash train_mask.sh
 ### Melody completion task and accompaniment suggestion task
 
 ```bash
-bash train_nsp.sh
+bash train_nsp.sh next checkpoints/checkpoint_last_musicbert_base.pt
+```
+
+```bash
+bash train_nsp.sh acc checkpoints/checkpoint_last_musicbert_small.pt
 ```
 
 ### Genre and style classification task
 
 ```bash
-bash train_genre.sh
+bash train_genre.sh topmagd 13 0 checkpoints/checkpoint_last_musicbert_base.pt
+```
+
+```bash
+bash train_genre.sh masd 25 4 checkpoints/checkpoint_last_musicbert_small.pt
 ```
 
 ## Evaluation
 
 ### Melody completion task and accompaniment suggestion task
 
+```bash
+python -u eval_nsp.py checkpoints/checkpoint_last_nsp_next_checkpoint_last_musicbert_base.pt next_data_bin
+```
+
 ### Genre and style classification task
+
+```bash
+python -u eval_genre.py checkpoints/checkpoint_last_genre_topmagd_x_checkpoint_last_musicbert_small.pt topmagd_data_bin/x
+```
+
