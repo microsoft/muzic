@@ -4,25 +4,26 @@
 
 ## Requirements
 The requirements for running *DeepRapper* are listed in `DeepRapper/requirements.txt`. To install the requirements, run:
-    ```bash
-    pip install -r requirements.txt 
-    ```
+```bash
+pip install -r requirements.txt 
+```
 ## Data Preparation
 Prepare both lyrics and pinyin for each song.
 
-    ```bash
-    ├── data
-    │   └── lyrics
-    │       └── rap
-    │           └── singer01
-    │               └── album01
-    │                   ├── song01
-    │                   │   ├── lyrics.txt
-    │                   │   └── pinyin.txt
-    │                   └── song02
-    │                       ├── lyrics.txt
-    │                       └── pinyin.txt
-    ```
+```bash
+├── data
+│   └── lyrics
+│       └── rap
+│           └── singer01
+│               └── album01
+│                   ├── song01
+│                   │   ├── lyrics.txt
+│                   │   └── pinyin.txt
+│                   └── song02
+│                       ├── lyrics.txt
+│                       └── pinyin.txt
+```
+
 Here is a sample of `lyrics.txt`:
 ```
 20_[01:12.56][BEAT]那就[BEAT]让我再沉[BEAT]沦这一世
@@ -50,11 +51,11 @@ Here is a sample of `pinyin.txt`:
 We provide a example script for train and generation.
 To train, run:
 
-    ```bash
-    bash train.sh
-    ```
+```bash
+bash train.sh
+```
 To generate, run:
 
-    ```bash
-    bash generate.sh
-    ```
+```bash
+bash generate.sh
+```
