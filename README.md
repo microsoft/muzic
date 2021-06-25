@@ -88,6 +88,7 @@ The requirements for running *DeepRapper* are listed in `DeepRapper/requirements
     ```
 ## Data Preparation
 Prepare both lyrics and pinyin for each song.
+
     ```bash
     ├── data
     │   └── lyrics
@@ -127,10 +128,12 @@ Here is a sample of `pinyin.txt`:
 ## Train & Generation
 We provide a example script for train and generation.
 To train, run:
+
     ```bash
     bash train.sh
     ```
 To generate, run:
+
     ```bash
     bash generate.sh
     ```
