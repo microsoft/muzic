@@ -1,6 +1,6 @@
 # DeepRapper
 
-* The paper: [MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training]()
+* The paper: [DeepRapper: Neural Rap Generation with Rhyme and Rhythm Modeling]()
 
 ## Requirements
 The requirements for running *DeepRapper* are listed in `DeepRapper/requirements.txt`. To install the requirements, run:
