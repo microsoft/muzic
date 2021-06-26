@@ -5,7 +5,6 @@ from fairseq.criterions import register_criterion
 from fairseq.criterions.sentence_prediction import SentencePredictionCriterion
 from fairseq.data import (MaskTokensDataset,
                           LanguagePairDataset,
-                          MaskTokensDataset,
                           PrependTokenDataset,
                           data_utils)
 from fairseq.models import register_model, register_model_architecture
@@ -174,7 +173,6 @@ class OctupleMaskTokensDataset(MaskTokensDataset):
                 self.mask_idx,
             )
             assert not self.mask_whole_words, 'mask whole words not supported for cp'
-
             def generate_mask(sz, prob):
                 mask_n = np.random.rand(sz)
                 mask_s = np.zeros(sz, dtype=np.int8)
@@ -449,3 +447,4 @@ class OctupleTokenDataset(PrependTokenDataset):
 
 fairseq.tasks.sentence_prediction.PrependTokenDataset = OctupleTokenDataset
 fairseq.tasks.masked_lm.PrependTokenDataset = OctupleTokenDataset
+fairseq.tasks.masked_lm.MaskTokensDataset = OctupleMaskTokensDataset

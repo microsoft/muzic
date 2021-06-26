@@ -24,7 +24,6 @@ pad_index = label_dict.pad()
 label_fn = lambda label: label_dict.string(
     [label + label_dict.nspecial]
 )
-# roberta = torch.nn.DataParallel(roberta)
 roberta.cuda()
 roberta.eval()
 

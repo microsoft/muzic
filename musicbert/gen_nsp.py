@@ -4,7 +4,7 @@ import pickle
 import preprocess
 import random
 # (Measure, Pos, Program, Pitch, Duration, Velocity, TimgSig, Tempo)
-samples_size = int(input('samples_size = '))  # set to 0 for full generation
+samples_size = 0  # set to 0 for full generation
 velocity_list = [8, 20, 31, 42, 53, 64, 80, 96, 112, 127]
 timesig = preprocess.t2e((4, 4))
 tempo = preprocess.b2e(120.0)
