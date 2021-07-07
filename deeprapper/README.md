@@ -1,6 +1,6 @@
 # DeepRapper
 
-* The paper: [DeepRapper: Neural Rap Generation with Rhyme and Rhythm Modeling]()
+* The paper: [DeepRapper: Neural Rap Generation with Rhyme and Rhythm Modeling](https://arxiv.org/abs/2107.01875)
 
 ## Requirements
 The requirements for running *DeepRapper* are listed in `DeepRapper/requirements.txt`. To install the requirements, run:
