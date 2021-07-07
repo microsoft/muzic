@@ -59,3 +59,6 @@ To generate, run:
 ```bash
 bash generate.sh
 ```
+
+## Pretrained Model
+The pretained model can be found in `Releases: DeepRapper-v1.0`.
