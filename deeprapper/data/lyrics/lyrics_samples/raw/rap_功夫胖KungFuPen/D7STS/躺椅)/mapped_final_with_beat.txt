@@ -1,0 +1,45 @@
+2_[00:15.808][BEAT] ou [BEAT] ei e i [BEAT] en ang o [BEAT] ie e ou [BEAT] i an [BEAT] an u o [BEAT] i
+3_[00:19.900][BEAT] ou [BEAT] ei e i [BEAT] i u [BEAT] in e i [BEAT] ong e u [BEAT] e o [BEAT] i
+4_[00:23.646][BEAT] ou [BEAT] ei ang i [BEAT] e e u [BEAT] e a a [BEAT] a en ao [BEAT] ao o i
+5_[00:26.833][BEAT] ou [BEAT] ei ou i [BEAT] ie ang [BEAT] u in [BEAT] an i ang [BEAT] e i [BEAT] in e
+6_[00:30.217][BEAT] ou ei [BEAT] e ai [BEAT] in [BEAT] i [PAD] [BEAT] o i [BEAT] ang ai [BEAT] er i
+7_[00:34.401][BEAT] ao [BEAT] i e u [BEAT] u e a [BEAT] ang i [PAD] [BEAT] ie ie [BEAT] in i [BEAT] e
+8_[00:38.253][BEAT] ou u [BEAT] ang ei [BEAT] in [BEAT] i [PAD] [BEAT] in ao in en [BEAT] e
+9_[00:42.298][BEAT] ao ei [BEAT] i i [BEAT] e an [BEAT] ie a [BEAT] ong ao [BEAT] ou ei [BEAT] e i
+10_[00:45.739][BEAT] u [BEAT] an ao [BEAT] ai i [BEAT] ai [BEAT] ong [PAD] ai [BEAT] i ao [BEAT] i i [BEAT] o en
+11_[00:49.716][BEAT] o [BEAT] en i [BEAT] ao ang [BEAT] a in [BEAT] ang [PAD] [BEAT] in ei e [BEAT] en i [BEAT] ai ong
+12_[00:53.394]in [BEAT] ei e [BEAT] en o [BEAT] ai [BEAT] ong [PAD] [BEAT] ang an ao [BEAT] an e [BEAT] ai ong
+13_[00:57.209]u [BEAT] ang ai [BEAT] ong [BEAT] ong e o [BEAT] e in [BEAT] u u [BEAT] ao ou [BEAT] ai ong
+14_[01:01.407][BEAT] ang o ei [BEAT] ao o [BEAT] e ang [BEAT] i o [BEAT] ang o [BEAT] e [BEAT] ang i
+15_[01:04.910][BEAT] i [BEAT] ang [BEAT] an in [BEAT] i ie ang [BEAT] en [BEAT] en i ai [BEAT] o [BEAT] ao i
+16_[01:08.711][BEAT] ei [BEAT] ao ao [BEAT] ong [BEAT] an e en [BEAT] in ao [BEAT] i ao [BEAT] ao [BEAT] a i
+17_[01:12.536][BEAT] i [BEAT] i i [BEAT] ou u [BEAT] i ao [BEAT] i e [BEAT] i [BEAT] a i
+18_[01:16.237][BEAT] ang [BEAT] o o [BEAT] ang o [BEAT] e ang [BEAT] i [PAD] [BEAT] o ang o [BEAT] e ang i
+19_[01:20.185][BEAT] i [BEAT] ang [BEAT] an in o [BEAT] ang o [BEAT] an [BEAT] i ie [BEAT] ong o ang in
+20_[01:23.699]ang [BEAT] o o [BEAT] ang o [BEAT] e ang [BEAT] i [PAD] [BEAT] o ang o [BEAT] e ang i
+21_[01:27.542][BEAT] ang [BEAT] ao an [BEAT] an
+22_[01:31.502][BEAT] ang o o [BEAT] ang o [BEAT] e ang [BEAT] i [PAD] [BEAT] o ang o [BEAT] e ang i
+23_[01:35.427][BEAT] ang [BEAT] ang ai an [BEAT] i o [BEAT] u ei [BEAT] ai ang [BEAT] i
+24_[01:39.566]ang [BEAT] o i [BEAT] ai o [BEAT] e ang [BEAT] i [PAD] [BEAT] ei a an [BEAT] an ang i
+25_[01:42.942][BEAT] o ei i [BEAT] e i [BEAT] e e [BEAT] i an [BEAT] o [BEAT] en [BEAT] ong [BEAT] e [BEAT] ang in
+26_[02:02.386]in [BEAT] ai ou e [BEAT] o a [BEAT] an i [BEAT] en e i [BEAT] ei an [BEAT] u
+27_[02:06.828]ei [BEAT] ang ang [BEAT] ai e [BEAT] en ou ang [BEAT] u i [BEAT] en i an [BEAT] u
+28_[02:11.184][BEAT] in [BEAT] u e i [BEAT] o e i [BEAT] ie an [BEAT] i e i [BEAT] i e [BEAT] an u
+29_[02:15.086][BEAT] a [BEAT] an e e [BEAT] in [BEAT] i ai i [BEAT] o ong [BEAT] ou e an u
+30_[02:18.166][BEAT] e i [BEAT] o en [BEAT] i e an [BEAT] u [PAD] [BEAT] ie i [BEAT] o en [BEAT] o e an u
+31_[02:22.083][BEAT] en in [BEAT] o i [BEAT] in i [BEAT] ang en [BEAT] in ei [BEAT] in in [BEAT] ang an u
+32_[02:25.833][BEAT] an ai [BEAT] ang [BEAT] an e ao [BEAT] u [PAD] [BEAT] en ai en [BEAT] o en a [BEAT] u [PAD] e i u
+33_[02:30.719][BEAT] ang [BEAT] i u [PAD] a [BEAT] ang i [BEAT] an in e a u
+34_[02:33.499][BEAT] ai a ou [BEAT] e [BEAT] in e an [BEAT] an u [BEAT] ie u [BEAT] e [BEAT] u en en
+35_[02:37.140][BEAT] ai [BEAT] e [BEAT] ao e [BEAT] a an [BEAT] i e ao [BEAT] e u [BEAT] e u [BEAT] an en
+36_[02:40.909][BEAT] ai [BEAT] ou [BEAT] ao o en [BEAT] an [BEAT] ie ie u [BEAT] ai o [BEAT] e en [BEAT] an en
+37_[02:44.739][BEAT] o [BEAT] en ei [BEAT] ai [BEAT] i i i [BEAT] i [BEAT] ie [BEAT] i ou i [BEAT] ei an en
+38_[02:48.668][BEAT] u an o an [BEAT] a in [BEAT] en ou [BEAT] ang [BEAT] i
+42_[03:03.899]ang [BEAT] o o [BEAT] ang o [BEAT] e [BEAT] ang [BEAT] i [PAD] o [BEAT] ang o [BEAT] e ang [BEAT] i
+43_[03:07.785][BEAT] i [BEAT] ang an [BEAT] in o [BEAT] ang o [BEAT] an i [BEAT] ie [BEAT] ong o ang in
+44_[03:11.376][BEAT] ang [BEAT] o o [BEAT] ang o [BEAT] e ang [BEAT] i [PAD] [BEAT] o ang o [BEAT] e ang i
+45_[03:15.040][BEAT] ang [BEAT] ao an [BEAT] an
+46_[03:19.039][BEAT] ang [BEAT] o o [BEAT] ang [BEAT] o e [BEAT] ang [BEAT] i [PAD] o [BEAT] ang o [BEAT] e ang [BEAT] i
+47_[03:23.147][BEAT] ang ang [BEAT] ai an [BEAT] i o [BEAT] u ei [BEAT] ai ang [BEAT] i
+48_[03:26.940]ang [BEAT] o i [BEAT] ai o [BEAT] e ang [BEAT] i [PAD] [BEAT] ei a an an ang i
+49_[03:30.157]o [BEAT] ei i [BEAT] e i [BEAT] e e [BEAT] i an [BEAT] o [BEAT] en ong [BEAT] e ang [BEAT] in

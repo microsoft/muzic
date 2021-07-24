@@ -1,0 +1,48 @@
+1_[00:10.022][BEAT]他们[BEAT]并不想要[BEAT]看见我[BEAT]们
+2_[00:12.456][BEAT]他们[BEAT]一直想要[BEAT]办了我[BEAT]们
+3_[00:14.845]但我还[BEAT]是做着你[BEAT]不待见的人
+4_[00:16.641]为了[BEAT]更多的[BEAT]兄弟在[BEAT]盼着我[BEAT]们
+5_[00:19.739][BEAT]我们[BEAT]的梦都奇[BEAT]形怪[BEAT]状
+6_[00:22.179][BEAT]但有[BEAT]一个所有[BEAT]人一[BEAT]样
+7_[00:24.605][BEAT]不愁[BEAT]粮草的唯[BEAT]一希望
+8_[00:26.957][BEAT]是藏在[BEAT]地下的[BEAT]黑色金[BEAT]矿
+9_[00:29.462][BEAT]一起 [BEAT]走起的 走[BEAT]起的 走起的
+11_[00:34.427][BEAT]一张[BEAT]地图 毛[BEAT]巾 和 日历
+12_[00:36.585][BEAT]一起[BEAT]写下本[BEAT]淘金日[BEAT]记
+13_[00:39.358][BEAT]一起 [BEAT]走起的 [BEAT]走起的 [BEAT]走起的
+15_[00:44.200][BEAT]一张[BEAT]地图 毛[BEAT]巾 和 [BEAT]日历
+16_[00:46.661]一[BEAT]起写下本[BEAT]淘金[BEAT]日[BEAT]记
+17_[00:58.636][BEAT]最初[BEAT]到现在的[BEAT]梦保持[BEAT]追寻
+18_[01:01.155][BEAT]长沙[BEAT]出发的[BEAT]货机保持[BEAT]飞行
+19_[01:03.536][BEAT]一口气冲[BEAT]下去把他[BEAT]的领先追平
+20_[01:05.698]让敌[BEAT]人归零 [BEAT]变成一[BEAT]座座的[BEAT]碑林
+21_[01:08.367][BEAT]不再写[BEAT]矫情的字句
+22_[01:09.739][BEAT]在乎[BEAT]淘金的日记
+23_[01:11.084]不[BEAT]能够拿给程[BEAT]咬金
+24_[01:12.721][BEAT]成功[BEAT]时别在乎谁[BEAT]说的话[BEAT]真好听
+25_[01:15.092][BEAT]只要记[BEAT]得落下[BEAT]时哪些兄[BEAT]弟挺你
+26_[01:18.119][BEAT]我答应[BEAT]东别出来[BEAT]有更强的
+27_[01:20.418][BEAT]我答应泽[BEAT]别终有一[BEAT]天
+28_[01:23.154][BEAT]每天升[BEAT]个级 玩[BEAT]得更彻底
+29_[01:24.943][BEAT]空气[BEAT]波能震慑你
+30_[01:26.570][BEAT]如果你[BEAT]想阻止[BEAT]喷射机
+31_[01:28.004][BEAT]我无法[BEAT]分心 像他[BEAT]们不停[BEAT]更衣
+32_[01:30.402][BEAT]但最 的那[BEAT]套都比不[BEAT]过当你登基
+34_[01:34.712][BEAT]每天对[BEAT]着镜子里[BEAT]的我说 你[BEAT]要争[BEAT]气
+35_[01:38.353][BEAT]我爱[BEAT]过 我[BEAT]恨过 我[BEAT]坏过 我正过
+36_[01:41.659]我[BEAT]卖过 [BEAT]无奈[BEAT]过 曾[BEAT]一错再错
+37_[01:44.573]重[BEAT]点是我[BEAT]会一[BEAT]直在做
+38_[01:47.425][BEAT]他们[BEAT]并不想要[BEAT]看见我[BEAT]们
+39_[01:49.845][BEAT]他们[BEAT]一直想要[BEAT]办了我[BEAT]们
+40_[01:52.331][BEAT]但我还[BEAT]是做着你[BEAT]不待见的人
+41_[01:53.994]为了[BEAT]更多的[BEAT]兄弟在[BEAT]盼着我[BEAT]们
+42_[01:57.120][BEAT]我们[BEAT]的梦都[BEAT]奇形[BEAT]怪状
+43_[01:59.536][BEAT]但有[BEAT]一个所有[BEAT]人一[BEAT]样
+44_[02:01.989][BEAT]不愁[BEAT]粮草的唯[BEAT]一希[BEAT]望
+45_[02:04.364][BEAT]是藏在地[BEAT]下的黑[BEAT]色金[BEAT]矿
+46_[02:06.904][BEAT]一起 [BEAT]走起的 [BEAT]走起的 [BEAT]走起的
+48_[02:11.735][BEAT]一张[BEAT]地图 [BEAT]毛巾 和 日[BEAT]历
+49_[02:14.186][BEAT]一起[BEAT]写下本[BEAT]淘金[BEAT]日记
+50_[02:16.710]一起 [BEAT]走起的 [BEAT]走起的 [BEAT]走起的
+52_[02:21.545][BEAT]一张[BEAT]地图 [BEAT]毛巾 和 [BEAT]日历
+53_[02:24.046]一起[BEAT]写下本[BEAT]淘金日[BEAT]记
