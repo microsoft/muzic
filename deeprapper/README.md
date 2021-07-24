@@ -13,18 +13,19 @@ Prepare both lyrics and pinyin for each song.
 ```bash
 ├── data
 │   └── lyrics
-│       └── rap
-│           └── singer01
-│               └── album01
-│                   ├── song01
-│                   │   ├── lyrics.txt
-│                   │   └── pinyin.txt
-│                   └── song02
-│                       ├── lyrics.txt
-│                       └── pinyin.txt
+│       └── lyrics_samples
+│           └── raw
+│               └── singer01
+│                   └── album01
+│                       ├── song01
+│                       │   ├── lyric_with_beat_global.txt
+│                       │   └── mapped_final_with_beat_global.txt
+│                       └── song02
+│                           ├── lyric_with_beat_global.txt
+│                           └── mapped_final_with_beat_global.txt
 ```
 
-Here is a sample of `lyrics.txt`:
+Here is a sample of `lyric_with_beat_global.txt`:
 ```
 20_[01:12.56][BEAT]那就[BEAT]让我再沉[BEAT]沦这一世
 21_[01:14.49][BEAT]不理[BEAT]解早已[BEAT]经不止一次
@@ -35,7 +36,7 @@ Here is a sample of `lyrics.txt`:
 26_[01:24.58][BEAT]那就[BEAT]让我孤[BEAT]注最后一掷
 27_[01:26.47][BEAT]不想昏[BEAT]暗之[BEAT]中度过每日
 ```
-Here is a sample of `pinyin.txt`:
+Here is a sample of `mapped_final_with_beat_global.txt`:
 ```
 20_[01:12.56][BEAT] a ou [BEAT] ang o ai en [BEAT] en e i i
 21_[01:14.49][BEAT] u i [BEAT] ie ao i [BEAT] in u i i i
