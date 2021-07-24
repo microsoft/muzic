@@ -72,5 +72,7 @@ To generate, run:
 bash generate.sh
 ```
 
+For more generated samples, visit https://deeprapper.github.io.
+
 ## Pretrained Model
 The pretained model can be found in `Releases: DeepRapper-v1.0`.
