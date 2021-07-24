@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+ # -*- coding: utf-8 -*
 
 import argparse
 import os
@@ -42,12 +40,12 @@ def main():
     parser.add_argument('--warmup_steps', default=2000, type=int, required=False, help='warm up步数')
     parser.add_argument('--log_step', default=10, type=int, required=False,
                         help='多少步汇报一次loss，设置为gradient accumulation的整数倍')
-    parser.add_argument('--stride', default=512, type=int, required=False, help='训练时取训练数据的窗口步长')
+    parser.add_argument('--stride', default=1024, type=int, required=False, help='训练时取训练数据的窗口步长')
     parser.add_argument('--gradient_accumulation', default=1, type=int, required=False, help='梯度积累')
     parser.add_argument('--fp16', action='store_true', help='混合精度')
     parser.add_argument('--fp16_opt_level', default='O1', type=str, required=False)
     parser.add_argument('--max_grad_norm', default=1.0, type=float, required=False)
-    parser.add_argument('--num_pieces', default=100, type=int, required=False, help='将训练语料分成多少份')
+    parser.add_argument('--num_pieces', default=1, type=int, required=False, help='将训练语料分成多少份')
     parser.add_argument('--min_length', default=0, type=int, required=False, help='最短收录文章长度')
     parser.add_argument('--pretrained_model', default='', type=str, required=False, help='模型训练起点路径')
     
@@ -79,7 +77,7 @@ def main():
     import transformers
     from torch.nn import DataParallel
     from torch.utils.tensorboard import SummaryWriter
-    from prepare_train_data import build_files, read_wiki_zn, read_lyrics, read_poetry, prepare_lyrics, prepare_poetry, get_shuffled_samples
+    from prepare_train_data import build_files_separate, read_lyrics, prepare_lyrics, get_shuffled_samples
     from tokenizations.bpe_tokenizer import get_encoder
     from module import GPT2Config, GPT2Model, GPT2LMHeadModel
     
@@ -139,7 +137,6 @@ def main():
         if args.raw:  
             print('Processing from raw data...') 
             prepare_fn = {
-                'poetry': prepare_poetry,
                 'lyrics': prepare_lyrics
             }
             prepare_fn[key](
@@ -151,14 +148,13 @@ def main():
 
         print('Loading processed data for training...')
         read_fn = {
-            'wiki': read_wiki_zn,
             'lyrics': read_lyrics,
-            'poetry': read_poetry
         } 
         train_lines, train_finals, train_sentences, train_pos, train_beats = read_fn[key](processed_path, reverse=args.reverse)
         
         print('Tokenizing processed data for training...')
-        build_files(num_pieces=args.num_pieces,
+        build_files_separate(num_pieces=args.num_pieces,
+                    stride=args.stride,
                     min_length=args.min_length,
                     lines=train_lines, 
                     finals=train_finals,
@@ -315,6 +311,7 @@ def main():
             samples_token, samples_final, samples_sentence, samples_pos, samples_beat = [], [], [], [], []
             n_ctx = model_config.n_ctx  # the length of a sentence for training
             stride = args.stride
+            print(len(tokens))
             while start_point < len(tokens) - stride:
                 samples_token.append(tokens[start_point: start_point + stride])
                 if args.enable_final:

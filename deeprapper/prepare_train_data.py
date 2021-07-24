@@ -74,6 +74,209 @@ def segment_text(lines):
     return lines
 
 
+def build_files_separate(num_pieces,
+                         stride,
+                         min_length,
+                         lines=None, 
+                         finals=None,
+                         sentences=None,
+                         pos=None,
+                         beats=None,
+                         tokenized_data_path=None, 
+                         finalized_data_path=None,
+                         sentenced_data_path=None,
+                         posed_data_path=None,
+                         beated_data_path=None,
+                         full_tokenizer=None, 
+                         full_finalizer=None,
+                         full_sentencer=None,
+                         full_poser=None,
+                         full_beater=None,
+                         enable_final=False,
+                         enable_sentence=False,
+                         enable_pos=False,
+                         enable_beat=False,
+                         segment=False):
+    print('Start tokenizing..')
+    assert len(lines) == len(finals) == len(sentences)
+    if segment:
+        lines = segment_text(lines)
+    path = tokenized_data_path.rsplit('/', 1)[0]
+    if not os.path.exists(path):
+        os.mkdir(path)
+    print(f'#lines: {len(lines)}')
+    if not os.path.exists(tokenized_data_path):
+        os.mkdir(tokenized_data_path) 
+    if enable_final:
+        print(f'#finals: {len(finals)}')
+        if not os.path.exists(finalized_data_path):
+            os.mkdir(finalized_data_path)
+    if enable_sentence:
+        print(f'#sentences: {len(sentences)}')
+        if not os.path.exists(sentenced_data_path):
+            os.mkdir(sentenced_data_path)
+    if enable_pos:
+        print(f'#pos: {len(pos)}')
+        if not os.path.exists(posed_data_path):
+            os.mkdir(posed_data_path)
+    if enable_beat:
+        print(f'#beats: {len(beats)}')
+        if not os.path.exists(beated_data_path):
+            os.mkdir(beated_data_path)
+    
+    all_len = len(lines)
+    
+    for k in range(num_pieces):
+        max_length = stride - 2 
+        print(max_length)
+        
+        for i in range(len(lines)):
+            line = lines[i]
+            if len(line) > min_length:
+                line = full_tokenizer.tokenize(line)
+                line = full_tokenizer.convert_tokens_to_ids(line)
+                line_length = len(line)
+                skip = full_tokenizer.convert_tokens_to_ids('[SKIP]')
+                skips = [skip] * max_length
+                if line_length >= max_length:
+                    line = line[0:max_length]
+                else:
+                    skips[0:line_length] = line[0:line_length]
+                    line = skips
+    
+                if enable_final:
+                    final = finals[i]
+                    final = full_finalizer.tokenize(final)
+                    final = full_finalizer.convert_tokens_to_ids(final) 
+                    skip = full_finalizer.convert_tokens_to_ids('[SKIP]')
+                    skips = [skip] * max_length
+                    if line_length >= max_length:
+                        final = final[0:max_length]
+                    else:
+                        skips[0:line_length] = final[0:line_length]
+                        final = skips
+                    assert len(final) == len(line)
+                           
+                if enable_sentence:
+                    sentence = sentences[i]
+                    sentence = full_sentencer.tokenize(sentence)
+                    sentence = full_sentencer.convert_tokens_to_ids(sentence)
+                    skip = full_sentencer.convert_tokens_to_ids('[SKIP]')
+                    skips = [skip] * max_length
+                    if line_length >= max_length:
+                        sentence = sentence[0:max_length]
+                    else:
+                        skips[0:line_length] = sentence[0:line_length]
+                        sentence = skips
+                    assert len(sentence) == len(line)
+                    
+                if enable_pos:
+                    p = pos[i]
+                    p = full_poser.tokenize(p)
+                    p = full_poser.convert_tokens_to_ids(p)
+                    skip = full_poser.convert_tokens_to_ids('[SKIP]')
+                    skips = [skip] * max_length
+                    if line_length >= max_length:
+                        p = p[0:max_length]
+                    else:
+                        skips[0:line_length] = p[0:line_length]
+                        p = skips
+                    assert len(p) == len(line)
+                
+                if enable_beat:
+                    beat = beats[i]
+                    beat = full_beater.tokenize(beat)
+                    beat = full_beater.convert_tokens_to_ids(beat)
+                    skip = full_beater.convert_tokens_to_ids('[SKIP]')
+                    skips = [skip] * max_length
+                    if line_length >= max_length:
+                        beat = beat[0:max_length]
+                    else:
+                        skips[0:line_length] = beat[0:line_length]
+                        beat = skips
+                    assert len(beat) == len(line)
+                
+                lines[i] = line
+                if enable_final:
+                    finals[i] = final
+                if enable_sentence:
+                    sentences[i] = sentence
+                if enable_pos:
+                    pos[i] = p
+                if enable_beat:
+                    beats[i] = beat
+        
+        full_line, full_final, full_sentence, full_pos, full_beat = [], [], [], [], []
+        for i in range(len(lines)):
+            mask = full_tokenizer.convert_tokens_to_ids('[MASK]')
+            clss = full_tokenizer.convert_tokens_to_ids('[CLS]')
+            full_line.append(mask)  # 文章开头添加MASK表示文章开始
+            full_line.extend(lines[i])
+            full_line.append(clss)  # 文章之间添加CLS表示文章结束
+            
+            if enable_final:
+                mask = full_finalizer.convert_tokens_to_ids('[MASK]')
+                clss = full_finalizer.convert_tokens_to_ids('[CLS]')
+                full_final.append(mask)  # 文章开头添加MASK表示文章开始
+                full_final.extend(finals[i])
+                full_final.append(clss)  # 文章之间添加CLS表示文章结束
+            
+            if enable_sentence:
+                mask = full_sentencer.convert_tokens_to_ids('[MASK]')
+                clss = full_sentencer.convert_tokens_to_ids('[CLS]')
+                full_sentence.append(mask)  # 文章开头添加MASK表示文章开始
+                full_sentence.extend(sentences[i])
+                full_sentence.append(clss)  # 文章之间添加CLS表示文章结束
+                
+            if enable_pos:
+                mask = full_poser.convert_tokens_to_ids('[MASK]')
+                clss = full_poser.convert_tokens_to_ids('[CLS]')
+                full_pos.append(mask)  # 文章开头添加MASK表示文章开始
+                full_pos.extend(pos[i])
+                full_pos.append(clss)  # 文章之间添加CLS表示文章结束    
+            
+            if enable_beat:
+                mask = full_beater.convert_tokens_to_ids('[MASK]')
+                clss = full_beater.convert_tokens_to_ids('[CLS]')
+                full_beat.append(mask)  # 文章开头添加MASK表示文章开始
+                full_beat.extend(beats[i])
+                full_beat.append(clss)  # 文章之间添加CLS表示文章结束 
+        
+        if enable_final:
+            assert len(full_line) == len(full_final), f'line: {len(full_line)}, final: {len(full_final)}'
+        if enable_sentence:
+            assert len(full_line) == len(full_sentence), f'line: {len(full_line)}, sentence: {len(full_sentence)}'
+        if enable_pos:
+            assert len(full_line) == len(full_pos), f'line: {len(full_line)}, pos: {len(full_pos)}'
+        if enable_beat:
+            assert len(full_line) == len(full_beat), f'line: {len(full_line)}, beat: {len(full_beat)}'
+        
+        with open(os.path.join(tokenized_data_path, 'tokenized_train_{}.txt'.format(k)), 'w') as f:
+            for idx in full_line:
+                f.write(str(idx) + ' ')
+        
+        if enable_final:
+            with open(os.path.join(finalized_data_path, 'tokenized_train_{}.txt'.format(k)), 'w') as f:
+                for idx in full_final:
+                    f.write(str(idx) + ' ')
+        
+        if enable_sentence:
+            with open(os.path.join(sentenced_data_path, 'tokenized_train_{}.txt'.format(k)), 'w') as f:
+                for idx in full_sentence:
+                    f.write(str(idx) + ' ')
+                    
+        if enable_pos:
+            with open(os.path.join(posed_data_path, 'tokenized_train_{}.txt'.format(k)), 'w') as f:
+                for idx in full_pos:
+                    f.write(str(idx) + ' ')
+                    
+        if enable_beat:
+            with open(os.path.join(beated_data_path, 'tokenized_train_{}.txt'.format(k)), 'w') as f:
+                for idx in full_beat:
+                    f.write(str(idx) + ' ')            
+    print('finish')
+
+
 def build_files(num_pieces,
                 min_length,
                 lines=None, 
