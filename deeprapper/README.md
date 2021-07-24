@@ -8,7 +8,7 @@ The requirements for running *DeepRapper* are listed in `DeepRapper/requirements
 pip install -r requirements.txt 
 ```
 ## Data Preparation
-Prepare both lyrics and pinyin for each song.
+Prepare both lyrics and pinyin for each song. We provide some data samples in `DeepRapper/data/`.
 
 ```bash
 ├── data
@@ -55,6 +55,17 @@ To train, run:
 ```bash
 bash train.sh
 ```
+When training, you may see the logs:
+
+```bash
+starting training
+epoch 1
+time: 2021-xx-xx 11:17:57.067011
+51200
+now time: 11:17. Step 10 of piece 0 of epoch 1, loss 9.587631130218506
+now time: 11:18. Step 20 of piece 0 of epoch 1, loss 9.187388515472412
+```
+
 To generate, run:
 
 ```bash
