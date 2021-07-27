@@ -6,7 +6,7 @@ import sklearn.metrics
 import sys
 import os
 
-max_length = 2048 if 'disable_cp' not in os.environ else 256
+max_length = 8192 if 'disable_cp' not in os.environ else 1024
 batch_size = 4
 n_folds = 1
 
@@ -23,7 +23,8 @@ for i in range(n_folds):
     roberta = RobertaModel.from_pretrained(
         '.',
         checkpoint_file=sys.argv[1].replace('x', str(i)),
-        data_name_or_path=sys.argv[2].replace('x', str(i))
+        data_name_or_path=sys.argv[2].replace('x', str(i)),
+        user_dir='musicbert'
     )
     num_classes = 13 if 'topmagd' in sys.argv[1] else 25
     roberta.task.load_dataset('valid')
