@@ -13,7 +13,8 @@ print('loading model and data')
 roberta = RobertaModel.from_pretrained(
     '.',
     checkpoint_file=sys.argv[1],
-    data_name_or_path=sys.argv[2]
+    data_name_or_path=sys.argv[2],
+    user_dit = 'musicbert'
 )
 num_classes = 2
 group_size = 50
