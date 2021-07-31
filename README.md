@@ -1,14 +1,25 @@
-# Project
+# Muzic
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+Muzic is a research project that empowers music understanding and generation with deep learning and artificial intelligence. 
+Muzic was started by [some researchers](https://www.microsoft.com/en-us/research/project/ai-music/) from [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/).  
 
-As the maintainer of this project, please make a few updates:
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+Our research work in Muzic:
+
+* Music Score Generation
+  + Song Writing: [SongMASS](https://arxiv.org/pdf/2012.05168.pdf)
+  + Lyric Generation: [DeepRapper](https://arxiv.org/pdf/2107.01875.pdf)
+  + Accompaniment Generation: [PopMAG](https://arxiv.org/pdf/2008.07703.pdf)
+* Singing Voice Synthesis
+  + [HiFiSinger](https://arxiv.org/pdf/2009.01776.pdf), [DeepSinger](https://arxiv.org/pdf/2007.04590.pdf), [XiaoiceSing](https://arxiv.org/pdf/2006.06261.pdf)
+* Music Understanding
+  + [MusicBERT](https://arxiv.org/pdf/2106.05630.pdf)
+
+
+We initially release the code of two research work: [MusicBERT](musicbert) and [DeepRapper](deeprapper). You can find the README in the corresponding folder. 
+
+
+
 
 ## Contributing
 
