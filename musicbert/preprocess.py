@@ -2,7 +2,6 @@
 # Licensed under the MIT License. 
 # 
 
-#!/usr/bin/env python3
 import os
 import sys
 import io
