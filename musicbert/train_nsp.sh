@@ -1,4 +1,6 @@
-#!/bin/bash
+# Copyright (c) Microsoft Corporation. All rights reserved. 
+# Licensed under the MIT License. 
+# 
 
 TOTAL_NUM_UPDATES=250000
 WARMUP_UPDATES=50000

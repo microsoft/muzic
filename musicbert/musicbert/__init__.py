@@ -1,3 +1,7 @@
+# Copyright (c) Microsoft Corporation. All rights reserved. 
+# Licensed under the MIT License. 
+# 
+
 import fairseq.tasks.sentence_prediction
 import fairseq.tasks.masked_lm
 from fairseq import metrics
