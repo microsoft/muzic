@@ -8,3 +8,19 @@ The requirements for running SongMASS are listed in `songmass/requirements.txt`.
 pip install -r requirements.txt
 ```
 
+
+## Data 
+We obtain LMD dataset from [here](https://github.com/yy1lab/Lyrics-Conditioned-Neural-Melody-Generation).
+
+```bash
+bash preprocess.sh
+```
+
+## Training
+TODO
+
+
+## Inference
+TODO
+
+## Evaluation
