@@ -55,37 +55,34 @@ class LabelSmoothedCrossEntropyCriterionWithAlign(FairseqCriterion):
 
     def compute_loss(self, model, net_output, sample, reduce=True):
         # T: target_loss
-        lprobs = model.get_normalized_probs(net_output, log_probs=True) # BaseFairseqModel.get_normalized_probs, softmax / log_softmax, (B,T,ClassNum)
-        lprobs = lprobs.view(-1, lprobs.size(-1)) # (B*T, ClassNum) 
-        target = model.get_targets(sample, net_output).view(-1, 1) #BaseFairseqModel.get.. Get sample target or netoutput. Sample['target'] (B*T, 1)
-        non_pad_mask = target.ne(self.padding_idx) #(B*T, 1) # 是否是padding的矩阵，padding为0，元素为1
-        nll_loss = -lprobs.gather(dim=-1, index=target)[non_pad_mask] #所有类别中选择正确类别的改率 #Vector : (B*T(Remove Padding))
+        lprobs = model.get_normalized_probs(net_output, log_probs=True) 
+        lprobs = lprobs.view(-1, lprobs.size(-1))  
+        target = model.get_targets(sample, net_output).view(-1, 1)
+        non_pad_mask = target.ne(self.padding_idx) 
+        nll_loss = -lprobs.gather(dim=-1, index=target)[non_pad_mask]
         smooth_loss = -lprobs.sum(dim=-1, keepdim=True)[non_pad_mask]
         
         
         if not ('word_ids' in sample.keys() and 'attns' in net_output[1].keys()):
             attn_loss = torch.zeros(nll_loss.size())
         else:
-            #输出内容里有att矩阵
             attns = net_output[1]['attns']
             src_len = attns[0].size()[2]
             tgt_len = attns[0].size()[1]
             
-            # 生成Attn Ground Truth
             source_word_ids = sample['word_ids']['source_word_ids']
-            target_word_ids = sample['word_ids']['target_word_ids']
-            # word_is为第几个token pair, 例如0 0 1 1 1 2 3 3 4 4 4 4 5 5，两个序列里相同id的为对应的pair
+            target_word_ids = sample['word_ids']['target_word_ids'] 
+            
             s = source_word_ids.unsqueeze(1).repeat(1,tgt_len,1) #(B, S) -> (B,1,S) -> (B,T,S)
             t = target_word_ids.unsqueeze(2).repeat(1,1,src_len) #(B, T) -> (B,T,1) -> (B,T,S)
-            word_attn = torch.eq(s,t).float()  #(B,T,S) #
-            # Normalize word_attn
+            word_attn = torch.eq(s,t).float()  #(B,T,S) 
+            
             attn_word_num = torch.sum(word_attn, dim=-1, keepdim=True) #(B,T,1)
             mx = torch.max(attn_word_num)
             attn_word_num = torch.clamp(attn_word_num,1,mx)
-            true_word_attn = word_attn / attn_word_num #(B,T,S) 比如当前这个target token对应三个source token,则每个0.33
+            true_word_attn = word_attn / attn_word_num 
             
             # Sentence_Normalize
-            # sent_ids类似word ids，相同id的为同一个句子，处理方式和word ids类似
             source_sent_ids = sample['net_input']['source_sent_ids']
             target_sent_ids = sample['net_input']['target_sent_ids']
             s = source_sent_ids.unsqueeze(1).repeat(1,tgt_len,1) #(B, S) -> (B,1,S) -> (B,T,S)
@@ -96,7 +93,6 @@ class LabelSmoothedCrossEntropyCriterionWithAlign(FairseqCriterion):
             sent_word_num = torch.clamp(sent_word_num,1,mx)
             sent_word_weight = sent_mask / sent_word_num
             
-            #计算每层att的损失
             attn_loss_each_layer = []
             for attn in attns:
                 attn_loss_layer = attn - true_word_attn #(B,T,S)
