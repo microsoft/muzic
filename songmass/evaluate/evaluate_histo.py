@@ -46,7 +46,6 @@ def get_pitch_duration_sequence(notes):
     return seq
 
 
-
 def separate_sentences(x, find_structure=False, SEP='[sep]'):
     z = x.copy()
     separate_positions = [k for k, v in enumerate(z) if v == SEP]
@@ -89,7 +88,6 @@ def get_songs(
     SEP='[sep]',
     ALIGN='[align]',
 ):
-
     lyrics = get_lyrics(lyric_file)
     song_ids = get_song_ids(song_id_file)
     lyric_sents = list(map(lambda x : x.count(SEP), lyrics))
