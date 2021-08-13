@@ -64,6 +64,8 @@
   ```bash
   bash binarize_pretrain.sh manymidi
   ```
+  
+* Pretrain checkpoints are available in Releases "MusicBert pretrain checkpoints-v1.0"
 
 ### Melody completion task and accompaniment suggestion task
 
