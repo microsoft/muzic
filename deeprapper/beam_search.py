@@ -105,7 +105,7 @@ def _normalize_logits(logits, gen_tokens, tokenizer, temperature, repitition_pen
     """
     Normalize token logits: 降低已经生成词的概率, 降低 [UNK] 概率
     """
-    for idx in set(gen_tokens): # 降低已经生成词概率
+    for idx in set(gen_tokens): # decrease the probability for generated tokens.
         logits[idx] /= repitition_penalty
 
     logits = logits / temperature
@@ -216,13 +216,13 @@ def _generate_addtional_token_ids(next_token_id, gen_tokens, gen_sentences, gen_
 
 
 def _select_results(next_nodes, sample_select_sg, samples_num, temperature=10):
-    if sample_select_sg == 'sample': # 按照概率采样
+    if sample_select_sg == 'sample': # sample with probability
         probs = torch.tensor([n.eval() for n in next_nodes])
         next_ids = torch.multinomial(temperature_softmax(probs, temperature), num_samples=samples_num)
         nodes = []
         for ni in next_ids:
             nodes.append(next_nodes[ni])
-    elif sample_select_sg == 'sort': # 保留概率最大的 samples_num 个样本
+    elif sample_select_sg == 'sort': # keep the samples_num of samples
         next_nodes = sorted(next_nodes, key=lambda x: x.eval())
         nodes = next_nodes[:samples_num]
     else:
@@ -266,7 +266,7 @@ def _control_rhymes(node, probs, tokenizer, beater, pinyin_dict, rhyme_words_lis
         last_token = tokenizer.convert_ids_to_tokens([last_token_id])[0]
         
         if last_token == '[SEP]':
-            if random.random() > rand_bound: # 概率不押之前的韵脚
+            if random.random() > rand_bound: # probabiliry to use a new rhyme
                 return probs
             
             # init rhymes
@@ -280,7 +280,7 @@ def _control_rhymes(node, probs, tokenizer, beater, pinyin_dict, rhyme_words_lis
                         s = s.replace(spt, '')
                     rhyme_words = tokenizer.convert_tokens_to_ids(list(s[:rhyme_count]))
                     for i, w in enumerate(rhyme_words):
-                        rhyme_words_list[i].append(w) # 语句 s 中的第 i 个韵脚词
+                        rhyme_words_list[i].append(w) # the i-th word of rhyme in the previous sentence
             
             # rescale rhymes
             # print('rhyme words list: ', rhyme_words_list)
@@ -296,9 +296,9 @@ def _control_rhymes(node, probs, tokenizer, beater, pinyin_dict, rhyme_words_lis
 def beam_search_decode(model, context, pinyin_dict, args, device='cpu'):
     """
     Params:
-        beam_width: 每次保留几个下一个节点
-        sample_select_sg: 筛选样本策略。sample: 按照概率采样， sort: 选择概率最大的
-        samples_num: 样本个数最大值
+        beam_width: beam width
+        sample_select_sg: ways to select samples。sample: according to probability， sort: choose the sample with maximum probability.
+        samples_num: maximum number of samples to keep.
     
     Return:
         list of samples(ids)
@@ -352,7 +352,7 @@ def beam_search_decode(model, context, pinyin_dict, args, device='cpu'):
                         beater, poser, device
                     )
                      
-                    # 生成[BEAT], 不占用韵脚词位置
+                    # generate beat tokens
                     next_token = tokenizer.convert_ids_to_tokens(nt_id)[0]
                     next_rhyme = node.rhyme if next_token == '[BEAT]' else node.rhyme[1:]
                 
@@ -375,10 +375,10 @@ def beam_search_decode_nctx(model, context, length, n_ctx, tokenizer, finalizer,
                             repitition_penalty=1.0, top_k=5, top_p=0.0, device='cpu', **kwargs):
     """
     Params:
-        beam_width: 每次保留几个下一个节点
-        sample_select_sg: 筛选样本策略。sample: 按照句子概率采样， sort: 选择句子概率最大的
-        samples_num: 样本个数最大值
-        n_ctx: 预测下一个词时，只用前 n_ctx 个词
+        beam_width: beam width
+        sample_select_sg: ways to select samples。sample: according to probability， sort: choose the sample with maximum probability.
+        samples_num: maximum number of samples to keep.
+        n_ctx: number of context words to be considered during generation
         
     Return:
         list of samples(ids)
@@ -431,9 +431,9 @@ def beam_search_decode_nctx(model, context, length, n_ctx, tokenizer, finalizer,
 def sample_sequence(model, context, length, n_ctx, tokenizer, finalizer, sentencer, pinyin_dict,
                     temperature=1.0, top_k=30, top_p=0.0, repitition_penalty=1.0, device='cpu'):
     """
-    贪心策略：每次从概率 top_k 的下个词的候选中采样一个
+    greedy mode：choose one word from words with top_k probability
     Args:
-        n_ctx: 预测下一个词时，只用前 n_ctx 个词
+        n_ctx: number of context words to be considered during generation
     """
     
     generated_tokens, generated_finals, generated_sentences = _prepare_init_inputs(context, device)
@@ -461,36 +461,3 @@ def sample_sequence(model, context, length, n_ctx, tokenizer, finalizer, sentenc
     return generated_tokens.tolist()
 
 
-def fast_sample_sequence(model, context, length, temperature=1.0, top_k=30, top_p=0.0, device='cpu'):
-    """
-    Can't be used at now!
-    """
-    inputs = torch.LongTensor(context).view(1, -1).to(device)
-    if len(context) > 1:
-        _, past = model(inputs[:, :-1], None)[:2]
-        prev = inputs[:, -1].view(1, -1)
-    else:
-        past = None
-        prev = inputs
-    generate = [] + context
-    with torch.no_grad():
-        for i in trange(length):
-            output = model(prev, past=past)
-            output, past = output[:2]
-            output = output[-1].squeeze(0) / temperature
-            filtered_logits = top_k_top_p_filtering(output, top_k=top_k, top_p=top_p)
-            next_token = torch.multinomial(torch.softmax(filtered_logits, dim=-1), num_samples=1)
-            generate.append(next_token.item())
-            prev = next_token.view(1, 1)
-    return [generate]
-
-
-# code backup 1
-#             beat_logit = next_token_logits[tokenizer.convert_tokens_to_ids('[BEAT]')]
-# #             print(f'old: {beat_logit}')
-#             prob = logit2prob(beat_logit)
-#             beat_prob = tempo * prob
-# #             print(f'tempo={tempo}, prob={prob}, newp={beat_prob}')
-#             beat_logit = math.log(beat_prob / (1.0 - beat_prob))  
-# #             print(f'new: {beat_logit}')
-#             next_token_logits[tokenizer.convert_tokens_to_ids('[BEAT]')] = beat_logit

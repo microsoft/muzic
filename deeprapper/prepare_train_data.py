@@ -213,37 +213,37 @@ def build_files_separate(num_pieces,
         for i in range(len(lines)):
             mask = full_tokenizer.convert_tokens_to_ids('[MASK]')
             clss = full_tokenizer.convert_tokens_to_ids('[CLS]')
-            full_line.append(mask)  # 文章开头添加MASK表示文章开始
+            full_line.append(mask)  # start of the document
             full_line.extend(lines[i])
-            full_line.append(clss)  # 文章之间添加CLS表示文章结束
+            full_line.append(clss)  # end of the document
             
             if enable_final:
                 mask = full_finalizer.convert_tokens_to_ids('[MASK]')
                 clss = full_finalizer.convert_tokens_to_ids('[CLS]')
-                full_final.append(mask)  # 文章开头添加MASK表示文章开始
+                full_final.append(mask)  # start of the document
                 full_final.extend(finals[i])
-                full_final.append(clss)  # 文章之间添加CLS表示文章结束
+                full_final.append(clss)  # end of the document
             
             if enable_sentence:
                 mask = full_sentencer.convert_tokens_to_ids('[MASK]')
                 clss = full_sentencer.convert_tokens_to_ids('[CLS]')
-                full_sentence.append(mask)  # 文章开头添加MASK表示文章开始
+                full_sentence.append(mask)  # start of the document
                 full_sentence.extend(sentences[i])
-                full_sentence.append(clss)  # 文章之间添加CLS表示文章结束
+                full_sentence.append(clss)  # end of the document
                 
             if enable_pos:
                 mask = full_poser.convert_tokens_to_ids('[MASK]')
                 clss = full_poser.convert_tokens_to_ids('[CLS]')
-                full_pos.append(mask)  # 文章开头添加MASK表示文章开始
+                full_pos.append(mask)  # start of the document
                 full_pos.extend(pos[i])
-                full_pos.append(clss)  # 文章之间添加CLS表示文章结束    
+                full_pos.append(clss)  # end of the document   
             
             if enable_beat:
                 mask = full_beater.convert_tokens_to_ids('[MASK]')
                 clss = full_beater.convert_tokens_to_ids('[CLS]')
-                full_beat.append(mask)  # 文章开头添加MASK表示文章开始
+                full_beat.append(mask)  # start of the document
                 full_beat.extend(beats[i])
-                full_beat.append(clss)  # 文章之间添加CLS表示文章结束 
+                full_beat.append(clss)  # end of the document
         
         if enable_final:
             assert len(full_line) == len(full_final), f'line: {len(full_line)}, final: {len(full_final)}'
@@ -333,27 +333,27 @@ def build_files(num_pieces,
     for k in tqdm(range(num_pieces)):
         sublines = lines[all_len // num_pieces * k: all_len // num_pieces * (k + 1)]
         if k == num_pieces - 1:
-            sublines.extend(lines[all_len // num_pieces * (k + 1):])  # 把尾部例子添加到最后一个piece      
+            sublines.extend(lines[all_len // num_pieces * (k + 1):])  # put the last documents to the last piece      
             
         if enable_final:
             subfinals = finals[all_len // num_pieces * k: all_len // num_pieces * (k + 1)]
             if k == num_pieces - 1:
-                subfinals.extend(finals[all_len // num_pieces * (k + 1):])  # 把尾部例子添加到最后一个piece
+                subfinals.extend(finals[all_len // num_pieces * (k + 1):])  # put the last documents to the last piece
                      
         if enable_sentence:
             subsentences = sentences[all_len // num_pieces * k: all_len // num_pieces * (k + 1)]
             if k == num_pieces - 1:
-                subsentences.extend(sentences[all_len // num_pieces * (k + 1):])  # 把尾部例子添加到最后一个piece   
+                subsentences.extend(sentences[all_len // num_pieces * (k + 1):])  # put the last documents to the last piece   
                 
         if enable_pos:
             subpos = pos[all_len // num_pieces * k: all_len // num_pieces * (k + 1)]
             if k == num_pieces - 1:
-                subpos.extend(pos[all_len // num_pieces * (k + 1):])  # 把尾部例子添加到最后一个piece
+                subpos.extend(pos[all_len // num_pieces * (k + 1):])  # put the last documents to the last piece
         
         if enable_beat:
             subbeats = beats[all_len // num_pieces * k: all_len // num_pieces * (k + 1)]
             if k == num_pieces - 1:
-                subbeats.extend(beats[all_len // num_pieces * (k + 1):])  # 把尾部例子添加到最后一个piece
+                subbeats.extend(beats[all_len // num_pieces * (k + 1):])  # put the last documents to the last piece
         
         for i in range(len(sublines)):
             line = sublines[i]
@@ -401,37 +401,37 @@ def build_files(num_pieces,
         for i in range(len(sublines)):
             mask = full_tokenizer.convert_tokens_to_ids('[MASK]')
             clss = full_tokenizer.convert_tokens_to_ids('[CLS]')
-            full_line.append(mask)  # 文章开头添加MASK表示文章开始
+            full_line.append(mask)  # start of the document
             full_line.extend(sublines[i])
-            full_line.append(clss)  # 文章之间添加CLS表示文章结束
+            full_line.append(clss)  # end of the document
             
             if enable_final:
                 mask = full_finalizer.convert_tokens_to_ids('[MASK]')
                 clss = full_finalizer.convert_tokens_to_ids('[CLS]')
-                full_final.append(mask)  # 文章开头添加MASK表示文章开始
+                full_final.append(mask)  # start of the document
                 full_final.extend(subfinals[i])
-                full_final.append(clss)  # 文章之间添加CLS表示文章结束
+                full_final.append(clss)  # end of the document
             
             if enable_sentence:
                 mask = full_sentencer.convert_tokens_to_ids('[MASK]')
                 clss = full_sentencer.convert_tokens_to_ids('[CLS]')
-                full_sentence.append(mask)  # 文章开头添加MASK表示文章开始
+                full_sentence.append(mask)  # start of the document
                 full_sentence.extend(subsentences[i])
-                full_sentence.append(clss)  # 文章之间添加CLS表示文章结束
+                full_sentence.append(clss)  # end of the document
                 
             if enable_pos:
                 mask = full_poser.convert_tokens_to_ids('[MASK]')
                 clss = full_poser.convert_tokens_to_ids('[CLS]')
-                full_pos.append(mask)  # 文章开头添加MASK表示文章开始
+                full_pos.append(mask)  # start of the document
                 full_pos.extend(subpos[i])
-                full_pos.append(clss)  # 文章之间添加CLS表示文章结束    
+                full_pos.append(clss)  # end of the document    
             
             if enable_beat:
                 mask = full_beater.convert_tokens_to_ids('[MASK]')
                 clss = full_beater.convert_tokens_to_ids('[CLS]')
-                full_beat.append(mask)  # 文章开头添加MASK表示文章开始
+                full_beat.append(mask)  # start of the document
                 full_beat.extend(subbeats[i])
-                full_beat.append(clss)  # 文章之间添加CLS表示文章结束 
+                full_beat.append(clss)  # end of the document 
         
         if enable_final:
             assert len(full_line) == len(full_final), f'line: {len(full_line)}, final: {len(full_final)}'
@@ -471,7 +471,7 @@ def build_files(num_pieces,
 """ Processing Lyrics Data """
 def process_lyric(ins_path='data/lyrics/RAP_DATASET_LYRIC/', out_path='data/lyrics/RAP_DATASET_LYRIC_valid/', invalid_songs=set([])):
     """
-    处理歌词：去除非歌词部分（如歌名、作者等），删除空行，无意义行（例如注释演唱者）
+    preprocssing lyrics: remove non-lyric symbols, remove empty lines.
     homepath = '/ssddata/lxueaa/controllable-text-generation/data'
     lyric_base = f'{homepath}/lyrics/RAP_DATASET_LYRIC'
     :return: list of invalid song path
@@ -571,16 +571,16 @@ def read_lyrics(root_path, reverse=False):
 #             print(type(song))
             if song['valid']:
                 if not reverse:
-                    lines.append(song['歌曲'])
-                    finals.append(song['韵母'])
-                    pos.append(song['相对位置'])
-                    beats.append(song['鼓点'])
+                    lines.append(song['lyric'])
+                    finals.append(song['vowel'])
+                    pos.append(song['pos'])
+                    beats.append(song['beat'])
                 else:
-                    lines.append(song['歌曲反向'])
-                    finals.append(song['韵母反向'])
-                    pos.append(song['相对位置反向'])
-                    beats.append(song['鼓点反向'])
-                sentences.append(song['句子'])
+                    lines.append(song['lyric-reverse'])
+                    finals.append(song['vowel-reverse'])
+                    pos.append(song['pos-reverse'])
+                    beats.append(song['beat-reverse'])
+                sentences.append(song['sentence'])
                 i += 1
             else:
 #                 print(l)
@@ -782,7 +782,7 @@ def parse_lyric(l_content_path, l_finals_path, with_beat=False, beat_mode=0):
     
     if num_line > 4:
         valid = True
-#     print(lyric, lyric_reverse, final, final_reverse, sentence, innerpos, innerpos_reverse, beat, beat_reverse, valid, num_line)
+
     return lyric, lyric_reverse, final, final_reverse, sentence, innerpos, innerpos_reverse, beat, beat_reverse, valid, num_line
 
 
@@ -812,15 +812,14 @@ def prepare_lyrics(ins_path, out_path, with_beat=False, beat_mode=0):
         j = 0  # number of empty songs
         max_num_lines = 0
         for s_path in os.listdir(ins_path):
-            l_info['歌手'] = s_path
+            l_info['singer'] = s_path
             s_path = os.path.join(ins_path, s_path)
 
             if os.path.isdir(s_path):
                 # enumerate album
                 for a_path in os.listdir(s_path):
-                    l_info['专辑'] = a_path
-#                     if a_path == '过山车31[Disc.1]':
-#                         print(s_path)
+                    l_info['album'] = a_path
+
                     a_path = os.path.join(s_path, a_path)
 
                     if os.path.isdir(a_path):
@@ -832,7 +831,7 @@ def prepare_lyrics(ins_path, out_path, with_beat=False, beat_mode=0):
                             if os.path.isdir(l_path):
                                 # enumerate lyric
                                 for l_song in os.listdir(l_path):
-                                    l_info['歌名'] = l_file_name  # remove '_content.txt' extension
+                                    l_info['song'] = l_file_name  # remove '_content.txt' extension
                                     
                                     if with_beat:
                                         if beat_mode == 0:
@@ -859,9 +858,9 @@ def prepare_lyrics(ins_path, out_path, with_beat=False, beat_mode=0):
                                         l_content_path = os.path.join(l_path, 'lyric_with_beat.txt')
                                         l_finals_path = os.path.join(l_path, 'mapped_final_with_beat.txt')
                                     if os.path.isfile(l_content_path):
-                                        l_info['歌曲'], l_info['歌曲反向'], l_info['韵母'], \
-                                        l_info['韵母反向'], l_info['句子'], l_info['相对位置'], \
-                                        l_info['相对位置反向'], l_info['鼓点'], l_info['鼓点反向'], \
+                                        l_info['lyric'], l_info['lyric-reverse'], l_info['vowel'], \
+                                        l_info['vowel-reverse'], l_info['sentence'], l_info['pos'], \
+                                        l_info['pos-reverse'], l_info['beat'], l_info['beat-reverse'], \
                                         l_info['valid'], num_lines = parse_lyric(l_content_path, l_finals_path, with_beat, beat_mode)
 #                                         print(l_info)
                                         if max_num_lines < num_lines:
