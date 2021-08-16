@@ -52,16 +52,6 @@ def sample_notes(flatten_notes, freq=2):
     return [flatten_notes[i * freq] for i in range(len(flatten_notes) // freq)]
 
 
-def relative_pitch(flatten_notes):
-    if len(flatten_notes) == 0:
-        return []
-    ret = flatten_notes.copy()
-    for i in range(len(ret) - 1, 0, -1):
-        ret[i] = ret[i] - ret[i - 1]
-    ret[0] = 0
-    return ret
-
-
 def main(args):
     hypos = get_songs(
         args.generated_melody_file,
