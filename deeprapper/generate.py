@@ -62,56 +62,55 @@ def main():
     parser = argparse.ArgumentParser()
 
     # inference parameters
-    parser.add_argument('--device', default='7', type=str, required=False, help='生成设备')
-    parser.add_argument('--length', default=512, type=int, required=False, help='生成长度')
-    parser.add_argument('--batch_size', default=1, type=int, required=False, help='生成的batch size')
-    parser.add_argument('--nsamples', default=4, type=int, required=False, help='生成几个样本')
-    parser.add_argument('--n_ctx', default='512', type=int, required=False, help='生成设备')
+    parser.add_argument('--device', default='7', type=str, required=False, help='cpu or gpu number')
+    parser.add_argument('--length', default=512, type=int, required=False, help='sequence length')
+    parser.add_argument('--batch_size', default=1, type=int, required=False, help='batch size')
+    parser.add_argument('--nsamples', default=4, type=int, required=False, help='number of samples')
+    parser.add_argument('--n_ctx', default='512', type=int, required=False, help='window of context')
     
-    # 各种语料库
-    parser.add_argument('--tokenizer_path', default='tokenizations/chinese_dicts.txt', type=str, required=False, help='选择词库')
-    parser.add_argument('--finalizer_path', default='tokenizations/finals.txt', type=str, required=False, help='选择韵母词库')
-    parser.add_argument('--sentencer_path', default='tokenizations/sentences.txt', type=str, required=False, help='选择句子词库')
-    parser.add_argument('--poser_path', default='tokenizations/sentences.txt', type=str, required=False, help='选择相对位置词库')
-    parser.add_argument('--beater_path', default='tokenizations/beats.txt', type=str, required=False, help='选择鼓点词库')
+    # path of dictionary
+    parser.add_argument('--tokenizer_path', default='tokenizations/chinese_dicts.txt', type=str, required=False, help='vocabulary of tokens')
+    parser.add_argument('--finalizer_path', default='tokenizations/finals.txt', type=str, required=False, help='vocabulary of finals')
+    parser.add_argument('--sentencer_path', default='tokenizations/sentences.txt', type=str, required=False, help='vocabulary of sentences')
+    parser.add_argument('--poser_path', default='tokenizations/sentences.txt', type=str, required=False, help='vocabulary of intra-sentence positions')
+    parser.add_argument('--beater_path', default='tokenizations/beats.txt', type=str, required=False, help='vocabulary of beats')
     
     # log dirs
-    parser.add_argument('--save_samples_dir', default='samples', type=str, required=False, help="保存样本的路径")
-    parser.add_argument('--samples_sign', default='', type=str, required=False, help="样本文件名标志，用于筛选样本")
-    parser.add_argument('--model_dir', default='model/lyrics/model_epoch30', type=str, required=False, help='模型路径')
+    parser.add_argument('--save_samples_dir', default='samples', type=str, required=False, help="path to save generated samples")
+    parser.add_argument('--samples_sign', default='', type=str, required=False, help="name of samples")
+    parser.add_argument('--model_dir', default='model/lyrics/model_epoch30', type=str, required=False, help='path to load models')
     
     # inference settings
-    parser.add_argument('--prefix', default='大海', type=str, required=False, help='生成文章的开头')
-    parser.add_argument('--model_config', default='model/lyrics/model_epoch30/config.json', type=str, required=False, help='模型参数')
-#     parser.add_argument('--no_wordpiece', action='store_true', help='不做word piece切词')
-    parser.add_argument('--segment', action='store_true', help='中文以词为单位')
-    parser.add_argument('--pattern', default='sample', help='采用什么模式生成文本: sample, fast, beam')
-    parser.add_argument('--save_samples', action='store_true', help='保存产生的样本')
-    parser.add_argument('--enable_final', action='store_true', help='是否加入韵母embedding')
-    parser.add_argument('--enable_sentence', action='store_true', help='是否加入sentence embedding')
-    parser.add_argument('--enable_relative_pos', action='store_true', help='是否加入inner-sentence positional embedding', required=False)
-    parser.add_argument('--enable_beat', action='store_true', help='是否加入beat embedding', required=False)
-    parser.add_argument('--reverse', action='store_true', help='是否反向生成')
-    parser.add_argument('--with_beat', action='store_true', help='是否加入beat信息')
-    parser.add_argument('--beat_mode', default=0, type=int, help='beat控制模式：0.不控制；2.global；3.local', required=False)
-    parser.add_argument('--tempo', default=1, type=int, required=False, help='歌词速度:0-local controll; 1-slow; 2-medium; 3-fast')
+    parser.add_argument('--prefix', default='大海', type=str, required=False, help='prefix given to the model')
+    parser.add_argument('--model_config', default='model/lyrics/model_epoch30/config.json', type=str, required=False, help='model parameters')
+    parser.add_argument('--segment', action='store_true', help='whehter to do Chinese Word Segmentation.')
+    parser.add_argument('--pattern', default='sample', help='sample mode: beam')
+    parser.add_argument('--save_samples', action='store_true', help='whether to save samples')
+    parser.add_argument('--enable_final', action='store_true', help='whether to use final embedding')
+    parser.add_argument('--enable_sentence', action='store_true', help='whether to use sentence embedding')
+    parser.add_argument('--enable_relative_pos', action='store_true', help='whether to use intra-sentence positional embedding', required=False)
+    parser.add_argument('--enable_beat', action='store_true', help='whether to use beat embedding', required=False)
+    parser.add_argument('--reverse', action='store_true', help='whether to use reverse language model')
+    parser.add_argument('--with_beat', action='store_true', help='whether to generate beats')
+    parser.add_argument('--beat_mode', default=0, type=int, help='beat mode：0.no control；2.global；3.local', required=False)
+    parser.add_argument('--tempo', default=1, type=int, required=False, help='pace of beats:0-local controll; 1-slow; 2-medium; 3-fast')
     
     # beam seach param
-    parser.add_argument('--beam_width', default=2, type=int, required=False, help='每次选则结果数目（子节点个数）')
-    parser.add_argument('--beam_samples_num', default=5, type=int, required=False, help='搜索树的路径上限，超过则会剪枝')
+    parser.add_argument('--beam_width', default=2, type=int, required=False, help='beam width')
+    parser.add_argument('--beam_samples_num', default=5, type=int, required=False, help='beam searching samples')
     parser.add_argument('--beam_sample_select_sg', default='sample', type=str, required=False,
-                        help='剪枝算法。sample: 按照得分概率采样，sort: 选取得分最高的')
-    parser.add_argument('--temperature', default=1, type=float, required=False, help='logits惩罚生成温度')
-    parser.add_argument('--beam_cut_temperature', default=10, type=float, required=False, help='beam剪枝概率温度')
-    parser.add_argument('--topk', default=8, type=int, required=False, help='从最高的topk选，采样子节点使用')
-    parser.add_argument('--topp', default=0, type=float, required=False, help='从超过该概率阈值的里面选')
-    parser.add_argument('--repetition_penalty', default=1.0, type=float, required=False, help='已成词的概率惩罚')
-    parser.add_argument('--dynamic_rhyme', action='store_true', help='是否使用动态韵脚（此处不是指换韵脚，指的是从前面句子读）')
-    parser.add_argument('--rhyme_sentence_num', default=2, type=int, required=False, help='韵脚控制观察的句子数目')
-    parser.add_argument('--rhyme_count', default=2, type=int, required=False, help='押韵字数')
-    parser.add_argument('--rhyme_bonus', default=5, type=int, required=False, help='韵脚词的概率 logits 奖励值')
-    parser.add_argument('--rhyme_alpha', default=.5, type=float, required=False, help='韵脚词的概率奖励系数')
-    parser.add_argument('--rhyme_prob_bound', default=0.6, type=float, required=False, help='是否要压前句韵的概率bound, 1.0=不变韵')
+                        help='sampleing algorithm. sample: sample according with scores，sort: choose the sample with highest scores')
+    parser.add_argument('--temperature', default=1, type=float, required=False, help='sampling temperature')
+    parser.add_argument('--beam_cut_temperature', default=10, type=float, required=False, help='beam cut temperature')
+    parser.add_argument('--topk', default=8, type=int, required=False, help='sample from topk tokens')
+    parser.add_argument('--topp', default=0, type=float, required=False, help='sample from topp tokens')
+    parser.add_argument('--repetition_penalty', default=1.0, type=float, required=False, help='repetition penalty')
+    parser.add_argument('--dynamic_rhyme', action='store_true', help='whether to use dynamic rhyme（')
+    parser.add_argument('--rhyme_sentence_num', default=2, type=int, required=False, help='checking rhyming according to the previous n sentences.')
+    parser.add_argument('--rhyme_count', default=2, type=int, required=False, help='number of words rhyming')
+    parser.add_argument('--rhyme_bonus', default=5, type=int, required=False, help='logits bonus given to rhyming words.')
+    parser.add_argument('--rhyme_alpha', default=.5, type=float, required=False, help='probability bonus given to rhyming words.')
+    parser.add_argument('--rhyme_prob_bound', default=0.6, type=float, required=False, help='probability of whether to use a new rhyme')
     
     
     args = parser.parse_args()
@@ -240,7 +239,7 @@ def main():
                 text = '[SEP]'.join(text)
                 text = tokenizer.tokenize(text)
 
-            for i, item in enumerate(text[:-1]):  # 确保英文前后有空格
+            for i, item in enumerate(text[:-1]):  # ensuring space before english words.
                 if is_word(item) and is_word(text[i + 1]):
                     text[i] = item + ' '
             for i, item in enumerate(text):
