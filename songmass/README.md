@@ -43,3 +43,7 @@ TODO
 TODO
 
 ## Evaluation
+We provide scripts under the [evaluation](evaluate/) folder to test the pitch/duration similarity and melody distance. To measure pitch/duration similarity, the script is as:
+```bash
+
+```
