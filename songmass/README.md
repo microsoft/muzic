@@ -43,7 +43,35 @@ TODO
 TODO
 
 ## Evaluation
-We provide scripts under the [evaluation](evaluate/) folder to test the pitch/duration similarity and melody distance. To measure pitch/duration similarity, the script is as:
+We provide scripts under the [evaluation](evaluate/) folder to test the pitch/duration similarity and melody distance. The examples are as:
 ```bash
+LYRIC={"The lyric file of ground truth"}
+MELODY={"The melody file of ground truth"}
+HYPOS={"The generated result in fairseq format"}
+SONG_ID={"SONG ID FILE"}
 
+cd evaluate/
+
+# pitch distribution similarity 
+python evaluate_histo.py \
+  --lyric-file $LYRIC \
+  --melody-file $MELODY \
+  --song-id-file $SONG_ID \
+  --generated-melody-file $HYPOS \
+  --metric pitch 
+
+# duration distribution similarity
+python evaluate_histo.py \
+  --lyric-file $LYRIC \
+  --melody-file $MELODY \
+  --song-id-file $SONG_ID \
+  --generated-melody-file $HYPOS \
+  --metric duration  
+  
+# melody distance
+python evaluate_timeseries.py \
+  --lyric-file $LYRIC \
+  --melody-file $MELODY \
+  --song-id-file $SONG_ID \
+  --generated-melody-file $HYPOS
 ```
