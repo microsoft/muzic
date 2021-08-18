@@ -34,7 +34,7 @@ Based on the above scripts, data samples will be generated under `data_org` dire
 │        ├── song_id_valid.txt
 │        └── song_id_test.txt
 ```
-We can consider para data as mono data and convert lyric file into bpecode to handle dictionary. 
+We can consider para data as mono data and convert lyric file into bpecode to handle dictionary. The processed bpecode and dictionaries have been uploaded under [data](data/).
 
 
 ## Training
