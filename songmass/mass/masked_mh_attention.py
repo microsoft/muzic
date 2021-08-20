@@ -1,12 +1,10 @@
-#修改attention mask矩阵的输入，原来是[batch_size, src_len]，现在改为[batch_size, tgt_len, src_len]
-# forward一个转mask 矩阵维度的地方改了一下
-
 # Copyright (c) 2017-present, Facebook, Inc.
 # All rights reserved.
 #
 # This source code is licensed under the license found in the LICENSE file in
 # the root directory of this source tree. An additional grant of patent rights
 # can be found in the PATENTS file in the same directory.
+#
 
 import torch
 from torch import nn
@@ -23,12 +21,31 @@ class MaskedMHAttention(MultiheadAttention):
     See "Attention Is All You Need" for more details.
     """
 
-    def __init__(self, embed_dim, num_heads, kdim=None, vdim=None, dropout=0., bias=True,
-                 add_bias_kv=False, add_zero_attn=False, self_attention=False,
-                 encoder_decoder_attention=False):
-        super().__init__(embed_dim, num_heads, kdim=kdim, vdim=vdim, dropout=dropout, bias=bias,
-                 add_bias_kv=add_bias_kv, add_zero_attn=add_zero_attn, self_attention=self_attention,
-                 encoder_decoder_attention=encoder_decoder_attention)
+    def __init__(
+        self, 
+        embed_dim, 
+        num_heads,
+        kdim=None,
+        vdim=None,
+        dropout=0.,
+        bias=True,
+        add_bias_kv=False,
+        add_zero_attn=False,
+        self_attention=False,
+        encoder_decoder_attention=False
+    ):
+        super().__init__(
+            embed_dim,
+            num_heads, 
+            kdim=kdim,
+            vdim=vdim,
+            dropout=dropout,
+            bias=bias,
+            add_bias_kv=add_bias_kv,
+            add_zero_attn=add_zero_attn,
+            self_attention=self_attention,
+            encoder_decoder_attention=encoder_decoder_attention
+        )
         self.embed_dim = embed_dim
         self.kdim = kdim if kdim is not None else embed_dim
         self.vdim = vdim if vdim is not None else embed_dim
@@ -37,22 +54,21 @@ class MaskedMHAttention(MultiheadAttention):
         self.num_heads = num_heads
         self.dropout = dropout
         self.head_dim = embed_dim // num_heads
-        assert self.head_dim * num_heads == self.embed_dim, "embed_dim must be divisible by num_heads"
+        assert (
+            self.head_dim * num_heads == self.embed_dim
+        ), "embed_dim must be divisible by num_heads"
         self.scaling = self.head_dim ** -0.5
 
         self.self_attention = self_attention
         self.encoder_decoder_attention = encoder_decoder_attention
 
-        assert not self.self_attention or self.qkv_same_dim, 'Self-attention requires query, key and ' \
-                                                             'value to be of the same size'
+        assert not self.self_attention or self.qkv_same_dim, (
+            'Self-attention requires query, key and value to be of the same size'
+        )
 
-
-        if self.qkv_same_dim:
-            self.in_proj_weight = Parameter(torch.Tensor(3 * embed_dim, embed_dim))
-        else:
-            self.k_proj_weight = Parameter(torch.Tensor(embed_dim, self.kdim))
-            self.v_proj_weight = Parameter(torch.Tensor(embed_dim, self.vdim))
-            self.q_proj_weight = Parameter(torch.Tensor(embed_dim, embed_dim))
+        self.k_proj_weight = Parameter(torch.Tensor(embed_dim, self.kdim))
+        self.v_proj_weight = Parameter(torch.Tensor(embed_dim, self.vdim))
+        self.q_proj_weight = Parameter(torch.Tensor(embed_dim, embed_dim))
 
         if bias:
             self.in_proj_bias = Parameter(torch.Tensor(3 * embed_dim))
@@ -72,9 +88,6 @@ class MaskedMHAttention(MultiheadAttention):
         self.reset_parameters()
 
         self.onnx_trace = False
-
-    def prepare_for_onnx_export_(self):
-        self.onnx_trace = True
 
     def reset_parameters(self):
         if self.qkv_same_dim:
@@ -110,10 +123,6 @@ class MaskedMHAttention(MultiheadAttention):
         assert embed_dim == self.embed_dim
         assert list(query.size()) == [tgt_len, bsz, embed_dim]
         
-        #SZH new impl: B*T*S
-#         print("MAMHATT",1, key_padding_mask.size())
-        
-
         if incremental_state is not None:
             saved_state = self._get_input_buffer(incremental_state)
             if 'prev_key' in saved_state:
@@ -151,12 +160,9 @@ class MaskedMHAttention(MultiheadAttention):
             if attn_mask is not None:
                 attn_mask = torch.cat([attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1)
             if key_padding_mask is not None:
-                #SZH : modified according to new impl
-                print(key_padding_mask.size())
                 key_padding_mask = torch.cat(
                     [key_padding_mask, 
                      key_padding_mask.new_zeros(key_padding_mask.size(0), key_padding_mask.size(1), 1)], dim=2)
-#                 print("MAMHATT",2, key_padding_mask.size())
                 
         q = q.contiguous().view(tgt_len, bsz * self.num_heads, self.head_dim).transpose(0, 1)
         if k is not None:
@@ -192,11 +198,6 @@ class MaskedMHAttention(MultiheadAttention):
             key_padding_mask = None
 
         if key_padding_mask is not None:
-#             #SZH: 
-#             print("MAMHATT",3, key_padding_mask.size())
-#             print(bsz)
-#             print(tgt_len)
-#             print(src_len)
             assert key_padding_mask.size(0) == bsz
             assert key_padding_mask.size(1) == tgt_len
             assert key_padding_mask.size(2) == src_len
@@ -208,12 +209,10 @@ class MaskedMHAttention(MultiheadAttention):
             if attn_mask is not None:
                 attn_mask = torch.cat([attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1)
             if key_padding_mask is not None:
-                #SZH : modified according to new impl
                 key_padding_mask = torch.cat(
                     [key_padding_mask,
                      torch.zeros(key_padding_mask.size(0), key_padding_mask.size(1), 1).type_as(key_padding_mask)],
                     dim=2)
-#                 print("MAMHATT",4, key_padding_mask.size())
                 
         attn_weights = torch.bmm(q, k.transpose(1, 2))
         assert list(attn_weights.size()) == [bsz * self.num_heads, tgt_len, src_len]
@@ -227,13 +226,6 @@ class MaskedMHAttention(MultiheadAttention):
 
         if key_padding_mask is not None:
             # don't attend to padding symbols
-            #SZH : modified according to new impl
-            #SZH : attn_weights : [batch, heads, tgt_len, src_len]
-            #   : org key_padding_mask [batch, src_len] -> [batch, 1, 1, src_len]
-            #   : my  key_padding_mask [batch, tgt_len, src_len] -> [batch, 1, tgt_len, src_len]
-#             print("MAMHATT",6, key_padding_mask.size())
-#             print("MAMHATT",6, key_padding_mask.unsqueeze(1).size())
-#             print("MAMHATT",6, attn_weights.size())
             attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
             if self.onnx_trace:
                 attn_weights = torch.where(
@@ -242,15 +234,10 @@ class MaskedMHAttention(MultiheadAttention):
                     attn_weights.float()
                 ).type_as(attn_weights)
             else: 
-#                 print(attn_weights)
-#                 print(key_padding_mask)
-#                 print(attn_weights.size())
-#                 print(key_padding_mask.size())
                 attn_weights = attn_weights.masked_fill(
                     key_padding_mask.unsqueeze(1),
                     float('-inf'),
                 )
-#                 print(attn_weights)
 
             attn_weights = attn_weights.view(bsz * self.num_heads, tgt_len, src_len)
 
@@ -262,8 +249,6 @@ class MaskedMHAttention(MultiheadAttention):
                     torch.isnan(attn_weights),
                     float(0.),
                 )
-#         print(attn_weights)    
-#         assert 0==1
         attn_weights = F.dropout(attn_weights, p=self.dropout, training=self.training)
 
         attn = torch.bmm(attn_weights, v)

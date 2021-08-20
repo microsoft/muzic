@@ -1,6 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-# SZH : 修改几个调用的数据集
+#
 
 from collections import OrderedDict
 import os
@@ -17,7 +17,7 @@ from fairseq.data import (
     TokenBlockDataset,
 )
 
-from fairseq.data.masked_lm_dictionary import MaskedLMDictionary
+from fairseq.data.dictionary import Dictionary
 from fairseq import options, checkpoint_utils
 from fairseq.models import FairseqMultiModel
 from fairseq.sequence_generator import SequenceGenerator
@@ -25,11 +25,7 @@ from fairseq.sequence_generator import SequenceGenerator
 from fairseq.tasks import register_task, FairseqTask
 from fairseq.tasks.semisupervised_translation import parse_lambda_config
 
-from .masked_language_pair_dataset import MaskedLanguagePairDataset
-from .noisy_language_pair_dataset import NoisyLanguagePairDataset
-
 from .music_mass_dataset import MusicMassDataset
-from .music_memt_dataset import MusicMemtDataset
 from .music_mt_dataset import MusicMtDataset
 
 
@@ -39,8 +35,27 @@ def _get_mass_dataset_key(lang_pair):
 def _get_mt_dataset_key(lang_pair):
     return "" + lang_pair
 
-def _get_memt_dataset_key(lang_pair):
-    return "memt:" + lang_pair
+
+class MaskedLMDictionary(Dictionary):
+    """
+    Dictionary for Masked Language Modelling tasks. This extends Dictionary by
+    adding the mask symbol.
+    """
+    def __init__(
+        self,
+        pad='<pad>',
+        eos='</s>',
+        unk='<unk>',
+        mask='<mask>',
+    ):
+        super().__init__()
+        self.mask_word = mask
+        self.mask_index = self.add_symbol(mask)
+        self.nspecial = len(self.symbols)
+
+    def mask(self):
+        """Helper to get index of mask symbol"""
+        return self.mask_index
 
 
 @register_task('xmasked_seq2seq')
@@ -62,8 +77,6 @@ class XMassTranslationTask(FairseqTask):
                             help='mass for monolingual data (en-en,zh-zh)')
         parser.add_argument('--mt_steps', default='', metavar='LANG-PAIRS',
                             help='supervised machine translation data (en-zh,zh-en)')
-        parser.add_argument('--memt_steps', default='', metavar='LANG-PAIRS',
-                            help='Masked encoder for machine translation')
 
         parser.add_argument('--raw-text', action='store_true',
                             help='load raw text dataset')
@@ -134,7 +147,6 @@ class XMassTranslationTask(FairseqTask):
         
         args.mass_steps = [s for s in args.mass_steps.split(',') if len(s) > 0]
         args.mt_steps   = [s for s in args.mt_steps.split(',')   if len(s) > 0]
-        args.memt_steps = [s for s in args.memt_steps.split(',') if len(s) > 0]
 
         mono_langs = [
             lang_pair.split('-')[0]
@@ -149,17 +161,13 @@ class XMassTranslationTask(FairseqTask):
 
         args.para_lang_pairs = list(set([
             '-'.join(sorted(lang_pair.split('-')))
-            for lang_pair in set(args.mt_steps + args.memt_steps) if 
+            for lang_pair in set(args.mt_steps) if 
             len(lang_pair) > 0
         ]))
 
         args.valid_lang_pairs = [s for s in args.valid_lang_pairs.split(',') if len(s) > 0]
 
         for lang_pair in args.mono_lang_pairs:
-            src, tgt = lang_pair.split('-')
-            assert src in args.source_langs and tgt in args.target_langs
-
-        for lang_pair in args.mt_steps + args.memt_steps:
             src, tgt = lang_pair.split('-')
             assert src in args.source_langs and tgt in args.target_langs
 
@@ -187,7 +195,7 @@ class XMassTranslationTask(FairseqTask):
             training = False
         else:
             if len(args.para_lang_pairs) > 0:
-                required_para = [s for s in set(args.mt_steps + args.memt_steps)]
+                required_para = [s for s in set(args.mt_steps)]
                 setattr(args, 'eval_lang_pair', required_para[0])
             else:
                 setattr(args, 'eval_lang_pair', args.mono_lang_pairs[0])
@@ -328,48 +336,13 @@ class XMassTranslationTask(FairseqTask):
                     src_lang = src,
                     tgt_lang = tgt
                 )  
-#                 eval_para_dataset[lang_pair] = LanguagePairDataset(
-#                     src_dataset, src_dataset.sizes, self.dicts[src],
-#                     tgt_dataset, tgt_dataset.sizes, self.dicts[tgt],
-#                     left_pad_source=self.args.left_pad_source,
-#                     left_pad_target=self.args.left_pad_target,
-#                     max_source_positions=self.args.max_source_positions,
-#                     max_target_positions=self.args.max_target_positions,
-#                 )
-
-        memt_para_dataset = {}
-        if split == 'train':
-            for lang_pair in self.args.memt_steps:
-                src, tgt = lang_pair.split('-')
-                key = '-'.join(sorted([src, tgt]))
-                src_key = key + '.' + src
-                tgt_key = key + '.' + tgt
-                src_id, tgt_id = self.args.langs_id[src], self.args.langs_id[tgt]
-                src_dataset = src_para_datasets[src_key]
-                tgt_dataset = src_para_datasets[tgt_key]
-                #SZH modified, org:NoisyLanguagePairDataset
-                memt_para_dataset[lang_pair] = MusicMemtDataset(
-                    src_dataset, src_dataset.sizes,
-                    tgt_dataset, tgt_dataset.sizes,
-                    self.dicts[src], self.dicts[tgt],
-                    src_id, tgt_id,
-                    left_pad_source=self.args.left_pad_source,
-                    left_pad_target=self.args.left_pad_target,
-                    max_source_positions=self.args.max_source_positions,
-                    max_target_positions=self.args.max_target_positions,
-                    ratio=self.args.word_mask,
-                    pred_probs=self.args.pred_probs,
-                    src_lang = src,
-                    tgt_lang = tgt
-                )
-
 
         mass_mono_datasets = {}
         if split == 'train':
             for lang_pair in self.args.mass_steps:
                 src_dataset = src_mono_datasets[lang_pair]
                 lang = lang_pair.split('-')[0]
-                #SZH Modified, org:MaskedLanguagePairDataset
+
                 mass_mono_dataset = MusicMassDataset(
                     src_dataset, src_dataset.sizes, self.dicts[lang],
                     left_pad_source=self.args.left_pad_source,
@@ -388,9 +361,6 @@ class XMassTranslationTask(FairseqTask):
             OrderedDict([
                 (_get_mt_dataset_key(lang_pair), mt_para_dataset[lang_pair])
                 for lang_pair in mt_para_dataset.keys()
-            ] + [
-                (_get_memt_dataset_key(lang_pair), memt_para_dataset[lang_pair])
-                for lang_pair in memt_para_dataset.keys()
             ] + [
                 (_get_mass_dataset_key(lang_pair), mass_mono_datasets[lang_pair])
                 for lang_pair in mass_mono_datasets.keys()
@@ -415,9 +385,6 @@ class XMassTranslationTask(FairseqTask):
         model.train()
         agg_loss, agg_sample_size, agg_logging_output = 0., 0., {}
         
-        #SZH: sample, key:"memt:melody-lyric", etc...
-#         print("Train Step. Sample", sample)
-
         def forward_backward(model, samples, logging_output_key, lang_pair, weight=1.0):
             nonlocal agg_loss, agg_sample_size, agg_logging_output
             if samples is None or len(samples) == 0:
@@ -438,10 +405,6 @@ class XMassTranslationTask(FairseqTask):
 
         for lang_pair in self.args.mt_steps:
             sample_key = lang_pair
-            forward_backward(model, sample[sample_key], sample_key, lang_pair)
-
-        for lang_pair in self.args.memt_steps:
-            sample_key = _get_memt_dataset_key(lang_pair)
             forward_backward(model, sample[sample_key], sample_key, lang_pair)
 
         for lang_pair in self.args.mass_steps:

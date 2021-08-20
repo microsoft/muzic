@@ -13,6 +13,7 @@ from fairseq.criterions import FairseqCriterion, register_criterion
 
 import torch
 
+
 @register_criterion('label_smoothed_cross_entropy_with_align')
 class LabelSmoothedCrossEntropyCriterionWithAlign(FairseqCriterion):
 
