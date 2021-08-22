@@ -2,6 +2,8 @@
 
 * The paper: [MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training](https://arxiv.org/pdf/2106.05630.pdf)
 
+## Preparing datasets
+
 ### Pre-training
 
 * Prepare a zip of midi files for pre-training (say `manymidi.zip`)
