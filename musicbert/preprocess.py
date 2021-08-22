@@ -325,9 +325,11 @@ def F(file_name):
                     e_segment.append(i)
                 else:
                     break
-            output_words = (['<s>'] * 8) + [('<{}-{}>'.format(j, k if j > 0 else k + bar_index_offset) if k != None else '<unk>') for i in e_segment for j, k in enumerate(i)] + (['</s>'] * 8)
+            output_words = (['<s>'] * 8) \
+                           + [('<{}-{}>'.format(j, k if j > 0 else k + bar_index_offset) if k != None else '<unk>') for i in e_segment for j, k in enumerate(i)] \
+                           + (['</s>'] * (8 - 1)) # 8 - 1 for append_eos functionality of binarizer in fairseq
             output_str_list.append(' '.join(output_words))
-        if not all(len(i.split()) > 16 for i in output_str_list):
+        if not all(len(i.split()) > 16 - 1 for i in output_str_list):
             print('ERROR(ENCODE): ' + file_name + ' ' + str(e) + '\n', end='')
             return False
         try:
@@ -365,7 +367,10 @@ def str_to_encoding(s):
 def encoding_to_str(e):
     bar_index_offset = 0
     p = 0
-    return (' '.join((['<s>'] * 8) + ['<{}-{}>'.format(j, k if j > 0 else k + bar_index_offset) for i in e[p: p + sample_len_max] if i[0] + bar_index_offset < bar_max for j, k in enumerate(i)] + (['</s>'] * 8)))
+
+    return ' '.join((['<s>'] * 8)
+                     + ['<{}-{}>'.format(j, k if j > 0 else k + bar_index_offset) for i in e[p: p + sample_len_max] if i[0] + bar_index_offset < bar_max for j, k in enumerate(i)]
+                     + (['</s>'] * (8 - 1)))   # 8 - 1 for append_eos functionality of binarizer in fairseq
 
 
 if __name__ == '__main__':

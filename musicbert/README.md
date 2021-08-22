@@ -26,17 +26,6 @@
 
 * Install apex for faster training (optional)
 
-## Preparing datasets
-
-* Patch fairseq binarizer (`fairseq/fairseq/binarizer.py`) because preprocessed data already contain eos tokens (`</s>`)
-
-  ```python
-  class Binarizer:
-      @staticmethod
-      def binarize(...):
-          append_eos = False  # add this line to always disable append_eos functionality of binarizer
-  ```
-
 ### Pre-training
 
 * Prepare a zip of midi files for pre-training (say `manymidi.zip`)
