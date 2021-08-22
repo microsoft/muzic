@@ -2,7 +2,6 @@
 # Licensed under the MIT License.
 #
 
-# 和原MASS基本一样，增加处理两个sentence_id序列和word_id序列打包进数据集 
 
 import numpy as np
 import torch
@@ -10,6 +9,7 @@ import torch
 from fairseq import utils
 
 from fairseq.data import data_utils, FairseqDataset
+
 
 class MusicMtDataset(FairseqDataset):
     """
@@ -23,8 +23,7 @@ class MusicMtDataset(FairseqDataset):
         src_lang_id, tgt_lang_id,
         left_pad_source=True, left_pad_target=False,
         max_source_positions=1024, max_target_positions=1024,
-        shuffle=True, input_feeding=True, ratio=0.50,
-        pred_probs=None,
+        shuffle=True, input_feeding=True,
         src_lang = "",
         tgt_lang = ""
     ):
@@ -42,8 +41,6 @@ class MusicMtDataset(FairseqDataset):
         self.max_target_positions = max_target_positions
         self.shuffle = shuffle
         self.input_feeding = input_feeding
-        self.ratio = ratio
-        self.pred_probs = pred_probs
         self.src_lang = src_lang
         self.tgt_lang = tgt_lang
         assert self.src_vocab.nspecial == self.tgt_vocab.nspecial
@@ -58,8 +55,6 @@ class MusicMtDataset(FairseqDataset):
 
         src_list = src_item.tolist()
         tgt_list = tgt_item.tolist()
-#         print("src_list",src_list)
-#         print("tgt_list",tgt_list)
              
         #For Source
         sep_positions = [i for i,x in enumerate(src_list) if x==self.sep_token]
@@ -67,7 +62,6 @@ class MusicMtDataset(FairseqDataset):
         sentences = []
         for i in range(len(sep_positions)-1):
             sentences.append(src_list[sep_positions[i]+1:sep_positions[i+1]])
-            #SZH: not include sep token
             
         source = []
         source_sent_ids = []
@@ -76,7 +70,6 @@ class MusicMtDataset(FairseqDataset):
         for i,s in enumerate(sentences):
             for t in s:
                 if t == self.align_token:
-                    # not include align token
                     word_idx += 1
                 else:
                     source.append(t)
@@ -85,19 +78,13 @@ class MusicMtDataset(FairseqDataset):
                     
             source.append(self.sep_token) #Add sep token for every sentence
             source_sent_ids.append(i)
-            #word_idx += 1 #保证所有句子以词分割符结尾，这里不用额外+1
             source_word_ids.append(word_idx)
             word_idx += 1 # next word
         
         source.append(self.src_vocab.eos_index)
         source_sent_ids.append(-1) #-1 for src non words
-        #word_idx += 1 #保证所有文档以句分割符结尾，这里不用额外+1
         source_word_ids.append(word_idx) # eos token word align
         
-#         print("src",src_list)
-#         print("source",source)
-#         print("source_sent_ids",source_sent_ids)
-#         print("source_word_ids",source_word_ids)
         assert len(source) == len(source_sent_ids)   
         assert len(source) == len(source_word_ids)
         
@@ -107,16 +94,14 @@ class MusicMtDataset(FairseqDataset):
         sentences = []
         for i in range(len(sep_positions)-1):
             sentences.append(tgt_list[sep_positions[i]+1:sep_positions[i+1]])
-            #SZH: not include sep token
             
         target = []
         target_sent_ids = []
         target_word_ids = []
         word_idx = 0
-        for i,s in enumerate(sentences):
+        for i, s in enumerate(sentences):
             for t in s:
                 if t == self.align_token:
-                    # not include align token
                     word_idx += 1
                 else:
                     target.append(t)
@@ -125,18 +110,12 @@ class MusicMtDataset(FairseqDataset):
                     
             target.append(self.sep_token) #Add sep token for every sentence
             target_sent_ids.append(i)
-            #word_idx += 1 #保证所有句子以词分割符结尾，这里不用额外+1
             target_word_ids.append(word_idx)
             word_idx += 1
             
         target.append(self.tgt_vocab.eos_index)
         target_sent_ids.append(-2) #-2 for tgt non words
-        #word_idx += 1 #保证所有文档以句分割符结尾，这里不用额外+1
         target_word_ids.append(word_idx) # eos token word align
-#         print("tgt",tgt_list)
-#         print("target",target)
-#         print("target_sent_ids",target_sent_ids)
-#         print("target_word_ids",target_word_ids)
         assert len(target) == len(target_sent_ids)
         assert len(target) == len(target_word_ids)
 
@@ -166,13 +145,11 @@ class MusicMtDataset(FairseqDataset):
                 pad_idx, eos_idx, left_pad, move_eos_to_beginning,
             )
         
-        #SZH add
         def merge_sentId(key, left_pad, pad_idx=pad_idx):
             return data_utils.collate_tokens(
                 [s[key] for s in samples],
                 pad_idx, eos_idx, left_pad,
             )
-        
 
         id = torch.LongTensor([s['id'] for s in samples])
         src_tokens = merge('source', left_pad=left_pad_source)
@@ -182,7 +159,6 @@ class MusicMtDataset(FairseqDataset):
         id = id.index_select(0, sort_order)
         src_tokens = src_tokens.index_select(0, sort_order)
         
-        #SZH: add, -1 for src non token
         source_sent_ids = None
         source_sent_ids = merge_sentId('source_sent_ids', left_pad=self.left_pad_target,pad_idx=-1)
         source_sent_ids = source_sent_ids.index_select(0, sort_order)
@@ -199,7 +175,6 @@ class MusicMtDataset(FairseqDataset):
             target = target.index_select(0, sort_order)
             ntokens = sum(len(s['target']) for s in samples)
             
-            #SZH: add, -2 for tgt non token
             target_sent_ids = merge_sentId('target_sent_ids', left_pad=self.left_pad_target,pad_idx=-2)
             target_sent_ids = target_sent_ids.index_select(0, sort_order)
             target_word_ids = merge_sentId('target_word_ids', left_pad=self.left_pad_target,pad_idx=-2)
@@ -230,13 +205,11 @@ class MusicMtDataset(FairseqDataset):
         }
         if prev_output_tokens is not None:
             batch['net_input']['prev_output_tokens'] = prev_output_tokens
-        #SZH Add
         if source_sent_ids is not None:
             batch['net_input']['source_sent_ids'] = source_sent_ids
         if target_sent_ids is not None:
             batch['net_input']['target_sent_ids'] = target_sent_ids   
         return batch
-
 
     def generate_dummy_batch(self, num_tokens, collate_fn, src_vocab, tgt_vocab, src_len=128, tgt_len=128):
         """Return a dummy batch with a given number of tokens."""

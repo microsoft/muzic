@@ -1,5 +1,3 @@
-# 基本没改，把self.encoder_attn类改为自己修改过的带输入Mask的Att矩阵的类， forward里就一个标SZH的地方need_weight改为True把att矩阵返回出来给计算损失用
-
 # Copyright (c) 2017-present, Facebook, Inc.
 # All rights reserved.
 #

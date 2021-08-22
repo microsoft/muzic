@@ -17,55 +17,55 @@ from utils import swap_value
 def main():
     parser = argparse.ArgumentParser()
     
-    # 各种数据路径
-    parser.add_argument('--model_dir', default='model', type=str, required=False, help='模型存放位置')
-    parser.add_argument('--root_path', default='data/lyrics/', type=str, required=False, help='根目录')
-    parser.add_argument('--raw_data_dir', default='lyric_with_final_small', type=str, required=False, help='原始数据目录名称')
-    parser.add_argument('--model_sign', default='1a', type=str, required=False, help='模型签名: 区分模型和log存储子目录')
-    parser.add_argument('--writer_dir', default='tensorboard_summary/', type=str, required=False, help='Tensorboard路径')
+    # path to data
+    parser.add_argument('--model_dir', default='model', type=str, required=False, help='directory of learned models')
+    parser.add_argument('--root_path', default='data/lyrics/', type=str, required=False, help='root path')
+    parser.add_argument('--raw_data_dir', default='lyric_with_final_small', type=str, required=False, help='directory of raw data')
+    parser.add_argument('--model_sign', default='1a', type=str, required=False, help='model sign, to identify each model')
+    parser.add_argument('--writer_dir', default='tensorboard_summary/', type=str, required=False, help='directory of tensorboard logs')
     
-    # 各种语料库
-    parser.add_argument('--tokenizer_path', default='tokenizations/chinese_dicts.txt', type=str, required=False, help='选择词库')
-    parser.add_argument('--finalizer_path', default='tokenizations/finals.txt', type=str, required=False, help='选择韵母词库')
-    parser.add_argument('--sentencer_path', default='tokenizations/sentences.txt', type=str, required=False, help='选择句子词库')
-    parser.add_argument('--poser_path', default='tokenizations/sentences.txt', type=str, required=False, help='选择相对位置词库')
-    parser.add_argument('--beater_path', default='tokenizations/beats.txt', type=str, required=False, help='选择鼓点词库')
+    # path to dictionary
+    parser.add_argument('--tokenizer_path', default='tokenizations/chinese_dicts.txt', type=str, required=False, help='vocabulary of tokens')
+    parser.add_argument('--finalizer_path', default='tokenizations/finals.txt', type=str, required=False, help='vocabulary of finals')
+    parser.add_argument('--sentencer_path', default='tokenizations/sentences.txt', type=str, required=False, help='vocabulary of sentence numbers')
+    parser.add_argument('--poser_path', default='tokenizations/sentences.txt', type=str, required=False, help='vocabulary of intra-sentence positions')
+    parser.add_argument('--beater_path', default='tokenizations/beats.txt', type=str, required=False, help='vocabulary of beats')
     
-    # 训练参数
-    parser.add_argument('--device', default='0', type=str, required=False, help='设置使用哪些显卡')
-    parser.add_argument('--init_device', default=0, type=int, required=False, help='设置使用主显卡')
+    # hyperparameters for training
+    parser.add_argument('--device', default='0', type=str, required=False, help='choose gpus')
+    parser.add_argument('--init_device', default=0, type=int, required=False, help='set the main gpu number')
     parser.add_argument('--model_config', default='config/model_config_small.json', type=str, required=False,
-                        help='选择模型参数')
-    parser.add_argument('--epochs', default=5, type=int, required=False, help='训练循环')
-    parser.add_argument('--start_epoch', default=0, type=int, required=False, help='从哪个epoch开始训练')
-    parser.add_argument('--batch_size', default=8, type=int, required=False, help='训练batch size')
-    parser.add_argument('--lr', default=1.5e-4, type=float, required=False, help='学习率')
-    parser.add_argument('--warmup_steps', default=2000, type=int, required=False, help='warm up步数')
+                        help='model configurations')
+    parser.add_argument('--epochs', default=5, type=int, required=False, help='number of epochs')
+    parser.add_argument('--start_epoch', default=0, type=int, required=False, help='the initial epoch')
+    parser.add_argument('--batch_size', default=8, type=int, required=False, help='batch size')
+    parser.add_argument('--lr', default=1.5e-4, type=float, required=False, help='learning rate')
+    parser.add_argument('--warmup_steps', default=2000, type=int, required=False, help='warm up steps')
     parser.add_argument('--log_step', default=10, type=int, required=False,
-                        help='多少步汇报一次loss，设置为gradient accumulation的整数倍')
-    parser.add_argument('--stride', default=1024, type=int, required=False, help='训练时取训练数据的窗口步长')
-    parser.add_argument('--gradient_accumulation', default=1, type=int, required=False, help='梯度积累')
-    parser.add_argument('--fp16', action='store_true', help='混合精度')
+                        help='steps of each printing of logs')
+    parser.add_argument('--stride', default=1024, type=int, required=False, help='windows of context in training')
+    parser.add_argument('--gradient_accumulation', default=1, type=int, required=False, help='steps of gradient accumulation')
+    parser.add_argument('--fp16', action='store_true', help='mixed precision')
     parser.add_argument('--fp16_opt_level', default='O1', type=str, required=False)
     parser.add_argument('--max_grad_norm', default=1.0, type=float, required=False)
-    parser.add_argument('--num_pieces', default=1, type=int, required=False, help='将训练语料分成多少份')
-    parser.add_argument('--min_length', default=0, type=int, required=False, help='最短收录文章长度')
-    parser.add_argument('--pretrained_model', default='', type=str, required=False, help='模型训练起点路径')
+    parser.add_argument('--num_pieces', default=1, type=int, required=False, help='number of pieces of data')
+    parser.add_argument('--min_length', default=0, type=int, required=False, help='min length of the lyrics')
+    parser.add_argument('--pretrained_model', default='', type=str, required=False, help='path to the pretrianed model')
     
-    # 数据处理方式
+    # ways to process data
     parser.add_argument('--encoder_json', default="tokenizations/encoder.json", type=str, help="encoder.json" , required=False)
     parser.add_argument('--vocab_bpe', default="tokenizations/vocab.bpe", type=str, help="vocab.bpe" , required=False)
-    parser.add_argument('--raw', action='store_true', help='是否从preprocessing开始', required=False)
-    parser.add_argument('--tokenize', action='store_true', help='是否作tokenize', required=False)
-    parser.add_argument('--segment', action='store_true', help='中文以词为单位', required=False)
-    parser.add_argument('--bpe_token', action='store_true', help='subword', required=False)
-    parser.add_argument('--enable_final', action='store_true', help='是否加入韵母embedding', required=False)
-    parser.add_argument('--enable_sentence', action='store_true', help='是否加入sentence embedding', required=False)
-    parser.add_argument('--enable_relative_pos', action='store_true', help='是否加入inner-sentence positional embedding', required=False)
-    parser.add_argument('--enable_beat', action='store_true', help='是否加入beat embedding', required=False)
-    parser.add_argument('--reverse', action='store_true', help='是否采用反向生成', required=False)
-    parser.add_argument('--with_beat', action='store_true', help='是否同时生成beat', required=False)
-    parser.add_argument('--beat_mode', default=0, type=int, help='beat控制模式：0.不控制；1.global；2.local', required=False)
+    parser.add_argument('--raw', action='store_true', help='whether the preprocessing is done', required=False)
+    parser.add_argument('--tokenize', action='store_true', help='whether the tokenization is done', required=False)
+    parser.add_argument('--segment', action='store_true', help='do Chinese Word Segmentation or not', required=False)
+    parser.add_argument('--bpe_token', action='store_true', help='use subword', required=False)
+    parser.add_argument('--enable_final', action='store_true', help='whether to use final embedding', required=False)
+    parser.add_argument('--enable_sentence', action='store_true', help='whether to use sentence embedding', required=False)
+    parser.add_argument('--enable_relative_pos', action='store_true', help='whether to use intra-sentence positional embedding', required=False)
+    parser.add_argument('--enable_beat', action='store_true', help='whether to use beat embedding', required=False)
+    parser.add_argument('--reverse', action='store_true', help='whether to use reverse language model', required=False)
+    parser.add_argument('--with_beat', action='store_true', help='whether to generate beat', required=False)
+    parser.add_argument('--beat_mode', default=0, type=int, help='beat mode：0.no control；1.global control；2.local control', required=False)
 
     args = parser.parse_args()
     print('args:\n' + args.__repr__())
@@ -75,7 +75,7 @@ def main():
     # basic settings
     ###################################
     # set envs and import related packages
-    os.environ["CUDA_VISIBLE_DEVICES"] = args.device  # 此处设置程序使用哪些显卡
+    os.environ["CUDA_VISIBLE_DEVICES"] = args.device  
     import torch
     import transformers
     from torch.nn import DataParallel
