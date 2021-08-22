@@ -5,22 +5,29 @@
 # the root directory of this source tree. An additional grant of patent rights
 # can be found in the PATENTS file in the same directory.
 
+
 import math
+import torch
 
 from fairseq import utils
-
 from fairseq.criterions import FairseqCriterion, register_criterion
-
-import torch
 
 
 @register_criterion('label_smoothed_cross_entropy_with_align')
 class LabelSmoothedCrossEntropyCriterionWithAlign(FairseqCriterion):
 
-    def __init__(self, args, task):
-        super().__init__(args, task)
-        self.eps = args.label_smoothing
-        self.attn_loss_weight = args.attn_loss_weight
+    def __init__(
+        self,
+        task,
+        sentence_avg,
+        label_smoothing,
+        attn_loss_weight=1.0,
+        report_accuracy=False,
+    ):
+        super().__init__(task)
+        self.eps = label_smoothing
+        self.attn_loss_weight = attn_loss_weight
+        self.report_accuracy = report_accuracy
 
     @staticmethod
     def add_args(parser):
@@ -28,8 +35,6 @@ class LabelSmoothedCrossEntropyCriterionWithAlign(FairseqCriterion):
         # fmt: off
         parser.add_argument('--label-smoothing', default=0., type=float, metavar='D',
                             help='epsilon for label smoothing, 0 means no label smoothing')
-        
-        # SZH
         parser.add_argument('--attn-loss-weight', default=1., type=float, metavar='D',
                             help='weight of supervised attention loss')
         # fmt: on

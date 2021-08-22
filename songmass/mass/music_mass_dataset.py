@@ -11,7 +11,6 @@ from fairseq.data import data_utils, FairseqDataset
 
 
 class MusicMassDataset(FairseqDataset):
-    #SZH:Multi-segment Mask
     """Masked Language Pair dataset (only support for single language)
        [x1, x2, x3, x4, x5]
                  |
@@ -25,7 +24,7 @@ class MusicMassDataset(FairseqDataset):
         left_pad_source=True, left_pad_target=False,
         max_source_positions=1024, max_target_positions=1024,
         shuffle=True, lang_id=None, ratio=None, training=True,
-        pred_probs=None, lang=""
+        pred_probs=None, lang="",
     ):
         self.src = src
         self.sizes = np.array(sizes)
@@ -40,20 +39,15 @@ class MusicMassDataset(FairseqDataset):
         self.training = training
         self.pred_probs = pred_probs
 
-        #SZH
         self.sep_token = vocab.nspecial
         self.align_token = self.sep_token + 1
         self.lang = lang
         self.mask_len_expect_per_segment = 10
         
-        #Used for melody
-        self.pitch_start = self.align_token + 1 #0
-        self.duration_start = self.align_token + 129  #SZH:保证词典0-127为Pitch,128为Rest，后面为时长
+        self.pitch_start = self.align_token + 1 
+        self.duration_start = self.align_token + 129
 
     def __getitem__(self, index):
-        #SZH: 每轮每条数据调用一次
-#         self.count += 1
-#         print("Cnt",self.count)
         if self.training is False:
             src_item = self.src[index]
             src_list = src_item.tolist()
@@ -79,20 +73,17 @@ class MusicMassDataset(FairseqDataset):
             src_item = self.src[index]
             src_list = src_item.tolist()
 
-            # 获取[SEP]位置
             sep_positions = [i for i,x in enumerate(src_list) if x==self.sep_token]
             sep_positions.insert(0,-1)
 
             s = []
             source_sent_ids = []
             for i in range(len(sep_positions)-1):
-                # 得到每个句子，去掉[SEP]和[ALIGN]
                 sent = src_list[sep_positions[i]+1:sep_positions[i+1]] #SZH: not include sep token
                 sent = [ch for ch in sent if ch != self.align_token] #Remove align
                 s.extend(sent)
                 source_sent_ids.extend([i] * len(sent))
                 
-            # 片段数及片段长度，每个片段里做一个mask，
             segment_num = round( len(s)/(self.mask_len_expect_per_segment/self.ratio) )
             segment_num = max(1,segment_num)
             seg_len = len(s)//segment_num
@@ -106,29 +97,26 @@ class MusicMassDataset(FairseqDataset):
                 seg_start = i * seg_len
                 seg_end = (i+1) * seg_len
                 if i == segment_num-1: seg_end = len(s)
-                if self.lang == 'melody': #如果是旋律序列，句内Align to 2，确保mask的片段包含整个音符 
+                if self.lang == 'melody':
                     assert len(s) % 2 == 0
-                    if seg_start % 2 == 1: seg_start -= 1
-                    if seg_end %2 == 1: seg_end -= 1
-                    mask_start, mask_length = self.mask_interval_align(seg_start, seg_end) #mask的片段
+                    if seg_start % 2 == 1: 
+                        seg_start -= 1
+                    if seg_end % 2 == 1: 
+                        seg_end -= 1
+                    mask_start, mask_length = self.mask_interval_align(seg_start, seg_end)
                 else: #Lyric
                     mask_start, mask_length = self.mask_interval(seg_start, seg_end)
-#                 print(seg_start, seg_end, mask_start, mask_length)
 
                 output.extend(s[mask_start: mask_start+mask_length].copy()) # mask的片段
     
-                # decoder端输入片段
                 for j in range(mask_start,mask_start+mask_length):
                     target_sent_ids.append(source_sent_ids[j]) 
                 if mask_start == 0:
                     t = [self.vocab.eos_index] + s[mask_start: mask_start+mask_length-1].copy()
                 else:
-                    t = s[mask_start-1: mask_start+mask_length-1].copy()
-                    
-                    
+                    t = s[mask_start - 1 : mask_start + mask_length - 1].copy()
                     
                 if self.lang == 'lyric':
-                    # 和原来mass的代码基本一样
                     for w in t:
                         target.append(self.random_word(w, self.pred_probs)) #SZH: Mask or Random word or itself
                     for i in range(seg_start, seg_end):
@@ -138,8 +126,6 @@ class MusicMassDataset(FairseqDataset):
                         if w is not None:
                             source.append(w)
                 else: 
-                    #melody
-                    #如果要替换，pitch换pitch， duration换duration
                     t = t[1:] + [t[0]]
                     t2 = []
                     for i in range(0,len(t),2):
@@ -166,16 +152,6 @@ class MusicMassDataset(FairseqDataset):
             assert len(source_sent_ids) == len(source)
             assert len(target_sent_ids) == len(target)
             
-#             if self.lang == 'melody':
-#                 print(src_list)
-#                 print("S",s)
-#                 print(segment_num, len(s), self.mask_len_expect_per_segment, self.ratio)
-#                 print("Source",source)
-#                 print("Output",output)
-#                 print("Target",target)    
-#                 print("Src_id",source_sent_ids)
-#                 print("Tgt_id",target_sent_ids) 
-#                 assert 0==1
         return {
             'id': index,
             'source': torch.LongTensor(source),
@@ -190,11 +166,6 @@ class MusicMassDataset(FairseqDataset):
         return len(self.src)
 
     def _collate(self, samples, pad_idx, eos_idx, segment_label):
-        # 修改的地方:处理两个sent_id序列
-        
-        #SZH: 每轮调用batch_size次，已组好batch
-#         self.count += 1
-#         print("Cnt",self.count)
 
         def merge(key, left_pad):
             return data_utils.collate_tokens(
@@ -208,17 +179,9 @@ class MusicMassDataset(FairseqDataset):
                 pad_idx, eos_idx, left_pad,
             )
         
-        #SZH
-        #id:Tensor(list:sentence num)
-        #src_tokens:Tensor(matrix:sentence_num * length(with padding))
-        #src_lengths:Tensor(list:sentence_num)
-        
         id = torch.LongTensor([s['id'] for s in samples])
-#         print("id",id)
         src_tokens = merge('source', left_pad=self.left_pad_source)
-#         print("Src_tokens",src_tokens)
         src_lengths = torch.LongTensor([s['source'].numel() for s in samples])
-#         print("src_lengths", src_lengths)
         src_lengths, sort_order = src_lengths.sort(descending=True)
         id = id.index_select(0, sort_order)
         src_tokens = src_tokens.index_select(0, sort_order)
@@ -258,12 +221,6 @@ class MusicMassDataset(FairseqDataset):
         
 
     def collater(self, samples):
-        #SZH: 每轮调用batch_size次，已组好batch
-#         self.count += 1
-#         print("Cnt",self.count)
-#         #SZH:仍未拆分句子，每个batch的len总和等于句子条数
-#         print("Len", len(samples))
-#         print("--------------------------")
         return self._collate(
             samples, 
             pad_idx=self.vocab.pad(),
@@ -277,9 +234,6 @@ class MusicMassDataset(FairseqDataset):
         max_positions, 
         tgt_len=128
     ):
-        #SZH: 没有调用
-#         self.count += 1
-#         print("Cnt",self.count)
         if isinstance(max_positions, float) or isinstance(max_positions, int):
             tgt_len = min(tgt_len, max_positions)
         source = self.vocab.dummy_sentence(tgt_len)
@@ -316,73 +270,8 @@ class MusicMassDataset(FairseqDataset):
     def prefetch(self, indices):
         self.src.prefetch(indices)
 
-#     def mask_start(self, end):
-#         p = np.random.random()
-#         if p >= 0.8:
-#             return 1
-#         elif p >= 0.6:
-#             return end
-#         else:
-#             return np.random.randint(1, end)
-
-#     def mask_word(self, w):
-#         p = np.random.random()
-#         if p >= 0.2:
-#             return self.vocab.mask_index
-#         elif p >= 0.1:
-#             return np.random.randint(self.vocab.nspecial, len(self.vocab))
-#         else:
-#             return w
-
-#     def random_word(self, w, pred_probs):
-#         cands = [self.vocab.mask_index, np.random.randint(self.vocab.nspecial, len(self.vocab)), w]
-#         prob = torch.multinomial(self.pred_probs, 1, replacement=True)
-#         return cands[prob]
-
-#     def mask_interval(self, l):
-#         mask_length = round(l * self.ratio)
-#         mask_length = max(1, mask_length)
-#         mask_start  = self.mask_start(l - mask_length)
-#         return mask_start, mask_length
-
     def size(self, index):
         return (self.sizes[index], int(round(self.sizes[index] * self.ratio)))
-    
-    #-------------------------------------------------------------------------------------------   
-    #SZH: For Melody
-#     def mask_interval_sep(self, l):
-#         mask_length = round(l * self.ratio)
-#         mask_length = max(1, mask_length)
-#         if mask_length%2 != 0:
-#             mask_length += 1 #SZH: make sure mask whole note
-        
-#         #SZH: mask_start
-#         end = l - mask_length
-#         p = np.random.random()
-#         if p >= 0.8:
-#             mask_start = 0 #SZH: no EOS at begin
-#         elif p >= 0.6:
-#             mask_start = end
-#         else:
-#             mask_start = np.random.randint(0, end) #SZH: no EOS at begin
-#         if mask_start%2 != 0:
-#             mask_start -= 1 #SZH: make sure mask whole note
-#         return mask_start, mask_length
-
-#     def mask_interval(self, l):
-#         mask_length = round((l-1) * self.ratio)
-#         mask_length = max(1, mask_length)
-#         mask_start  = self.mask_start(l - mask_length) #SZH: include l-masklength
-#         return mask_start, mask_length
-    
-#     def mask_start(self, end):
-#         p = np.random.random()
-#         if p >= 0.8:
-#             return 1
-#         elif p >= 0.6:
-#             return end
-#         else:
-#             return np.random.randint(1, end+1) #SZH: End is ok
     
     def mask_word(self, w):
         p = np.random.random()

@@ -66,14 +66,9 @@ class MaskedMHAttention(MultiheadAttention):
             'Self-attention requires query, key and value to be of the same size'
         )
 
-        self.k_proj_weight = Parameter(torch.Tensor(embed_dim, self.kdim))
-        self.v_proj_weight = Parameter(torch.Tensor(embed_dim, self.vdim))
-        self.q_proj_weight = Parameter(torch.Tensor(embed_dim, embed_dim))
-
-        if bias:
-            self.in_proj_bias = Parameter(torch.Tensor(3 * embed_dim))
-        else:
-            self.register_parameter('in_proj_bias', None)
+        self.k_proj = nn.Linear(self.kdim, embed_dim, bias=bias)
+        self.v_proj = nn.Linear(self.vdim, embed_dim, bias=bias)
+        self.q_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
 
         self.out_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
 
@@ -89,23 +84,6 @@ class MaskedMHAttention(MultiheadAttention):
 
         self.onnx_trace = False
 
-    def reset_parameters(self):
-        if self.qkv_same_dim:
-            nn.init.xavier_uniform_(self.in_proj_weight)
-        else:
-            nn.init.xavier_uniform_(self.k_proj_weight)
-            nn.init.xavier_uniform_(self.v_proj_weight)
-            nn.init.xavier_uniform_(self.q_proj_weight)
-
-        nn.init.xavier_uniform_(self.out_proj.weight)
-        if self.in_proj_bias is not None:
-            nn.init.constant_(self.in_proj_bias, 0.)
-            nn.init.constant_(self.out_proj.bias, 0.)
-        if self.bias_k is not None:
-            nn.init.xavier_normal_(self.bias_k)
-        if self.bias_v is not None:
-            nn.init.xavier_normal_(self.bias_v)
-
     def forward(self, query, key, value, key_padding_mask=None, incremental_state=None,
                 need_weights=True, static_kv=False, attn_mask=None):
         #SZH:
@@ -118,6 +96,10 @@ class MaskedMHAttention(MultiheadAttention):
         the key by passing a binary ByteTensor (`key_padding_mask`) with shape:
         batch x src_len, where padding elements are indicated by 1s.
         """
+
+        import IPython
+        IPython.embed()
+        exit()
 
         tgt_len, bsz, embed_dim = query.size()
         assert embed_dim == self.embed_dim

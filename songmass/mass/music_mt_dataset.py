@@ -23,8 +23,7 @@ class MusicMtDataset(FairseqDataset):
         src_lang_id, tgt_lang_id,
         left_pad_source=True, left_pad_target=False,
         max_source_positions=1024, max_target_positions=1024,
-        shuffle=True, input_feeding=True, ratio=0.50,
-        pred_probs=None,
+        shuffle=True, input_feeding=True,
         src_lang = "",
         tgt_lang = ""
     ):
@@ -42,8 +41,6 @@ class MusicMtDataset(FairseqDataset):
         self.max_target_positions = max_target_positions
         self.shuffle = shuffle
         self.input_feeding = input_feeding
-        self.ratio = ratio
-        self.pred_probs = pred_probs
         self.src_lang = src_lang
         self.tgt_lang = tgt_lang
         assert self.src_vocab.nspecial == self.tgt_vocab.nspecial

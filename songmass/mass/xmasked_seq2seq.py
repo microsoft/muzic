@@ -15,6 +15,8 @@ from fairseq.data import (
     RoundRobinZipDatasets,
     MonolingualDataset,
     TokenBlockDataset,
+    data_utils,
+    indexed_dataset,
 )
 
 from fairseq.data.dictionary import Dictionary
@@ -31,6 +33,7 @@ from .music_mt_dataset import MusicMtDataset
 
 def _get_mass_dataset_key(lang_pair):
     return "mass:" + lang_pair
+
 
 def _get_mt_dataset_key(lang_pair):
     return "" + lang_pair
@@ -102,7 +105,7 @@ class XMassTranslationTask(FairseqTask):
 
         parser.add_argument('--word_mask', default=0.25, type=float, metavar='RATIO',
                             help='The mask ratio')
-        parser.add_argument('--word_mask_keep_rand', default="0.1,0.1,0.8", type=str,
+        parser.add_argument('--word_mask_keep_rand', default="0.8,0.1,0.1", type=str,
                             help='Word prediction proability')
 
         parser.add_argument('--reload-checkpoint', type=str, default=None,
@@ -113,7 +116,6 @@ class XMassTranslationTask(FairseqTask):
         self.dicts = dicts
         self.training = training
         self.langs = list(dicts.keys())
-                
 
     @classmethod
     def build_dictionary(cls, filenames, workers=1, threshold=-1, nwords=-1, padding_factor=8):
@@ -215,34 +217,20 @@ class XMassTranslationTask(FairseqTask):
         return dicts, training
 
     def load_dataset(self, split, **kwargs):
+
+        def load_indexed_dataset(path, dictionary):
+            return data_utils.load_indexed_dataset(
+                path, dictionary, self.args.dataset_impl,
+            )
         
         def split_exists(split, lang):
             filename = os.path.join(self.args.data, '{}.{}'.format(split, lang))
-            if self.args.raw_text and IndexedRawTextDataset.exists(filename):
-                return True
-            elif not self.args.raw_text and IndexedDataset.exists(filename):
-                return True
-            return False
-
+            return indexed_dataset.dataset_exists(filename, impl=self.args.dataset_impl)
+        
         def split_para_exists(split, key, lang):
             filename = os.path.join(self.args.data, '{}.{}.{}'.format(split, key, lang))
-            if self.args.raw_text and IndexedRawTextDataset.exists(filename):
-                return True
-            elif not self.args.raw_text and IndexedDataset.exists(filename):
-                return True
-            return False
+            return indexed_dataset.dataset_exists(filename, impl=self.args.dataset_impl)
 
-
-        def indexed_dataset(path, dictionary):
-            if self.args.raw_text:
-                return IndexedRawTextDataset(path, dictionary)
-            elif IndexedDataset.exists(path):
-                if self.args.lazy_load:
-                    return IndexedDataset(path, fix_lua_indexing=True)
-                else:
-                    return IndexedCachedDataset(path, fix_lua_indexing=True)
-            return None
-        
         src_mono_datasets = {}
         for lang_pair in self.args.mono_lang_pairs:
             lang = lang_pair.split('-')[0]
@@ -252,7 +240,7 @@ class XMassTranslationTask(FairseqTask):
             else:
                 raise FileNotFoundError('Not Found available {} dataset for ({}) lang'.format(split, lang))
             
-            src_mono_datasets[lang_pair] = indexed_dataset(prefix, self.dicts[lang])
+            src_mono_datasets[lang_pair] = load_indexed_dataset(prefix, self.dicts[lang])
             print('| monolingual {}-{}: {} examples'.format(split, lang, len(src_mono_datasets[lang_pair])))
 
         src_para_datasets = {}
@@ -266,9 +254,9 @@ class XMassTranslationTask(FairseqTask):
             
             prefix = os.path.join(self.args.data, '{}.{}'.format(split, key))
             if '{}.{}'.format(key, src) not in src_para_datasets:
-                src_para_datasets[key + '.' + src] = indexed_dataset(prefix + '.' + src, self.dicts[src])
+                src_para_datasets[key + '.' + src] = load_indexed_dataset(prefix + '.' + src, self.dicts[src])
             if '{}.{}'.format(key, tgt) not in src_para_datasets:
-                src_para_datasets[key + '.' + tgt] = indexed_dataset(prefix + '.' + tgt, self.dicts[tgt])
+                src_para_datasets[key + '.' + tgt] = load_indexed_dataset(prefix + '.' + tgt, self.dicts[tgt])
 
             print('| bilingual {} {}-{}.{}: {} examples'.format(split, src, tgt, src, len(src_para_datasets[key + '.' + src])))
             print('| bilingual {} {}-{}.{}: {} examples'.format(split, src, tgt, tgt, len(src_para_datasets[key + '.' + tgt])))
@@ -282,7 +270,7 @@ class XMassTranslationTask(FairseqTask):
             src_dataset = src_para_datasets[src_key]
             tgt_dataset = src_para_datasets[tgt_key]
             src_id, tgt_id = self.args.langs_id[src], self.args.langs_id[tgt]
-            #SZH modified
+
             mt_para_dataset[lang_pair] = MusicMtDataset(
                 src_dataset, src_dataset.sizes,
                 tgt_dataset, tgt_dataset.sizes,
@@ -292,19 +280,9 @@ class XMassTranslationTask(FairseqTask):
                 left_pad_target=self.args.left_pad_target,
                 max_source_positions=self.args.max_source_positions,
                 max_target_positions=self.args.max_target_positions,
-                ratio=0,
-                pred_probs=self.args.pred_probs,
                 src_lang = src,
                 tgt_lang = tgt
             )            
-#             mt_para_dataset[lang_pair] = LanguagePairDataset(
-#                 src_dataset, src_dataset.sizes, self.dicts[src],
-#                 tgt_dataset, tgt_dataset.sizes, self.dicts[tgt],
-#                 left_pad_source=self.args.left_pad_source,
-#                 left_pad_target=self.args.left_pad_target,
-#                 max_source_positions=self.args.max_source_positions,
-#                 max_target_positions=self.args.max_target_positions,
-#             )
 
         eval_para_dataset = {}
         if split != 'train':
@@ -331,8 +309,6 @@ class XMassTranslationTask(FairseqTask):
                     left_pad_target=self.args.left_pad_target,
                     max_source_positions=self.args.max_source_positions,
                     max_target_positions=self.args.max_target_positions,
-                    ratio=0,
-                    pred_probs=self.args.pred_probs,
                     src_lang = src,
                     tgt_lang = tgt
                 )  
