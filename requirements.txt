@@ -4,6 +4,7 @@ fastBPE
 dtw-python
 nltk
 keras
+matplotlib
 fairseq==0.10.2
 torch==1.7.1
 transformers==3.5.1
