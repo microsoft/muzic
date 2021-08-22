@@ -2,30 +2,6 @@
 
 * The paper: [MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training](https://arxiv.org/pdf/2106.05630.pdf)
 
-## Preparing environment
-
-* Download Anaconda install script and install it on current directory
-
-  ```bash
-  wget https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh
-  bash Anaconda3-2020.07-Linux-x86_64.sh -b -p anaconda3
-  anaconda3/bin/conda create --name musicbert python=3.7 -y
-  anaconda3/bin/activate musicbert
-  conda install pytorch=1.4.0 cudatoolkit=10.0 -c pytorch -y
-  pip install sklearn miditoolkit matplotlib
-  ```
-
-* Install fairseq (version 336942734c85791a90baa373c212d27e7c722662)
-
-  ```bash
-  git clone https://github.com/pytorch/fairseq
-  cd fairseq
-  git checkout 336942734c85791a90baa373c212d27e7c722662
-  pip install --editable ./
-  ```
-
-* Install apex for faster training (optional)
-
 ### Pre-training
 
 * Prepare a zip of midi files for pre-training (say `manymidi.zip`)
