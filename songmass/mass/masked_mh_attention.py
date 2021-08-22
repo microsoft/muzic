@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+#
 # Copyright (c) 2017-present, Facebook, Inc.
 # All rights reserved.
 #
@@ -86,9 +89,6 @@ class MaskedMHAttention(MultiheadAttention):
 
     def forward(self, query, key, value, key_padding_mask=None, incremental_state=None,
                 need_weights=True, static_kv=False, attn_mask=None):
-        #SZH:
-        #In my new implement, key_padding_mask : [batch_size, tgt_len, src_len]
-                
         """Input shape: Time x Batch x Channel
 
         Timesteps can be masked by supplying a T x T mask in the
