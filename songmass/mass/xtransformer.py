@@ -21,6 +21,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class XTransformerEncoder(TransformerEncoder):
 
     def __init__(self, args, dictionary, embed_tokens):
@@ -29,7 +30,7 @@ class XTransformerEncoder(TransformerEncoder):
 
     def forward(self, src_tokens, src_lengths,
                 source_sent_ids=None, target_sent_ids=None):
-    
+
         x = self.embed_scale * self.embed_tokens(src_tokens)
         if self.embed_positions is not None:
             x += self.embed_positions(src_tokens)
@@ -108,7 +109,7 @@ class XTransformerDecoder(TransformerDecoder):
             s = source_sent_ids.unsqueeze(1).repeat(1, tgt_len, 1) #(BB, S) -> (BB,1,S) -> (BB,T,S)
             t = target_sent_ids.unsqueeze(2).repeat(1, 1, src_len) #(BB, T) -> (BB,T,1) -> (BB,T,S)
             sent_mask = torch.ne(s, t) 
-            sent_mask = sent_mask[:,-1,:] 
+            sent_mask = sent_mask[:, -1, :] 
             sent_mask = sent_mask.unsqueeze(1) #(BB,1,S)
             encoder_out['encoder_padding_mask'] = sent_mask
             
@@ -142,12 +143,13 @@ class XTransformerDecoder(TransformerDecoder):
 
         # decoder layers
         for layer in self.layers:
-            x, attn = layer(
+            x, attn, _ = layer(
                 x,
                 encoder_out['encoder_out'] if encoder_out is not None else None,
                 encoder_out['encoder_padding_mask'] if encoder_out is not None else None,
                 incremental_state,
                 self_attn_mask=self.buffered_future_mask(x) if incremental_state is None else None,
+                need_attn=True,
             )
             inner_states.append(x)
             attns.append(attn) #attn: batch_size * target_len * source_len
@@ -204,19 +206,20 @@ class XTransformerModel(BaseFairseqModel):
 
     def forward(self, src_tokens, src_lengths, prev_output_tokens, 
                 source_sent_ids, target_sent_ids, src_key, tgt_key, positions=None):
-        
+
         encoder_out = self.encoders[src_key](src_tokens, src_lengths)
         
-        input_encoder_out = encoder_out['encoder_out'] #(S * B * C)
+        input_encoder_out = encoder_out['encoder_out']
         input_encoder_padding_mask = encoder_out['encoder_padding_mask'] #Bool(B * S), Treat Mask As Padding
-               
+
         src_len = src_tokens.size()[1]
         tgt_len = prev_output_tokens.size()[1]
-        s = source_sent_ids.unsqueeze(1).repeat(1,tgt_len,1) #(B, S) -> (B,1,S) -> (B,T,S)
-        t = target_sent_ids.unsqueeze(2).repeat(1,1,src_len) #(B, T) -> (B,T,1) -> (B,T,S)
-        sent_mask = torch.ne(s,t) #FIXBUG:不等于为True，才需要被mask
+        s = source_sent_ids.unsqueeze(1).repeat(1, tgt_len, 1) #(B, S) -> (B,1,S) -> (B,T,S)
+        t = target_sent_ids.unsqueeze(2).repeat(1, 1, src_len) #(B, T) -> (B,T,1) -> (B,T,S)
 
+        sent_mask = torch.ne(s, t)
         encoder_out['encoder_padding_mask'] = sent_mask
+
         decoder_out = self.decoders[tgt_key](
             prev_output_tokens,
             encoder_out=encoder_out,

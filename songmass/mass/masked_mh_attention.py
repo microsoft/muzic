@@ -293,6 +293,10 @@ class MaskedMHAttention(MultiheadAttention):
         attn_weights_float = utils.softmax(
             attn_weights, dim=-1, onnx_trace=self.onnx_trace
         )
+        attn_weights_float = attn_weights_float.masked_fill(
+            torch.isnan(attn_weights_float),
+            float(0.),
+        )
         attn_weights = attn_weights_float.type_as(attn_weights)
         attn_probs = self.dropout_module(attn_weights)
 
