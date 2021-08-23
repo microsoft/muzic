@@ -15,6 +15,7 @@ import pypinyin
 import shutil
 from pypinyin import lazy_pinyin, Style
 from tqdm.auto import tqdm
+from utils import special_tokens
 
 
 def get_shuffled_samples(a, b, c, d, e):
