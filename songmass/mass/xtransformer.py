@@ -15,7 +15,7 @@ from fairseq.models.transformer import (
     TransformerModel,
 )
 
-from .masked_attention_decoder_layer import MaskedAtteionDecoderLayer
+from .masked_attention_decoder_layer import MaskedAttentionDecoderLayer
 
 import torch
 import torch.nn as nn
@@ -86,7 +86,7 @@ class XTransformerDecoder(TransformerDecoder):
         
         self.layers = nn.ModuleList([])
         self.layers.extend([
-            MaskedAtteionDecoderLayer(args, no_encoder_attn)
+            MaskedAttentionDecoderLayer(args, no_encoder_attn)
             for _ in range(args.decoder_layers)
         ])
         self.cnt = 0

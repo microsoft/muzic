@@ -9,14 +9,18 @@
 # can be found in the PATENTS file in the same directory.
 #
 
+from typing import Dict, Optional, Tuple
+
 import torch
-from torch import nn
-from torch.nn import Parameter
 import torch.nn.functional as F
 
-from fairseq import utils
+from torch import Tensor, nn
+from torch.nn import Parameter
 
+from fairseq import utils
+from fairseq.incremental_decoding_utils import with_incremental_state
 from fairseq.modules import MultiheadAttention
+
 
 class MaskedMHAttention(MultiheadAttention):
     """Multi-headed attention.
@@ -49,65 +53,80 @@ class MaskedMHAttention(MultiheadAttention):
             self_attention=self_attention,
             encoder_decoder_attention=encoder_decoder_attention
         )
-        self.embed_dim = embed_dim
-        self.kdim = kdim if kdim is not None else embed_dim
-        self.vdim = vdim if vdim is not None else embed_dim
-        self.qkv_same_dim = self.kdim == embed_dim and self.vdim == embed_dim
 
-        self.num_heads = num_heads
-        self.dropout = dropout
-        self.head_dim = embed_dim // num_heads
-        assert (
-            self.head_dim * num_heads == self.embed_dim
-        ), "embed_dim must be divisible by num_heads"
-        self.scaling = self.head_dim ** -0.5
-
-        self.self_attention = self_attention
-        self.encoder_decoder_attention = encoder_decoder_attention
-
-        assert not self.self_attention or self.qkv_same_dim, (
-            'Self-attention requires query, key and value to be of the same size'
-        )
-
-        self.k_proj = nn.Linear(self.kdim, embed_dim, bias=bias)
-        self.v_proj = nn.Linear(self.vdim, embed_dim, bias=bias)
-        self.q_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
-
-        self.out_proj = nn.Linear(embed_dim, embed_dim, bias=bias)
-
-        if add_bias_kv:
-            self.bias_k = Parameter(torch.Tensor(1, 1, embed_dim))
-            self.bias_v = Parameter(torch.Tensor(1, 1, embed_dim))
-        else:
-            self.bias_k = self.bias_v = None
-
-        self.add_zero_attn = add_zero_attn
-
-        self.reset_parameters()
-
-        self.onnx_trace = False
-
-    def forward(self, query, key, value, key_padding_mask=None, incremental_state=None,
-                need_weights=True, static_kv=False, attn_mask=None):
+    def forward(
+        self,
+        query,
+        key: Optional[Tensor],
+        value: Optional[Tensor],
+        key_padding_mask: Optional[Tensor] = None,
+        incremental_state: Optional[Dict[str, Dict[str, Optional[Tensor]]]] = None,
+        need_weights: bool = True,
+        static_kv: bool = False,
+        attn_mask: Optional[Tensor] = None,
+        before_softmax: bool = False,
+        need_head_weights: bool = False,
+    ) -> Tuple[Tensor, Optional[Tensor]]:
         """Input shape: Time x Batch x Channel
-
-        Timesteps can be masked by supplying a T x T mask in the
-        `attn_mask` argument. Padding elements can be excluded from
-        the key by passing a binary ByteTensor (`key_padding_mask`) with shape:
-        batch x src_len, where padding elements are indicated by 1s.
+        Args:
+            key_padding_mask (ByteTensor, optional): mask to exclude
+                keys that are pads, of shape `(batch, src_len)`, where
+                padding elements are indicated by 1s.
+            need_weights (bool, optional): return the attention weights,
+                averaged over heads (default: False).
+            attn_mask (ByteTensor, optional): typically used to
+                implement causal attention, where the mask prevents the
+                attention from looking forward in time (default: None).
+            before_softmax (bool, optional): return the raw attention
+                weights and values before the attention softmax.
+            need_head_weights (bool, optional): return the attention
+                weights for each head. Implies *need_weights*. Default:
+                return the average attention weights over all heads.
         """
-
-        import IPython
-        IPython.embed()
-        exit()
+        if need_head_weights:
+            need_weights = True
 
         tgt_len, bsz, embed_dim = query.size()
         assert embed_dim == self.embed_dim
         assert list(query.size()) == [tgt_len, bsz, embed_dim]
-        
+
+        if (
+            not self.onnx_trace
+            and not self.tpu  # don't use PyTorch version on TPUs
+            and incremental_state is None 
+            and not static_kv
+            # A workaround for quantization to work. Otherwise JIT compilation
+            # treats bias in linear module as method.
+            and not torch.jit.is_scripting()
+        ):
+            assert key is not None and value is not None
+            return F.multi_head_attention_forward(
+                query,
+                key,
+                value,
+                self.embed_dim,
+                self.num_heads,
+                torch.empty([0]),
+                torch.cat((self.q_proj.bias, self.k_proj.bias, self.v_proj.bias)),
+                self.bias_k,
+                self.bias_v,
+                self.add_zero_attn,
+                self.dropout_module.p,
+                self.out_proj.weight,
+                self.out_proj.bias,
+                self.training or self.dropout_module.apply_during_inference,
+                key_padding_mask,
+                need_weights,
+                attn_mask,
+                use_separate_proj_weight=True,
+                q_proj_weight=self.q_proj.weight,
+                k_proj_weight=self.k_proj.weight,
+                v_proj_weight=self.v_proj.weight,
+            )
+
         if incremental_state is not None:
             saved_state = self._get_input_buffer(incremental_state)
-            if 'prev_key' in saved_state:
+            if saved_state is not None and "prev_key" in saved_state:
                 # previous time steps are cached - no need to recompute
                 # key and value if they are static
                 if static_kv:
@@ -117,7 +136,6 @@ class MaskedMHAttention(MultiheadAttention):
             saved_state = None
 
         if self.self_attention:
-            # self-attention
             q = self.q_proj(query)
             k = self.k_proj(query)
             v = self.v_proj(query)
@@ -149,40 +167,74 @@ class MaskedMHAttention(MultiheadAttention):
             if key_padding_mask is not None:
                 key_padding_mask = torch.cat(
                     [
-                        key_padding_mask, 
-                     key_padding_mask.new_zeros(key_padding_mask.size(0), key_padding_mask.size(1), 1)], dim=2)
-                
-        q = q.contiguous().view(tgt_len, bsz * self.num_heads, self.head_dim).transpose(0, 1)
+                        key_padding_mask,
+                        key_padding_mask.new_zeros(key_padding_mask.size(0), key_padding_mask.size(1), 1),
+                    ],
+                    dim=2,
+                )
+
+        q = (
+            q.contiguous()
+            .view(tgt_len, bsz * self.num_heads, self.head_dim)
+            .transpose(0, 1)
+        )
         if k is not None:
-            k = k.contiguous().view(-1, bsz * self.num_heads, self.head_dim).transpose(0, 1)
+            k = (
+                k.contiguous()
+                .view(-1, bsz * self.num_heads, self.head_dim)
+                .transpose(0, 1)
+            )
         if v is not None:
-            v = v.contiguous().view(-1, bsz * self.num_heads, self.head_dim).transpose(0, 1)
+            v = (
+                v.contiguous()
+                .view(-1, bsz * self.num_heads, self.head_dim)
+                .transpose(0, 1)
+            )
 
         if saved_state is not None:
             # saved states are stored with shape (bsz, num_heads, seq_len, head_dim)
-            if 'prev_key' in saved_state:
-                prev_key = saved_state['prev_key'].view(bsz * self.num_heads, -1, self.head_dim)
+            if "prev_key" in saved_state:
+                _prev_key = saved_state["prev_key"]
+                assert _prev_key is not None
+                prev_key = _prev_key.view(bsz * self.num_heads, -1, self.head_dim)
                 if static_kv:
                     k = prev_key
                 else:
-                    k = torch.cat((prev_key, k), dim=1)
-            if 'prev_value' in saved_state:
-                prev_value = saved_state['prev_value'].view(bsz * self.num_heads, -1, self.head_dim)
+                    assert k is not None
+                    k = torch.cat([prev_key, k], dim=1)
+            if "prev_value" in saved_state:
+                _prev_value = saved_state["prev_value"]
+                assert _prev_value is not None
+                prev_value = _prev_value.view(bsz * self.num_heads, -1, self.head_dim)
                 if static_kv:
                     v = prev_value
                 else:
-                    v = torch.cat((prev_value, v), dim=1)
-            saved_state['prev_key'] = k.view(bsz, self.num_heads, -1, self.head_dim)
-            saved_state['prev_value'] = v.view(bsz, self.num_heads, -1, self.head_dim)
+                    assert v is not None
+                    v = torch.cat([prev_value, v], dim=1)
+            prev_key_padding_mask: Optional[Tensor] = None
+            if "prev_key_padding_mask" in saved_state:
+                prev_key_padding_mask = saved_state["prev_key_padding_mask"]
+            assert k is not None and v is not None
+            key_padding_mask = MultiheadAttention._append_prev_key_padding_mask(
+                key_padding_mask=key_padding_mask,
+                prev_key_padding_mask=prev_key_padding_mask,
+                batch_size=bsz,
+                src_len=k.size(1),
+                static_kv=static_kv,
+            )
 
-            self._set_input_buffer(incremental_state, saved_state)
-
+            saved_state["prev_key"] = k.view(bsz, self.num_heads, -1, self.head_dim)
+            saved_state["prev_value"] = v.view(bsz, self.num_heads, -1, self.head_dim)
+            saved_state["prev_key_padding_mask"] = key_padding_mask
+            # In this branch incremental_state is never None
+            assert incremental_state is not None
+            incremental_state = self._set_input_buffer(incremental_state, saved_state)
+        assert k is not None
         src_len = k.size(1)
-        
 
         # This is part of a workaround to get around fork/join parallelism
         # not supporting Optional types.
-        if key_padding_mask is not None and key_padding_mask.shape == torch.Size([]):
+        if key_padding_mask is not None and key_padding_mask.dim() == 0:
             key_padding_mask = None
 
         if key_padding_mask is not None:
@@ -191,21 +243,30 @@ class MaskedMHAttention(MultiheadAttention):
             assert key_padding_mask.size(2) == src_len
 
         if self.add_zero_attn:
+            assert v is not None
             src_len += 1
             k = torch.cat([k, k.new_zeros((k.size(0), 1) + k.size()[2:])], dim=1)
             v = torch.cat([v, v.new_zeros((v.size(0), 1) + v.size()[2:])], dim=1)
             if attn_mask is not None:
-                attn_mask = torch.cat([attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1)
+                attn_mask = torch.cat(
+                    [attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1
+                )
             if key_padding_mask is not None:
                 key_padding_mask = torch.cat(
-                    [key_padding_mask,
-                     torch.zeros(key_padding_mask.size(0), key_padding_mask.size(1), 1).type_as(key_padding_mask)],
-                    dim=2)
-                
+                    [
+                        key_padding_mask,
+                        torch.zeros(key_padding_mask.size(0), key_padding_mask.size(1), 1).type_as(
+                            key_padding_mask
+                        ),
+                    ],
+                    dim=2,
+                )
+
         attn_weights = torch.bmm(q, k.transpose(1, 2))
+        attn_weights = self.apply_sparse_mask(attn_weights, tgt_len, src_len, bsz)
+
         assert list(attn_weights.size()) == [bsz * self.num_heads, tgt_len, src_len]
 
-                
         if attn_mask is not None:
             attn_mask = attn_mask.unsqueeze(0)
             if self.onnx_trace:
@@ -215,68 +276,43 @@ class MaskedMHAttention(MultiheadAttention):
         if key_padding_mask is not None:
             # don't attend to padding symbols
             attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
-            if self.onnx_trace:
-                attn_weights = torch.where(
-                    key_padding_mask.unsqueeze(1),
-                    torch.Tensor([float("-Inf")]),
-                    attn_weights.float()
-                ).type_as(attn_weights)
-            else: 
+            if not self.tpu:
                 attn_weights = attn_weights.masked_fill(
-                    key_padding_mask.unsqueeze(1),
-                    float('-inf'),
+                    key_padding_mask.unsqueeze(1).to(torch.bool),
+                    float("-inf"),
                 )
-
+            else:
+                attn_weights = attn_weights.transpose(0, 2)
+                attn_weights = attn_weights.masked_fill(key_padding_mask, float("-inf"))
+                attn_weights = attn_weights.transpose(0, 2)
             attn_weights = attn_weights.view(bsz * self.num_heads, tgt_len, src_len)
 
-        attn_weights = utils.softmax(
-            attn_weights, dim=-1, onnx_trace=self.onnx_trace,
-        ).type_as(attn_weights)
-        
-        attn_weights = attn_weights.masked_fill(
-                    torch.isnan(attn_weights),
-                    float(0.),
-                )
-        attn_weights = F.dropout(attn_weights, p=self.dropout, training=self.training)
+        if before_softmax:
+            return attn_weights, v
 
-        attn = torch.bmm(attn_weights, v)
+        attn_weights_float = utils.softmax(
+            attn_weights, dim=-1, onnx_trace=self.onnx_trace
+        )
+        attn_weights = attn_weights_float.type_as(attn_weights)
+        attn_probs = self.dropout_module(attn_weights)
+
+        assert v is not None
+        attn = torch.bmm(attn_probs, v)
         assert list(attn.size()) == [bsz * self.num_heads, tgt_len, self.head_dim]
-        if (self.onnx_trace and attn.size(1) == 1):
+        if self.onnx_trace and attn.size(1) == 1:
             # when ONNX tracing a single decoder step (sequence length == 1)
             # the transpose is a no-op copy before view, thus unnecessary
             attn = attn.contiguous().view(tgt_len, bsz, embed_dim)
         else:
             attn = attn.transpose(0, 1).contiguous().view(tgt_len, bsz, embed_dim)
         attn = self.out_proj(attn)
-
+        attn_weights: Optional[Tensor] = None
         if need_weights:
-            # average attention weights over heads
-            attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
-            attn_weights = attn_weights.sum(dim=1) / self.num_heads
-        else:
-            attn_weights = None
+            attn_weights = attn_weights_float.view(
+                bsz, self.num_heads, tgt_len, src_len
+            ).transpose(1, 0)
+            if not need_head_weights:
+                # average attention weights over heads
+                attn_weights = attn_weights.mean(dim=0)
 
         return attn, attn_weights
-
-    def reorder_incremental_state(self, incremental_state, new_order):
-        """Reorder buffered internal state (for incremental generation)."""
-        input_buffer = self._get_input_buffer(incremental_state)
-        if input_buffer is not None:
-            for k in input_buffer.keys():
-                input_buffer[k] = input_buffer[k].index_select(0, new_order)
-            self._set_input_buffer(incremental_state, input_buffer)
-
-    def _get_input_buffer(self, incremental_state):
-        return utils.get_incremental_state(
-            self,
-            incremental_state,
-            'attn_state',
-        ) or {}
-
-    def _set_input_buffer(self, incremental_state, buffer):
-        utils.set_incremental_state(
-            self,
-            incremental_state,
-            'attn_state',
-            buffer,
-        )

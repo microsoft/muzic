@@ -37,7 +37,8 @@ from .masked_mh_attention import MaskedMHAttention
 DEFAULT_MAX_SOURCE_POSITIONS = 1024
 DEFAULT_MAX_TARGET_POSITIONS = 1024
 
-class MaskedAtteionDecoderLayer(TransformerDecoderLayer):
+
+class MaskedAttentionDecoderLayer(TransformerDecoderLayer):
     def __init__(self, args, no_encoder_attn=False, add_bias_kv=False, add_zero_attn=False):
         super().__init__(args, no_encoder_attn=no_encoder_attn, add_bias_kv=add_bias_kv, add_zero_attn=add_zero_attn)
 
@@ -116,7 +117,6 @@ class MaskedAtteionDecoderLayer(TransformerDecoderLayer):
                 need_weights=True,
             )
             x = self.dropout_module(x)
-            x = F.dropout(x, p=self.dropout, training=self.training)
             x = residual + x
             x = self.maybe_layer_norm(self.encoder_attn_layer_norm, x, after=True)
 
@@ -125,7 +125,7 @@ class MaskedAtteionDecoderLayer(TransformerDecoderLayer):
         x = self.activation_fn(self.fc1(x))
         x = self.activation_dropout_module(x)
         x = self.fc2(x)
-        x = F.dropout(x, p=self.dropout, training=self.training)
+        x = self.dropout_module(x)
         x = residual + x
         x = self.maybe_layer_norm(self.final_layer_norm, x, after=True)
         if self.onnx_trace and incremental_state is not None:

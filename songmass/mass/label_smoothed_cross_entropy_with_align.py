@@ -25,6 +25,7 @@ class LabelSmoothedCrossEntropyCriterionWithAlign(FairseqCriterion):
         report_accuracy=False,
     ):
         super().__init__(task)
+        self.sentence_avg = sentence_avg
         self.eps = label_smoothing
         self.attn_loss_weight = attn_loss_weight
         self.report_accuracy = report_accuracy
@@ -49,7 +50,7 @@ class LabelSmoothedCrossEntropyCriterionWithAlign(FairseqCriterion):
         """
         net_output = model(**sample['net_input'])
         loss, nll_loss = self.compute_loss(model, net_output, sample, reduce=reduce)
-        sample_size = sample['target'].size(0) if self.args.sentence_avg else sample['ntokens']
+        sample_size = sample['target'].size(0) if self.sentence_avg else sample['ntokens']
         logging_output = {
             'loss': utils.item(loss.data) if reduce else loss.data,
             'nll_loss': utils.item(nll_loss.data) if reduce else nll_loss.data,
