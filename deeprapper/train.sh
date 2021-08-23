@@ -1,5 +1,5 @@
 python train.py \
-  --device '4' \
+  --device 'cpu' \
   --stride 1024 \
   --model_config 'config/model_config_small.json' \
   --model_dir 'model' \
@@ -14,6 +14,6 @@ python train.py \
   --reverse \
   --model_sign 'samples' \
   --with_beat \
-  --beat_mode 0 
+  --beat_mode 0 \
   --tokenize \
   --raw  

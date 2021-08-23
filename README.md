@@ -19,7 +19,11 @@ Our research work in Muzic:
 We initially release the code of two research work: [MusicBERT](musicbert) and [DeepRapper](deeprapper). You can find the README in the corresponding folder. 
 
 
-
+## Requirements
+The requirements for running muzic are listed in `requirements.txt`. To install the requirements, run:
+```bash
+pip install -r requirements.txt
+```
 
 ## Contributing
 

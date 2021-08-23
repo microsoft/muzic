@@ -1,13 +1,6 @@
 # SongMASS
 
-* The paper: [SongMASS: Automatic Song Writing with Pre-training and Alignment Constraint](https://arxiv.org/abs/2107.01875)
-
-## Requirements
-The requirements for running SongMASS are listed in `songmass/requirements.txt`. To install the requirements, run:
-```bash
-pip install -r requirements.txt
-```
-
+* The paper: [SongMASS: Automatic Song Writing with Pre-training and Alignment Constraint](https://arxiv.org/abs/2107.01875).
 
 ## Data 
 We obtain LMD dataset from [here](https://github.com/yy1lab/Lyrics-Conditioned-Neural-Melody-Generation). We privode a [script](data/generate_lmd_dataset) to parse LMD data in our experiments. We provide a example to instruct how to parse LMD data in our paper.
@@ -117,7 +110,7 @@ fairseq-train $data_dir \
   --mass_steps lyric-lyric,melody-melody \
   --mt_steps lyric-melody,melody-lyric \
   --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm 0.0 \
-  --lr-scheduler inverse_sqrt --lr 0.00005 --min-lr 1e-09 \
+  --lr-scheduler inverse_sqrt --lr 0.00005 --min-lr 1e-09 --warmup-init-lr 1e-07 \
   --criterion label_smoothed_cross_entropy_with_align \
   --attn-loss-weight 1.0 \
   --max-tokens 4096 \

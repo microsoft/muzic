@@ -175,9 +175,9 @@ class MusicMtDataset(FairseqDataset):
             target = target.index_select(0, sort_order)
             ntokens = sum(len(s['target']) for s in samples)
             
-            target_sent_ids = merge_sentId('target_sent_ids', left_pad=self.left_pad_target,pad_idx=-2)
+            target_sent_ids = merge_sentId('target_sent_ids', left_pad=self.left_pad_target, pad_idx=-2)
             target_sent_ids = target_sent_ids.index_select(0, sort_order)
-            target_word_ids = merge_sentId('target_word_ids', left_pad=self.left_pad_target,pad_idx=-2)
+            target_word_ids = merge_sentId('target_word_ids', left_pad=self.left_pad_target, pad_idx=-2)
             target_word_ids = target_word_ids.index_select(0, sort_order)
 
             if input_feeding:

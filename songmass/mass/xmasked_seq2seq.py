@@ -357,10 +357,12 @@ class XMassTranslationTask(FairseqTask):
                 model.load_state_dict(state['model'], strict=False)
         return model
 
-    def train_step(self, sample, model, criterion, optimizer, ignore_grad=False):
+    def train_step(
+        self, sample, model, criterion, optimizer, update_num, ignore_grad=False
+    ):
         model.train()
         agg_loss, agg_sample_size, agg_logging_output = 0., 0., {}
-        
+
         def forward_backward(model, samples, logging_output_key, lang_pair, weight=1.0):
             nonlocal agg_loss, agg_sample_size, agg_logging_output
             if samples is None or len(samples) == 0:
@@ -369,7 +371,6 @@ class XMassTranslationTask(FairseqTask):
             samples['net_input']['src_key'] = src_key
             samples['net_input']['tgt_key'] = tgt_key
 
-            
             loss, sample_size, logging_output = criterion(model, samples)
             if ignore_grad:
                 loss *= 0
@@ -387,21 +388,6 @@ class XMassTranslationTask(FairseqTask):
             sample_key = _get_mass_dataset_key(lang_pair)
             forward_backward(model, sample[sample_key], sample_key, lang_pair)
 
-        #SZH:for debug
-#         for lang_pair in self.args.mass_steps:
-#             sample_key = _get_mass_dataset_key(lang_pair)
-#             print(sample_key)
-#             print(sample[sample_key])
-#             SZH：仍未拆分句子
-#             self.count += 1
-#             print("Cnt",self.count)
-#             print("src_tokens",sample[sample_key]['net_input']['src_tokens'].size())
-#             print("src_lens",sample[sample_key]['net_input']['src_lengths'].size())
-#             print("prev",sample[sample_key]['net_input']['prev_output_tokens'].size())
-#             print("target",sample[sample_key]['target'].size())
-#             print("--------------------------------------")
-#             forward_backward(model, sample[sample_key], sample_key, lang_pair)
-
         return agg_loss, agg_sample_size, agg_logging_output
 
     def valid_step(self, sample, model, criterion):
@@ -414,7 +400,6 @@ class XMassTranslationTask(FairseqTask):
 
                 if sample_key not in sample or sample[sample_key] is None or len(sample[sample_key]) == 0:
                     continue
-                    #return agg_loss, agg_sample_size, agg_logging_output
                 
                 src_key, tgt_key = lang_pair.split('-')
                 sample[sample_key]['net_input']['src_key'] = src_key
@@ -427,24 +412,14 @@ class XMassTranslationTask(FairseqTask):
                 agg_logging_output[lang_pair] = logging_output
         return agg_loss, agg_sample_size, agg_logging_output
 
-    def inference_step(self, generator, models, sample, prefix_tokens=None):
-#         print("Inf!")
-#         print(sample)
-#         print(models)
-#         assert 0==1
-#         print(self.cntcnt)
-#         print("------------------")
-#         print(models)
-#         print("------------------")
-#         print(sample)
-#         print("------------------")
-#         self.cntcnt += 1
-#         if self.cntcnt == 3:
-#             assert 0==1
+    def inference_step(
+        self, generator, models, sample, prefix_tokens=None, constraints=None,
+    ):
 
         for model in models:
             model.source_lang = self.args.source_lang
             model.target_lang = self.args.target_lang
+
         with torch.no_grad():
             return generator.generate(
                 models,
