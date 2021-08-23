@@ -117,7 +117,7 @@ fairseq-train $data_dir \
   --mass_steps lyric-lyric,melody-melody \
   --mt_steps lyric-melody,melody-lyric \
   --optimizer adam --adam-betas '(0.9, 0.98)' --clip-norm 0.0 \
-  --lr-scheduler inverse_sqrt --lr 0.00005 --min-lr 1e-09 \
+  --lr-scheduler inverse_sqrt --lr 0.00005 --min-lr 1e-09 --warmup-init-lr 1e-07 \
   --criterion label_smoothed_cross_entropy_with_align \
   --attn-loss-weight 1.0 \
   --max-tokens 4096 \
