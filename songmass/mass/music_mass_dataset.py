@@ -56,8 +56,8 @@ class MusicMassDataset(FairseqDataset):
             s = []
             source_sent_ids = []
             for i in range(len(sep_positions)-1):
-                sent = src_list[sep_positions[i]+1:sep_positions[i+1]] #SZH: not include sep token
-                sent = [ch for ch in sent if ch != self.align_token] #Remove align
+                sent = src_list[sep_positions[i]+1:sep_positions[i+1]] 
+                sent = [ch for ch in sent if ch != self.align_token] 
                 s.extend(sent)
                 source_sent_ids.extend([i] * len(sent))
             source.append(self.vocab.eos_index)
@@ -79,8 +79,8 @@ class MusicMassDataset(FairseqDataset):
             s = []
             source_sent_ids = []
             for i in range(len(sep_positions)-1):
-                sent = src_list[sep_positions[i]+1:sep_positions[i+1]] #SZH: not include sep token
-                sent = [ch for ch in sent if ch != self.align_token] #Remove align
+                sent = src_list[sep_positions[i]+1:sep_positions[i+1]] 
+                sent = [ch for ch in sent if ch != self.align_token] 
                 s.extend(sent)
                 source_sent_ids.extend([i] * len(sent))
                 
@@ -118,11 +118,11 @@ class MusicMassDataset(FairseqDataset):
                     
                 if self.lang == 'lyric':
                     for w in t:
-                        target.append(self.random_word(w, self.pred_probs)) #SZH: Mask or Random word or itself
+                        target.append(self.random_word(w, self.pred_probs)) 
                     for i in range(seg_start, seg_end):
                         w = s[i]
                         if i >= mask_start and i < mask_start + mask_length:
-                            w = self.mask_word(w) #SZH: 0.8 mask 0.1 replace random word 0.1 itself
+                            w = self.mask_word(w) 
                         if w is not None:
                             source.append(w)
                 else: 
@@ -195,7 +195,6 @@ class MusicMassDataset(FairseqDataset):
         target = merge('output', left_pad=self.left_pad_target)
         target = target.index_select(0, sort_order)
         
-        #SZH
         #-1 for src non token
         #-2 for tgt non token
         source_sent_ids = merge_sentId('source_sent_ids', left_pad=self.left_pad_target,pad_idx=-1)
@@ -214,7 +213,6 @@ class MusicMassDataset(FairseqDataset):
             'target': target,
         }
         batch['net_input']['prev_output_tokens'] = prev_output_tokens
-        #SZH
         batch['net_input']['source_sent_ids'] = source_sent_ids
         batch['net_input']['target_sent_ids'] = target_sent_ids
         return batch
@@ -338,7 +336,7 @@ class MusicMassDataset(FairseqDataset):
         #not include end
         mask_length = round((end-start) * self.ratio)
         mask_length = max(1, mask_length)
-        mask_start  = self.mask_start(start, end - mask_length) #SZH: include end-masklength
+        mask_start  = self.mask_start(start, end - mask_length) 
         return mask_start, mask_length
     
     def mask_start(self, start, end):
@@ -348,15 +346,17 @@ class MusicMassDataset(FairseqDataset):
         elif p >= 0.6:
             return end
         else:
-            return np.random.randint(start, end+1) #SZH: End is ok, random.randint[a,b],np.random.randint[a,b)
+            return np.random.randint(start, end+1) 
         
     def mask_interval_align(self, start, end):
         #not include end
         mask_length = round((end-start) * self.ratio)
-        if mask_length%2 != 0: mask_length -= 1
+        if mask_length % 2 != 0: 
+            mask_length -= 1
         mask_length = max(2, mask_length)
-        mask_start  = self.mask_start(start, end - mask_length) #SZH: include end-masklength
-        if mask_start%2 !=0: mask_start -= 1
+        mask_start  = self.mask_start(start, end - mask_length)
+        if mask_start % 2 !=0: 
+            mask_start -= 1
         return mask_start, mask_length
             
     
