@@ -93,7 +93,7 @@ class MaskedAtteionDecoderLayer(TransformerDecoderLayer):
             need_weights=False,
             attn_mask=self_attn_mask,
         )
-        x = F.dropout(x, p=self.dropout, training=self.training)
+        x = self.dropout_module(x)
         x = residual + x
         x = self.maybe_layer_norm(self.self_attn_layer_norm, x, after=True)
 
@@ -113,9 +113,9 @@ class MaskedAtteionDecoderLayer(TransformerDecoderLayer):
                 key_padding_mask=encoder_padding_mask,
                 incremental_state=incremental_state,
                 static_kv=True,
-                need_weights=True, #SZH
-                # need_weights=(not self.training and self.need_attn),
+                need_weights=True,
             )
+            x = self.dropout_module(x)
             x = F.dropout(x, p=self.dropout, training=self.training)
             x = residual + x
             x = self.maybe_layer_norm(self.encoder_attn_layer_norm, x, after=True)
@@ -123,7 +123,7 @@ class MaskedAtteionDecoderLayer(TransformerDecoderLayer):
         residual = x
         x = self.maybe_layer_norm(self.final_layer_norm, x, before=True)
         x = self.activation_fn(self.fc1(x))
-        x = F.dropout(x, p=self.activation_dropout, training=self.training)
+        x = self.activation_dropout_module(x)
         x = self.fc2(x)
         x = F.dropout(x, p=self.dropout, training=self.training)
         x = residual + x
@@ -133,3 +133,10 @@ class MaskedAtteionDecoderLayer(TransformerDecoderLayer):
             self_attn_state = saved_state["prev_key"], saved_state["prev_value"]
             return x, attn, self_attn_state
         return x, attn
+
+    def maybe_layer_norm(self, layer_norm, x, before=False, after=False):
+        assert before ^ after
+        if after ^ self.normalize_before:
+            return layer_norm(x)
+        else:
+            return x

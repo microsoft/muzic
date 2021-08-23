@@ -33,7 +33,8 @@ class XTransformerEncoder(TransformerEncoder):
         x = self.embed_scale * self.embed_tokens(src_tokens)
         if self.embed_positions is not None:
             x += self.embed_positions(src_tokens)
-        x = F.dropout(x, p=self.dropout, training=self.training)
+
+        x = self.dropout_module(x)
 
         # B x T x C -> T x B x C
         x = x.transpose(0, 1)
@@ -96,7 +97,7 @@ class XTransformerDecoder(TransformerDecoder):
             and 'source_sent_ids' in encoder_out.keys() and encoder_out['source_sent_ids'] is not None:
 
             src_len = encoder_out['source_sent_ids'].size()[-1]
-            tgt_len = prev_output_tokens.size()[1]
+            tgt_len = prev_outpu_tokens.size()[1]
             beam_batch_size = prev_output_tokens.size()[0]
 
             source_sent_ids = encoder_out['source_sent_ids'] #BB*S
@@ -131,7 +132,7 @@ class XTransformerDecoder(TransformerDecoder):
 
         if positions is not None:
             x += positions
-        x = F.dropout(x, p=self.dropout, training=self.training)
+        x = self.dropout_module(x)
 
         # B x T x C -> T x B x C
         x = x.transpose(0, 1)

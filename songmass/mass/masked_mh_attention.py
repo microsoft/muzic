@@ -118,21 +118,24 @@ class MaskedMHAttention(MultiheadAttention):
 
         if self.self_attention:
             # self-attention
-            q, k, v = self.in_proj_qkv(query)
+            q = self.q_proj(query)
+            k = self.k_proj(query)
+            v = self.v_proj(query)
         elif self.encoder_decoder_attention:
             # encoder-decoder attention
-            q = self.in_proj_q(query)
+            q = self.q_proj(query)
             if key is None:
                 assert value is None
                 k = v = None
             else:
-                k = self.in_proj_k(key)
-                v = self.in_proj_v(key)
+                k = self.k_proj(key)
+                v = self.v_proj(key)
 
         else:
-            q = self.in_proj_q(query)
-            k = self.in_proj_k(key)
-            v = self.in_proj_v(value)
+            assert key is not None and value is not None
+            q = self.q_proj(query)
+            k = self.k_proj(key)
+            v = self.v_proj(value)
         q *= self.scaling
 
         if self.bias_k is not None:
@@ -140,10 +143,13 @@ class MaskedMHAttention(MultiheadAttention):
             k = torch.cat([k, self.bias_k.repeat(1, bsz, 1)])
             v = torch.cat([v, self.bias_v.repeat(1, bsz, 1)])
             if attn_mask is not None:
-                attn_mask = torch.cat([attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1)
+                attn_mask = torch.cat(
+                    [attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1
+                )
             if key_padding_mask is not None:
                 key_padding_mask = torch.cat(
-                    [key_padding_mask, 
+                    [
+                        key_padding_mask, 
                      key_padding_mask.new_zeros(key_padding_mask.size(0), key_padding_mask.size(1), 1)], dim=2)
                 
         q = q.contiguous().view(tgt_len, bsz * self.num_heads, self.head_dim).transpose(0, 1)
@@ -251,46 +257,6 @@ class MaskedMHAttention(MultiheadAttention):
             attn_weights = None
 
         return attn, attn_weights
-
-    def in_proj_qkv(self, query):
-        return self._in_proj(query).chunk(3, dim=-1)
-
-    def in_proj_q(self, query):
-        if self.qkv_same_dim:
-            return self._in_proj(query, end=self.embed_dim)
-        else:
-            bias = self.in_proj_bias
-            if bias is not None:
-                bias = bias[:self.embed_dim]
-            return F.linear(query, self.q_proj_weight, bias)
-
-    def in_proj_k(self, key):
-        if self.qkv_same_dim:
-            return self._in_proj(key, start=self.embed_dim, end=2 * self.embed_dim)
-        else:
-            weight = self.k_proj_weight
-            bias = self.in_proj_bias
-            if bias is not None:
-                bias = bias[self.embed_dim:2 * self.embed_dim]
-            return F.linear(key, weight, bias)
-
-    def in_proj_v(self, value):
-        if self.qkv_same_dim:
-            return self._in_proj(value, start=2 * self.embed_dim)
-        else:
-            weight = self.v_proj_weight
-            bias = self.in_proj_bias
-            if bias is not None:
-                bias = bias[2 * self.embed_dim:]
-            return F.linear(value, weight, bias)
-
-    def _in_proj(self, input, start=0, end=None):
-        weight = self.in_proj_weight
-        bias = self.in_proj_bias
-        weight = weight[start:end, :]
-        if bias is not None:
-            bias = bias[start:end]
-        return F.linear(input, weight, bias)
 
     def reorder_incremental_state(self, incremental_state, new_order):
         """Reorder buffered internal state (for incremental generation)."""
