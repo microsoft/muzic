@@ -154,3 +154,5 @@ python evaluate_timeseries.py \
   --song-id-file $SONG_ID \
   --generated-melody-file $HYPOS
 ```
+
+For more generated samples, please visit [https://speechresearch.github.io/songmass/](https://speechresearch.github.io/songmass/).
