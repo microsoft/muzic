@@ -2,11 +2,7 @@
 
 * The paper: [DeepRapper: Neural Rap Generation with Rhyme and Rhythm Modeling](https://arxiv.org/abs/2107.01875)
 
-## Requirements
-The requirements for running *DeepRapper* are listed in `DeepRapper/requirements.txt`. To install the requirements, run:
-```bash
-pip install -r requirements.txt 
-```
+
 ## Data Preparation
 Prepare both lyrics and pinyin for each song. We provide some data samples in `DeepRapper/data/`.
 
@@ -65,12 +61,14 @@ time: 2021-xx-xx 11:17:57.067011
 now time: 11:17. Step 10 of piece 0 of epoch 1, loss 9.587631130218506
 now time: 11:18. Step 20 of piece 0 of epoch 1, loss 9.187388515472412
 ```
+You can specify the arguments in the bash file, such as number of epoch, bach size, etc.
 
 To generate, run:
 
 ```bash
 bash generate.sh
 ```
+You can specify the arguments in the bash file, such as number of epoch, bach size, etc.
 
 For more generated samples, visit https://deeprapper.github.io.
 
