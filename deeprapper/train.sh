@@ -6,7 +6,7 @@ python train.py \
   --root_path 'data/lyrics/' \
   --raw_data_dir 'lyrics_samples' \
   --batch_size 1 \
-  --epochs 1 \
+  --epochs 4 \
   --enable_final \
   --enable_sentence \
   --enable_relative_pos \

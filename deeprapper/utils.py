@@ -17,7 +17,7 @@ valid_finals = ['a', 'o', 'e', 'i', 'u', 'v',
                     'en', 'in', 'un', 'vn', 
                     'ang', 'eng', 'ing', 'ong', 'n']
 
-special_tokens = ['[SEP]', '[MASK]', '[PAD]', '[CLS]', '[UNK]', '[BEAT]', '[S]', '[M]', '[F]']
+special_tokens = ['[SEP]', '[MASK]', '[PAD]', '[CLS]', '[UNK]', '[BEAT]', '[S]', '[M]', '[F]','[SKIP]']
 
 map_dict = {'a': 'a', 'o': 'o', 'e': 'e', 'i': 'i', 'v': 'i', 'u': 'u',
             'ai': 'ai', 'ei': 'ei', 'ui': 'ei', 'ao': 'ao',
@@ -26,7 +26,7 @@ map_dict = {'a': 'a', 'o': 'o', 'e': 'e', 'i': 'i', 'v': 'i', 'u': 'u',
             'in': 'in', 'vn': 'in', 'ang': 'ang', 'eng': 'en',
             'ing': 'in', 'ong': 'ong', 'n': 'en', 'UNK': 'UNK',
             '[SEP]': '[SEP]', '[PAD]': '[PAD]', '[BEAT]': '[BEAT]',
-            '[F]': '[F]', '[M]': '[M]', '[S]': '[S]', '[UNK]': '[UNK]'}
+            '[F]': '[F]', '[M]': '[M]', '[S]': '[S]', '[UNK]': '[UNK]', '[SKIP]':'[SKIP]'}
 
 
 def swap_value(arr, a, b):

@@ -10,7 +10,7 @@ python generate.py \
                       --save_samples \
                       --save_samples_dir 'samples_save_dir' \
                       --samples_sign 'sample_name' \
-                      --model_dir 'model_path' \
+                      --model_dir 'model/lyrics/lyrics_samples_reverse/samples' \
                       --model_config 'config.json' \
                       --enable_final \
                       --enable_sentence \
@@ -26,5 +26,5 @@ python generate.py \
                       --dynamic_rhyme \
                       --rhyme_count 1 \
                       --rhyme_prob_bound 1.0 \
-                      --rhyme_alpha 0.95 \
+                      --rhyme_alpha 0.95
 

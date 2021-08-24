@@ -10,7 +10,7 @@ import os
 import math
 from datetime import datetime
 from utils import get_sentence_pinyin_finals, special_tokens
-from beam_search import sample_sequence, fast_sample_sequence, beam_search_decode_nctx, beam_search_decode
+from beam_search import sample_sequence, beam_search_decode_nctx, beam_search_decode
 
 
 def is_word(word):
@@ -46,9 +46,7 @@ def _init_pinyin_dict(tokenizer):
 def generate(model, context, pinyin_dict, args, device='cpu'):
     
     pattern = args.pattern
-    if pattern == 'fast':
-        sample_fn =  fast_sample_sequence
-    elif pattern == 'sample':
+    if pattern == 'sample':
         sample_fn =  sample_sequence
     elif pattern == 'beam':
         sample_fn = beam_search_decode if args.n_ctx >= args.length else beam_search_decode_nctx
@@ -243,7 +241,7 @@ def main():
                 if is_word(item) and is_word(text[i + 1]):
                     text[i] = item + ' '
             for i, item in enumerate(text):
-                if item == '[MASK]':
+                if item == '[MASK]' or item == '[SKIP]':
                     text[i] = ''
                 elif item == '[CLS]':
                     text[i] = '\n\n'
