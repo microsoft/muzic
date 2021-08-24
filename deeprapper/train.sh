@@ -1,5 +1,5 @@
 python train.py \
-  --device 'cpu' \
+  --device '0,1' \
   --stride 1024 \
   --model_config 'config/model_config_small.json' \
   --model_dir 'model' \

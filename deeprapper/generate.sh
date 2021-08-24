@@ -10,7 +10,7 @@ python generate.py \
                       --save_samples \
                       --save_samples_dir 'samples_save_dir' \
                       --samples_sign 'sample_name' \
-                      --model_dir 'model/lyrics/lyrics_samples_reverse/samples' \
+                      --model_dir 'model/deeprapper-model' \
                       --model_config 'config.json' \
                       --enable_final \
                       --enable_sentence \
