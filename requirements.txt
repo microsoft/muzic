@@ -1,5 +1,5 @@
 sklearn
-miditoolkit
+miditoolkit==0.1.14
 fastBPE
 dtw-python
 nltk
