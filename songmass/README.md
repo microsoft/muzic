@@ -10,8 +10,7 @@ git clone https://github.com/yy1lab/Lyrics-Conditioned-Neural-Melody-Generation
 DATADIR=Lyrics-Conditioned-Neural-Melody-Generation/lmd-full_MIDI_dataset/Sentence_and_Word_Parsing
 OUTPUTDIR=data_org
 
-cd data
-python generate_lmd_dataset.py --lmd-data-dir $DATADIR --output-dir $OUTPUTDIR
+python data/generate_lmd_dataset.py --lmd-data-dir $DATADIR --output-dir $OUTPUTDIR
 ```
 Based on the above scripts, data samples will be generated under the `data_org` directory. We consider para data as mono data and convert lyric file into bpecode to handle dictionary. The processed bpecode and dictionaries have been uploaded under [data](data/). We move dictionary files to `mono` and `para` directory. The format is as:
 ```bash
