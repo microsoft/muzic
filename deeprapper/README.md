@@ -68,7 +68,7 @@ To generate, run:
 ```bash
 bash generate.sh
 ```
-You can specify the arguments in the bash file, such as number of epoch, bach size, etc.
+You can specify the arguments in the bash file, such as beam width, number of samples, etc.
 
 For more generated samples, visit https://deeprapper.github.io.
 
