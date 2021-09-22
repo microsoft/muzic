@@ -17,7 +17,9 @@ Muzic is pronounced as [ˈmjuːzeik] and '谬贼客' (in Chinese). Besides the l
 We summarize the scope of our Muzic project in the following figure:
 <br/><br/>
 <p align="center">
+<a href="https://github.com/microsoft/muzic">
   <img src="img/concept_map_new.png" height="350"/>
+</a>
 </p>
 <br/>
 
