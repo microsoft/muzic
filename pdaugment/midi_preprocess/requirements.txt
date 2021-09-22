@@ -1,0 +1,9 @@
+miditoolkit
+scipy
+matplotlib
+tqdm
+pretty_midi
+pandas
+PyYAML
+pypianoroll
+scikit-learn==0.21.3

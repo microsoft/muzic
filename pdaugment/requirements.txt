@@ -1,0 +1,10 @@
+numpy
+pandas
+librosa
+pyworld
+soundfile
+miditoolkit
+matplotlib
+pyOpenSSL
+secrets
+

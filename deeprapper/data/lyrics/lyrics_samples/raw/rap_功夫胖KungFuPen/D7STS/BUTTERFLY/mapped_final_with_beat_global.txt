@@ -1,0 +1,37 @@
+1_[00:12.42][F] [BEAT] ang [BEAT] ong i i a [BEAT] o en ang [BEAT] o ou i [BEAT] ang o i
+2_[00:15.15][BEAT] ai o ei [BEAT] i o ie [BEAT] ang o ai i an en o i
+3_[00:17.91][BEAT] i ou u [BEAT] an ang ang ai en ou ong e i o i
+4_[00:20.81]i [BEAT] ou ai i [BEAT] i i i i a ie i ou i o i
+5_[00:23.70][BEAT] en i ao [BEAT] i i ou u ang ang i a i ang
+6_[00:26.79][BEAT] i [BEAT] in i i [BEAT] ang an [BEAT] ou in e ei ou a i a
+7_[00:29.67][BEAT] ao [BEAT] in en [BEAT] ai e i i i a u ong o an in an
+8_[00:32.68][BEAT] u a i [BEAT] i o e [BEAT] o a u en i o in an
+9_[00:35.76][BEAT] i i [BEAT] o ang ie [BEAT] a ong i [BEAT] ie ei i [BEAT] in en an
+10_[00:39.05][BEAT] in in [BEAT] ou e o en in in o ou o a ong an
+11_[00:41.74][BEAT] ie ai [BEAT] o i e [BEAT] e en o en in o ao en ie
+12_[00:44.87]ang [BEAT] o ang a [BEAT] en an a e ong i o an en ie
+16_[00:56.73]ai a [BEAT] ang [BEAT] i
+18_[01:11.88][BEAT] ei ou [BEAT] i ai e ang [BEAT] o e o ei ao ang
+19_[01:14.87]in e ie an e [BEAT] o [BEAT] i ei ao ai [BEAT] ai ong [BEAT] ao ang
+20_[01:17.77][BEAT] i a i [BEAT] ie u [BEAT] en a ie ao i o e ao ang
+21_[01:20.78][BEAT] a a [BEAT] e en i [BEAT] ei i ei ong ie ang o ai ao ang
+22_[01:23.84]ei [BEAT] ang ao ao [BEAT] ong e an i ie i en o e ang ang
+23_[01:26.81][BEAT] o ao [BEAT] e [BEAT] u ai a en ao an e ang ang
+24_[01:29.84]a [BEAT] en o u [BEAT] ai ang ai ang i i ai ang ai o
+25_[01:32.72]en [BEAT] i in i [BEAT] o e ei ie ei e en ang ai o
+26_[01:35.66][BEAT] a an ei [BEAT] u ong [BEAT] in e i ou ao o
+27_[01:38.51][BEAT] an [BEAT] a en [BEAT] ei ei o ai [PAD] ai a o ou ao en a e
+28_[01:41.87]a [BEAT] en ao i [BEAT] ei i e [PAD] er o ong e [PAD] an in a e
+29_[01:44.80]ou [BEAT] an o i [BEAT] ei a en [BEAT] a e [PAD] o e ei a i i ou e
+30_[01:47.49][BEAT] in ong [BEAT] ong an ai [BEAT] ai i [PAD] u ai in i u in i
+31_[01:50.62]ai [BEAT] ao o e [BEAT] o [PAD] an ai an e an e en in i
+32_[01:53.62][BEAT] ang i i [BEAT] an o e [BEAT] an ou u en i en e in i
+33_[01:56.67][BEAT] ang i [BEAT] i an o [BEAT] e ong u ang o en u ang in i
+34_[01:59.62]o [BEAT] o e u i i e u i an i
+35_[02:02.71]u [BEAT] en ou ao [BEAT] a i o [BEAT] i ao en i i ai e i
+36_[02:05.49][BEAT] en en [BEAT] ai o [BEAT] in ie o ang [BEAT] o e i [BEAT] ai en ang i
+38_[02:11.58]i [BEAT] i o [BEAT] ang ie a ong i ie ei i in en an
+39_[02:14.71][BEAT] in in [BEAT] ou e o [BEAT] en in in o ou o a ong an
+40_[02:17.61]ie [BEAT] ai o i [BEAT] e e en o en in o ao en ie
+41_[02:20.49][BEAT] ang o ang [BEAT] a en an a e ong i o an en ie
+45_[02:32.41][BEAT] ai [BEAT] a ang [BEAT] i

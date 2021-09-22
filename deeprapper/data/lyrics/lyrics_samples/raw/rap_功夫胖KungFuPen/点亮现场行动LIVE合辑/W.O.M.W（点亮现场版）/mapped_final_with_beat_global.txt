@@ -1,0 +1,25 @@
+1_[00:24.24][M] [BEAT] a [BEAT] i [BEAT] an
+2_[00:29.35]u [BEAT] in [BEAT] e [BEAT] u [BEAT] i [BEAT] ang [BEAT] e [BEAT] an
+3_[00:34.49][BEAT] ang [BEAT] ong [BEAT] u [BEAT] an [PAD] [BEAT] i i [BEAT] ou in [BEAT] e an
+4_[00:43.77][BEAT] ei [BEAT] en [BEAT] e [BEAT] e [BEAT] ie [PAD] ai i [BEAT] ie ai [BEAT] i ei [BEAT] i i an
+5_[00:53.86][BEAT] in [BEAT] in [BEAT] ang [BEAT] ou [BEAT] ao [BEAT] en i [BEAT] e [BEAT] an [BEAT] an
+6_[01:03.74][BEAT] i in en [BEAT] ei ei ao [BEAT] u ou [BEAT] en e i [BEAT] an
+7_[01:06.35]ou [BEAT] an ai ao [PAD] [BEAT] ai i ao ei [BEAT] ei i an
+8_[01:08.78][BEAT] a [BEAT] o an [BEAT] ao [PAD] en ai ou [BEAT] u in ao [BEAT] i ei
+9_[01:11.23]e [BEAT] ie u u [BEAT] i ei [PAD] ang [BEAT] u i ao i ei
+10_[01:13.65][BEAT] i [BEAT] ang ei i [BEAT] e [PAD] e o [BEAT] i in ai [BEAT] ie
+11_[01:16.07]i [BEAT] i e i [BEAT] ai [PAD] en ong [BEAT] a an o ai an
+12_[01:18.49][BEAT] ai [BEAT] ao i e [PAD] a [BEAT] an ie an [PAD] in [BEAT] ong e a an
+13_[01:20.83][BEAT] i [BEAT] i ou e [PAD] ai [BEAT] e ai e [PAD] in [BEAT] ong e a [BEAT] an
+14_[01:23.16]i [BEAT] an e [BEAT] ang e [BEAT] an u ao in ou
+15_[01:25.59][BEAT] ang i i [BEAT] er ou [PAD] ei [BEAT] an a [BEAT] i ou
+16_[01:28.09]u [BEAT] a a ie [BEAT] i en [BEAT] ei [PAD] ei en ao u o
+17_[01:30.51][BEAT] ong ei u i i [BEAT] en ou [BEAT] i en [BEAT] ei
+18_[01:33.28][BEAT] o o e [BEAT] ie ei e [BEAT] a en e ong i
+19_[01:35.46][BEAT] ei [BEAT] e o e i [BEAT] ai [PAD] ei [BEAT] o e ong i
+20_[01:37.97][BEAT] i [BEAT] an e [BEAT] in en [PAD] o [BEAT] en i an [BEAT] ai e
+23_[01:47.24][BEAT] ang i [BEAT] ao [BEAT] ao ou [BEAT] in [BEAT] o e [BEAT] i [BEAT] ie
+24_[01:52.35][BEAT] ai [BEAT] ong [BEAT] an i [BEAT] ang [BEAT] ai [BEAT] in [BEAT] e [BEAT] en [BEAT] an
+26_[02:07.24][BEAT] en [BEAT] e [BEAT] ie [BEAT] an [BEAT] ou [BEAT] an [BEAT] e ai ei
+27_[02:11.97][BEAT] ang [BEAT] i [BEAT] ie o [BEAT] i [BEAT] i u [BEAT] ai [BEAT] en an
+28_[02:22.44][BEAT] e [BEAT] i [BEAT] ie [BEAT] o [BEAT] i [BEAT] i [BEAT] u [BEAT] ai [BEAT] en [BEAT] an
