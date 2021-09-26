@@ -9,7 +9,7 @@ matplotlib
 pretty_midi
 PyYAML
 pypianoroll
-fairseq==0.10.2
+fairseq==0.10.0
 torch==1.7.1
 transformers==3.5.1
 pypinyin==0.39.1
@@ -20,4 +20,3 @@ librosa
 pyworld
 soundfile
 pyOpenSSL
-secrets
