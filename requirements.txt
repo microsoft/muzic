@@ -20,3 +20,4 @@ librosa
 pyworld
 soundfile
 pyOpenSSL
+secrets
