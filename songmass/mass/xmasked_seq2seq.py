@@ -20,7 +20,7 @@ from fairseq.data import (
 )
 
 from fairseq.data.dictionary import Dictionary
-from fairseq import options, checkpoint_utils
+from fairseq import options, checkpoint_utils, tokenizer
 from fairseq.models import FairseqMultiModel
 from fairseq.sequence_generator import SequenceGenerator
 
