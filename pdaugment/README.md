@@ -132,7 +132,7 @@ metadata_dir            # metadata information of dataset, e.g., data/speech/pho
 output_duration_dir     # output directory of duration-augmented wav, e.g., data/duration
 output_pitch_dir        # output directory of pitch-augmented wav, e.g., data/pitch
 output_pdaugment_dir    # output directory of PDAugmented wav, e.g., data/pdaugment
-selected_dir            # select directory for training, validing and testing, e.g., ${output_pdaugment_dir}
+selected_dir            # select directory for training, validating and testing, e.g., ${output_pdaugment_dir}
 ```
 
 You can augment the speech dataset with multiple threads by setting:

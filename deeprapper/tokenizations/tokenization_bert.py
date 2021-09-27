@@ -120,7 +120,7 @@ class BertTokenizer(PreTrainedTokenizer):
                 Only has an effect when do_basic_tokenize=True
             **tokenize_chinese_chars**: (`optional`) boolean (default True)
                 Whether to tokenize Chinese characters.
-                This should likely be desactivated for Japanese:
+                This should likely be deactivated for Japanese:
                 see: https://github.com/huggingface/pytorch-pretrained-BERT/issues/328
         """
         super(BertTokenizer, self).__init__(unk_token=unk_token, sep_token=sep_token,
@@ -215,7 +215,7 @@ class BasicTokenizer(object):
                 List of token not to split.
             **tokenize_chinese_chars**: (`optional`) boolean (default True)
                 Whether to tokenize Chinese characters.
-                This should likely be desactivated for Japanese:
+                This should likely be deactivated for Japanese:
                 see: https://github.com/huggingface/pytorch-pretrained-BERT/issues/328
         """
         if never_split is None:
@@ -401,7 +401,7 @@ class WordpieceTokenizer(object):
 
 def _is_whitespace(char):
     """Checks whether `chars` is a whitespace character."""
-    # \t, \n, and \r are technically contorl characters but we treat them
+    # \t, \n, and \r are technically control characters but we treat them
     # as whitespace since they are generally considered as such.
     if char == " " or char == "\t" or char == "\n" or char == "\r":
         return True
