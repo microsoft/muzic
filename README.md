@@ -39,7 +39,7 @@ The current work in [Muzic](https://www.microsoft.com/en-us/research/project/ai-
 
 ## Requirements
 
-The operating system is Linux. We test on Ubuntu 16.04.6 LTS, with Python 3.6.12. The requirements for running Muzic are listed in `requirements.txt`. To install the requirements, run:
+The operating system is Linux. We test on Ubuntu 16.04.6 LTS, CUDA 10, with Python 3.6.12. The requirements for running Muzic are listed in `requirements.txt`. To install the requirements, run:
 ```bash
 pip install -r requirements.txt
 ```
