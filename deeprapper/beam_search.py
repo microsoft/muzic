@@ -258,7 +258,7 @@ def _control_rhymes(node, probs, tokenizer, beater, pinyin_dict, rhyme_words_lis
         rhyme_words = node.rhyme[0]
         for w in rhyme_words:
             probs = _rescale_rhymes(probs, w, tokenizer, beater, pinyin_dict, alpha)
-    else:  # detect the begining of new sentences
+    else:  # detect the beginning of new sentences
         last_token_id = node.wordid[0][0][-1]  # d2:batch size
         last_token = tokenizer.convert_ids_to_tokens([last_token_id])[0]
 

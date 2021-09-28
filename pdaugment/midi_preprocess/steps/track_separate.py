@@ -13,7 +13,7 @@ import os
 def remove_empty_track(midi_file):
     '''
     1. read pretty midi data
-    2. remove emtpy track,
+    2. remove empty track,
     also remove track with fewer than 10% notes of the track
     with most notes
     ********

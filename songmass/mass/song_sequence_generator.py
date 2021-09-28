@@ -115,7 +115,7 @@ class SongSequenceGenerator(SequenceGenerator):
             raise Exception("expected src_tokens or source in net input")
 
         # bsz: total number of sentences in beam
-        # Note that src_tokens may have more than 2 dimenions (i.e. audio features)
+        # Note that src_tokens may have more than 2 dimensions (i.e. audio features)
         bsz, src_len = src_tokens.size()[:2]
         beam_size = self.beam_size
         # Get sentence numbers
@@ -176,7 +176,7 @@ class SongSequenceGenerator(SequenceGenerator):
         finalized = torch.jit.annotate(
             List[List[Dict[str, Tensor]]],
             [torch.jit.annotate(List[Dict[str, Tensor]], []) for i in range(bsz)],
-        )  # contains lists of dictionaries of infomation about the hypothesis being finalized at each step
+        )  # contains lists of dictionaries of information about the hypothesis being finalized at each step
 
         finished = [
             False for i in range(bsz)

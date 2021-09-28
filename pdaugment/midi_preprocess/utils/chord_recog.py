@@ -60,7 +60,7 @@ _DEFAULT_TIME_SIGNATURE_CHORDS_PER_BAR = {
 
 
 def steps_per_bar_in_quantized_sequence(steps_per_quarter=4):
-    """Calculates steps per bar in a NoteSequence that has been quantized. assum time signature is 4/4
+    """Calculates steps per bar in a NoteSequence that has been quantized. assume time signature is 4/4
     Returns:
         Steps per bar as a floating point number.
         """

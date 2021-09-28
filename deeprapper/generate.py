@@ -92,9 +92,9 @@ def main():
     parser.add_argument('--reverse', action='store_true', help='whether to use reverse language model')
     parser.add_argument('--with_beat', action='store_true', help='whether to generate beats')
     parser.add_argument('--beat_mode', default=0, type=int, help='beat mode：0.no control；2.global；3.local', required=False)
-    parser.add_argument('--tempo', default=1, type=int, required=False, help='pace of beats:0-local controll; 1-slow; 2-medium; 3-fast')
+    parser.add_argument('--tempo', default=1, type=int, required=False, help='pace of beats:0-local control; 1-slow; 2-medium; 3-fast')
     
-    # beam seach param
+    # beam search param
     parser.add_argument('--beam_width', default=2, type=int, required=False, help='beam width')
     parser.add_argument('--beam_samples_num', default=5, type=int, required=False, help='beam searching samples')
     parser.add_argument('--beam_sample_select_sg', default='sample', type=str, required=False,

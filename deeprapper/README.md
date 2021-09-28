@@ -85,7 +85,7 @@ To generate by our provided pretrained DeepRapper, first unzip the pretrained De
 │       └── config.json
 ```
 
-Finaly, run the following command to generate:
+Finally, run the following command to generate:
 ```bash
 bash generate_from_pretrain.sh
 ```
