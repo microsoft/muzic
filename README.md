@@ -51,11 +51,11 @@ We initially release the code of 5 research work: [MusicBERT](musicbert), [PDAug
 
 If you find the Muzic project useful in your work, you can cite the following papers if there's a need:
 
-* MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training, Mingliang Zeng, Xu Tan, Rui Wang, Zeqian Ju, Tao Qin, Tie-Yan Liu, ACL 2021.  
-* PDAugment: Data Augmentation by Pitch and Duration Adjustments for Automatic Lyrics Transcription, Chen Zhang, Jiaxing Yu, Luchin Chang, Xu Tan, Jiawei Chen, Tao Qin, Kejun Zhang, arXiv 2021.
-* DeepRapper: Neural Rap Generation with Rhyme and Rhythm Modeling, Lanqing Xue, Kaitao Song, Duocai Wu, Xu Tan, Nevin L. Zhang, Tao Qin, Wei-Qiang Zhang, Tie-Yan Liu, ACL 2021. 
-* SongMASS: Automatic Song Writing with Pre-training and Alignment Constraint, Zhonghao Sheng, Kaitao Song, Xu Tan, Yi Ren, Wei Ye, Shikun Zhang, Tao Qin, AAAI 2021.
-* TeleMelody: Lyric-to-Melody Generation with a Template-Based Two-Stage Method, Zeqian Ju, Peiling Lu, Xu Tan, Rui Wang, Chen Zhang, Songruoyao Wu, Kejun Zhang, Xiangyang Li, Tao Qin, Tie-Yan Liu, arXiv 2021.
+* *MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training*, Mingliang Zeng, Xu Tan, Rui Wang, Zeqian Ju, Tao Qin, Tie-Yan Liu, ACL 2021.  
+* *PDAugment: Data Augmentation by Pitch and Duration Adjustments for Automatic Lyrics Transcription*, Chen Zhang, Jiaxing Yu, Luchin Chang, Xu Tan, Jiawei Chen, Tao Qin, Kejun Zhang, arXiv 2021.
+* *DeepRapper: Neural Rap Generation with Rhyme and Rhythm Modeling*, Lanqing Xue, Kaitao Song, Duocai Wu, Xu Tan, Nevin L. Zhang, Tao Qin, Wei-Qiang Zhang, Tie-Yan Liu, ACL 2021. 
+* *SongMASS: Automatic Song Writing with Pre-training and Alignment Constraint*, Zhonghao Sheng, Kaitao Song, Xu Tan, Yi Ren, Wei Ye, Shikun Zhang, Tao Qin, AAAI 2021.
+* *TeleMelody: Lyric-to-Melody Generation with a Template-Based Two-Stage Method*, Zeqian Ju, Peiling Lu, Xu Tan, Rui Wang, Chen Zhang, Songruoyao Wu, Kejun Zhang, Xiangyang Li, Tao Qin, Tie-Yan Liu, arXiv 2021.
 
 
 
