@@ -136,7 +136,8 @@ def time_signature_reduce(numerator, denominator):
     return numerator, denominator
 
 
-def writer(output_str_list):
+def writer(file_name, output_str_list):
+    # note: parameter "file_name" is reserved for patching
     with open(output_file, 'a') as f:
         for output_str in output_str_list:
             f.write(output_str + '\n')
@@ -400,7 +401,7 @@ def F(file_name):
             return False
         try:
             lock_write.acquire()
-            writer(output_str_list)
+            writer(file_name, output_str_list)
         except BaseException as e:
             print('ERROR(WRITE): ' + file_name + ' ' + str(e) + '\n', end='')
             return False
