@@ -270,6 +270,8 @@ def encoding_to_MIDI(encoding):
         program = i[2]
         pitch = (i[3] - 128 if program == 128 else i[3])
         duration = get_tick(0, e2d(i[4]))
+        if duration == 0:
+            duration = 1
         end = start + duration
         velocity = e2v(i[5])
         midi_obj.instruments[program].notes.append(miditoolkit.containers.Note(
