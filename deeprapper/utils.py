@@ -45,7 +45,7 @@ def temperature_softmax(logits, T=1):
     return z / torch.sum(z, dim=-1)
 
 
-def get_sentence_pinyin_finals(line, invalids_finals:dict):
+def get_sentence_pinyin_finals(line, invalids_finals:dict={}):
 
     finals = lazy_pinyin(line, style=Style.FINALS)
     valid = True
