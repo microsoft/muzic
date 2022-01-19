@@ -1,0 +1,12 @@
+1 68669
+0 68603
+2 68354
+3 67679
+[sep] 33233
+madeupword0000 0
+madeupword0001 0
+madeupword0002 0
+madeupword0003 0
+madeupword0004 0
+madeupword0005 0
+madeupword0006 0

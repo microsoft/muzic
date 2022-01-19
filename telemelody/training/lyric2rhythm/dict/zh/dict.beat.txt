@@ -1,0 +1,12 @@
+3 893331
+2 893093
+0 893075
+1 892686
+[sep] 423192
+madeupword0000 0
+madeupword0001 0
+madeupword0002 0
+madeupword0003 0
+madeupword0004 0
+madeupword0005 0
+madeupword0006 0
