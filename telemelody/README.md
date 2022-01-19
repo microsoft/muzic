@@ -18,7 +18,7 @@
    bash train.sh data/example example 8192
    ```
 
-(UPDATE: We provide our [EN](https://msramllasc.blob.core.windows.net/modelrelease/lyric2rhythm_en_best.pt) and [ZH](https://msramllasc.blob.core.windows.net/modelrelease/lyric2rhythm_zh_best.pt) checkpoints , and corresponding dictionary in ` telemelody\training\lyric2rhythm\dict`.)
+(UPDATE: We provide our [EN](https://msramllasc.blob.core.windows.net/modelrelease/lyric2rhythm_en_best.pt) and [ZH](https://msramllasc.blob.core.windows.net/modelrelease/lyric2rhythm_zh_best.pt) checkpoints , and corresponding dictionary in ` training/lyric2rhythm/dict`.)
 
 ### 1.2 Template-to-Melody
 
