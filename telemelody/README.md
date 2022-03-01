@@ -44,6 +44,8 @@
    bash train.sh lmd_matched
    ```
 
+(UPDATE: [Here](https://msramllasc.blob.core.windows.net/modelrelease/template2melody_best.pt) we provide the template-to-melody model trained on lmd_matched dataset. )
+
 ## 2. Inference
 
 2.1 Modify `miditoolkit` to support Chinese lyrics.
