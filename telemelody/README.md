@@ -108,7 +108,7 @@
    python infer_zh.py {zh_lyric2rhythm_prefix} {template2melody_prefix} {zh_data_prefix} {zh_save_prefix}
    ```
 
-UPDATE: we provide EN and ZH test set in ``test/``.  In ``test.melody``, we use every two number $$x, y$$ to represent a note, where  $$1\le x \le 128$$ is the pitch ($$128$$ if it is a rest note) and  $y \ge 129$ is the duration (corresponds to $$\frac{y-128}{4}$$ beats).  ``test.chord`` is inferred through the algorithm proposed by [Magenta](https://github.com/magenta/note-seq/blob/master/note_seq/chord_inference.py).    
+UPDATE: we provide EN and ZH test set in ``test/``.  In ``test.melody``, we use every two number (x, y) to represent a note, where 0 < x  <129 is the pitch (128 if it is a rest note) and  y > 128 is the duration (corresponds to y - 128 beats).  ``test.chord`` is inferred through the algorithm proposed by [Magenta](https://github.com/magenta/note-seq/blob/master/note_seq/chord_inference.py).    
 
 ## 3. Evaluation
 
