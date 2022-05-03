@@ -1,88 +1,142 @@
-<br/>
-<a href="https://github.com/microsoft/muzic"><img src="img/logo_gradient.png" height="70"> </a>
-<br/>
-<br/>
+# TeleMelody
 
-**Muzic** is a research project on AI music that empowers music understanding and generation with deep learning and artificial intelligence. 
-Muzic is pronounced as [ˈmjuːzeik] and '谬贼客' (in Chinese). Besides the logo in image version (see above), Muzic also has a logo in video version (you can click here to watch <a href="https://ai-muzic.github.io/muzic_logo/"><img src="img/muzic_video_logo.PNG" title="Muzic Video Logo" height="15"/></a>). Muzic was started by [some researchers](https://www.microsoft.com/en-us/research/project/ai-music/) from [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/).  
+[TeleMelody: Lyric-to-Melody Generation with a Template-Based Two-Stage Method](https://arxiv.org/pdf/2109.09617.pdf), by Zeqian Ju, Peiling Lu, Xu Tan, Rui Wang, Chen Zhang, Songruoyao Wu, Kejun Zhang, Xiangyang Li, Tao Qin, Tie-Yan Liu, arXiv 2021, is a two-stage lyric-to-melody generation system with music template (e.g., tonality, chord progression, rhythm pattern, and cadence) to bridge the gap between lyrics and melodies. TeleMelody consists of a lyric-to-template module and a template-to-melody module, and generates melodies with higher quality, better controllability, and less requirement on paired lyric-melody data than previous generation systems.
 
 
+<p align="center"><img src="../img/TeleMelody.PNG" width="550"><br/> Architecture of TeleMelody </p>
 
-<!-- [![Muzic Video Logo](img/muzic_video_logo.PNG)](https://ai-muzic.github.io/muzic_logo/ "Muzic Video Logo") -->
-  
+## 1. Training
 
- 
+### 1.1 Lyric-to-Rhythm
 
-<br/>
-We summarize the scope of our Muzic project in the following figure:
-<br/><br/>
-<p align="center">
-<a href="https://github.com/microsoft/muzic">
-  <img src="img/concept_map_new.png" height="350"/>
-</a>
-</p>
-<br/>
+(1) Prepare lyric-to-rhythm dataset. We provide several examples in directory `data/en_example` and `data/zh_example`. Due to potential copyright issues, we cannot share the training data, but you can follow the pipeline mentioned in our [paper](https://arxiv.org/pdf/2109.09617.pdf) to get the training data.  
+
+(2) Train lyric-to-rhythm model.
+
+   ```shell
+   cd training/lyric2rhythm/
+   bash train.sh data/example example 8192
+   ```
+
+(UPDATE: We provide our [EN](https://msramllasc.blob.core.windows.net/modelrelease/lyric2rhythm_en_best.pt) and [ZH](https://msramllasc.blob.core.windows.net/modelrelease/lyric2rhythm_zh_best.pt) checkpoints , and corresponding dictionary in ` training/lyric2rhythm/dict`.)
+
+### 1.2 Template-to-Melody
+
+(1) Prepare [lmd-matched](https://colinraffel.com/projects/lmd/) MIDI dataset.
+
+   ```shell
+   cd training/template2melody/
+   wget http://hog.ee.columbia.edu/craffel/lmd/lmd_matched.tar.gz
+   tar -xzvf lmd_matched.tar.gz
+   ```
+
+(2) Generate training data and alignments.
+
+   ```shell
+   python gen.py lmd_matched lmd_matched
+   python gen_align.py lmd_matched
+   ```
+
+(3) Train template-to-melody model.
+
+   ```shell
+   bash preprocess.sh lmd_matched lmd_matched
+   bash train.sh lmd_matched
+   ```
+
+(UPDATE: [Here](https://msramllasc.blob.core.windows.net/modelrelease/template2melody_best.pt) we provide the template-to-melody model trained on lmd_matched dataset. )
+
+## 2. Inference
+
+2.1 Modify `miditoolkit` to support Chinese lyrics.
+
+   (1) 
+   ```shell
+   git clone https://github.com/YatingMusic/miditoolkit.git
+   cd miditoolkit
+   ```
+
+   (2) Modify `miditoolkit/midi/parser.py`.
+
+      raw:
+
+   ```python
+      318    def dump(self,
+      319              filename=None,
+      320              file=None,
+      321              segment=None,
+      322              shift=True,
+      323              instrument_idx=None):
+      ...
+      371 midi_parsed=mido.MidiFile(ticks_per_beat=self.ticks_per_beat)
+   ```
+
+      Modified:
+
+   ```python
+      318    def dump(self,
+      319              filename=None,
+      320              file=None,
+      321              segment=None,
+      322              shift=True,
+      323              instrument_idx=None,
+      324              charset ='latin1'):
+      ...
+      372 midi_parsed=mido.MidiFile(ticks_per_beat=self.ticks_per_beat, charset=charset)
+   ```
+
+   (3) Install `miditoolkit`.
+
+   ```shell
+   pip uninstall miditoolkit
+   python setup.py install
+   ```
+
+2.2 Save checkpoints in `checkpoints/{model_prefix}` and dictionary in `data-bin/{model_prefix}`.
+
+2.3 Prepare word-level (EN) or character-level (ZH) lyrics in `data/{lang}/{data_prefix}/lyric.txt` and chord progression in `data/{lang}/{data_prefix}/chord.txt`. For English lyrics, additionally prepare syllable-level lyrics in `data/en/{data_prefix}/syllable.txt` as the input of lyric-to-rhythm model. We provide examples in `data/en/test/` and `data/zh/test/`.
+
+2.4 Infer. Results are saved in directory `results/{save_prefix}/midi/`.
+
+   ```shell
+   
+   cd inference/
+   (EN):
+   python infer_en.py {en_lyric2rhythm_prefix} {template2melody_prefix} {en_data_prefix} {en_save_prefix}
+
+   (ZH):
+   python infer_zh.py {zh_lyric2rhythm_prefix} {template2melody_prefix} {zh_data_prefix} {zh_save_prefix}
+   ```
+
+UPDATE: we provide EN and ZH test set in ``test/``.  In ``test.melody``, we use every two number (x, y) to represent a note, where 0 < x  <129 is the pitch (128 if it is a rest note) and  y > 128 is the duration (corresponds to y - 128 beats).  ``test.chord`` is inferred through the algorithm proposed by [Magenta](https://github.com/magenta/note-seq/blob/master/note_seq/chord_inference.py).    
+
+## 3. Evaluation
+
+3.1 PD & DD 
+
+  Prepare generated melodies in ``{hyp_prefix}/{song_id}.mid`` and ground-truth melodies in ``{gt_prefix}/{song_id}.mid``.
+
+  ```shell
+  cd evaluation
+  python cal_similarity.py {gt_prefix} {hyp_prefix}
+  ```
+
+3.2 MD:
+
+  Prepare generated melodies in ``{hyp_prefix}/{song_id}.mid`` and ground-truth melodies in ``{gt_prefix}/{song_id}.mid``.
+
+  ```shell
+  python cal_dtw.py {gt_prefix} {hyp_prefix}
+  ```
+
+3.3 TA, CA, RA, AA
+
+  Prepare melody in `{prefix}/test.hyp.txt` and template in `{prefix}/test.src.txt`.
+
+  ```shell
+  python cal_acc.py {prefix}
+  ```
 
 
-The current work in [Muzic](https://www.microsoft.com/en-us/research/project/ai-music/) include:
-* Music Understanding
-  + Symbolic Music Understanding: [MusicBERT](https://arxiv.org/pdf/2106.05630.pdf)
-  + Automatic Lyrics Transcription: [PDAugment](https://arxiv.org/pdf/2109.07940.pdf) 
-* Music Generation
-  + Song Writing: [SongMASS](https://arxiv.org/pdf/2012.05168.pdf)
-  + Lyric Generation: [DeepRapper](https://arxiv.org/pdf/2107.01875.pdf)
-  + Melody Generation: [TeleMelody](https://arxiv.org/pdf/2109.09617.pdf)
-  + Accompaniment Generation: [PopMAG](https://arxiv.org/pdf/2008.07703.pdf)
-  + Singing Voice Synthesis: [HiFiSinger](https://arxiv.org/pdf/2009.01776.pdf)
 
-  You can find some music samples generated by our systems from this page: https://ai-muzic.github.io/.
-
-
-
-### What is New!
-We give a tutorial on [AI Music Composition](https://www.microsoft.com/en-us/research/uploads/prod/2021/10/Tutorial-on-AI-Music-Composition-@ACM-MM-2021.pdf) at [ACM Multimedia 2021](https://2021.acmmm.org/).
-
-
-## Requirements
-
-The operating system is Linux. We test on Ubuntu 16.04.6 LTS, CUDA 10, with Python 3.6.12. The requirements for running Muzic are listed in `requirements.txt`. To install the requirements, run:
-```bash
-pip install -r requirements.txt
-```
-We initially release the code of 5 research work: [MusicBERT](musicbert), [PDAugment](pdaugment), [DeepRapper](deeprapper), [SongMASS](songmass), and [TeleMelody](telemelody). You can find the README in the corresponding folder for detailed instructions on how to use. 
-
-
-
-## Reference
-
-If you find the Muzic project useful in your work, you can cite the following papers if there's a need:
-
-* *MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training*, Mingliang Zeng, Xu Tan, Rui Wang, Zeqian Ju, Tao Qin, Tie-Yan Liu, ACL 2021.  
-* *PDAugment: Data Augmentation by Pitch and Duration Adjustments for Automatic Lyrics Transcription*, Chen Zhang, Jiaxing Yu, Luchin Chang, Xu Tan, Jiawei Chen, Tao Qin, Kejun Zhang, arXiv 2021.
-* *DeepRapper: Neural Rap Generation with Rhyme and Rhythm Modeling*, Lanqing Xue, Kaitao Song, Duocai Wu, Xu Tan, Nevin L. Zhang, Tao Qin, Wei-Qiang Zhang, Tie-Yan Liu, ACL 2021. 
-* *SongMASS: Automatic Song Writing with Pre-training and Alignment Constraint*, Zhonghao Sheng, Kaitao Song, Xu Tan, Yi Ren, Wei Ye, Shikun Zhang, Tao Qin, AAAI 2021.
-* *TeleMelody: Lyric-to-Melody Generation with a Template-Based Two-Stage Method*, Zeqian Ju, Peiling Lu, Xu Tan, Rui Wang, Chen Zhang, Songruoyao Wu, Kejun Zhang, Xiangyang Li, Tao Qin, Tie-Yan Liu, arXiv 2021.
-
-
-
-## Contributing
-
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
-
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## Trademarks
-
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+You can find demo samples by TeleMelody from [https://ai-muzic.github.io/telemelody/](https://ai-muzic.github.io/telemelody/).
