@@ -152,13 +152,13 @@ if __name__ == '__main__':
     lyric2beats = TransformerModel.from_pretrained(
         f'checkpoints/{lyric2beat_prefix}',
         checkpoint_file='checkpoint_best.pt',
-        data_name_or_path=f'data-bin/{lyric2beat_prefix}',
+        data_name_or_path=f'data-bin/',
     )
     trend2note_prefix = sys.argv[2]
     trend2notes = TransformerModel.from_pretrained(
         f'checkpoints/{trend2note_prefix}',
         checkpoint_file='checkpoint_best.pt',
-        data_name_or_path=f'data-bin/{trend2note_prefix}'
+        data_name_or_path=f'data-bin/'
     )
     data_prefix = sys.argv[3]
     prefix = sys.argv[4]
