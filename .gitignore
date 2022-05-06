@@ -1,0 +1,6 @@
+training/template2melody/data_midi/*
+training/template2melody/data_xml/*
+__pycache__/
+checkpoints/
+data-bin/
+data/
