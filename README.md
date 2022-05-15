@@ -41,7 +41,7 @@ The current work in [Muzic](https://www.microsoft.com/en-us/research/project/ai-
 ### What is New!
 We give a tutorial on [AI Music Composition](https://www.microsoft.com/en-us/research/uploads/prod/2021/10/Tutorial-on-AI-Music-Composition-@ACM-MM-2021.pdf) at [ACM Multimedia 2021](https://2021.acmmm.org/).
 
-For more speech related research, you can find from this page: https://speechresearch.github.io/ and https://github.com/microsoft/NeuralSpeech.
+For more speech related research, you can find from this page: https://github.com/microsoft/NeuralSpeech and https://speechresearch.github.io/.
 
 
 ## Requirements
