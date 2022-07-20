@@ -45,7 +45,7 @@ Projects using MusicBERT:
 
 ### 1.2 Melody completion and accompaniment suggestion datasets
 
-* Follow "PiRhDy: Learning Pitch-, Rhythm-, and Dynamics-aware Embeddings for Symbolic Music" (https://github.com/mengshor/PiRhDy) to generate datasets for melody completion task and accompaniment suggestion task.
+* Follow "PiRhDy: Learning Pitch-, Rhythm-, and Dynamics-aware Embeddings for Symbolic Music" (https://github.com/mengshor/PiRhDy) to generate datasets for melody completion task and accompaniment suggestion task, or [download](https://1drv.ms/u/s!Av1IXjAYTqPstx6rhUOq8f5BhnTb?e=ZA2Bqz) generated datasets directly.
 
   ```
   PiRhDy/dataset/context_next/train
