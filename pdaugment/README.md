@@ -1,6 +1,6 @@
 # PDAugment
 
-[PDAugment: Data Augmentation by Pitch and Duration Adjustments for Automatic Lyrics Transcription](https://arxiv.org/pdf/2109.07940.pdf), by Chen Zhang, Jiaxing Yu, LuChin Chang, Xu Tan, Jiawei Chen, Tao Qin, Kejun Zhang, arXiv 2021, is a data augmentation method that adjusts pitch and duration of speech to help the training of automatic lyrics transcription. It adjusts the pitch and duration of each syllable in natural speech to those of the corresponding note extracted from music scores, to narrow the gap between natural speech and singing voice. PDAugment outperforms previous state-of-the-art systems by 5.9% and 18.1% WERs on lyrics transription datasets DSing30 and Dali respectively. 
+[PDAugment: Data Augmentation by Pitch and Duration Adjustments for Automatic Lyrics Transcription](https://arxiv.org/pdf/2109.07940.pdf), by Chen Zhang, Jiaxing Yu, LuChin Chang, Xu Tan, Jiawei Chen, Tao Qin, Kejun Zhang, ISMIR 2022, is a data augmentation method that adjusts pitch and duration of speech to help the training of automatic lyrics transcription. It adjusts the pitch and duration of each syllable in natural speech to those of the corresponding note extracted from music scores, to narrow the gap between natural speech and singing voice. PDAugment outperforms previous state-of-the-art systems by 5.9% and 18.1% WERs on lyrics transription datasets DSing30 and Dali respectively. 
 
 
 <p align="center"><img src="../img/PDAugment_structure.PNG" width="500"><br/> The pipeline of automatic lyrics transcription system equipped with PDAugment </p>
