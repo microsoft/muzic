@@ -21,3 +21,6 @@ pyworld
 soundfile
 pyOpenSSL
 secrets
+pkuseg==0.0.25
+icecream==2.1.3
+textrank4zh==0.3
