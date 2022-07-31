@@ -68,7 +68,7 @@ pathy==0.6.1
 pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
 phonemizer==3.1.1
 pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
-Pillow==8.3.1
+Pillow==9.0.1
 pkuseg==0.0.25
 portalocker==2.0.0
 preshed==3.0.6
