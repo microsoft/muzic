@@ -99,17 +99,22 @@ def get_keyword(text) -> dict:
         results (dict): {[keywords]: [score]}
     """
     a = 0.5
-    textrank = dict(get_textrank(text))
-    tf_idf = infer_tfidf(text, "lyrics_tfidf_model.pkl")
+    textrank = dict(get_textrank(text), topk=5)
+    # textrank = dict(get_textrank(text))
+    # tf_idf = infer_tfidf(text, "lyrics_tfidf_model.pkl")
 
-    keys = list(textrank.keys() & tf_idf.keys())
-    tmp = {}
-    for key in keys:
-        textr_score = textrank[key]
-        tfidf_score = tf_idf[key]
+    # keys = list(textrank.keys())
+    # keys = list(textrank.keys() & tf_idf.keys())
+    # tmp = {}
+    # for key in keys:
+    #     textr_score = textrank[key]
+    #     tfidf_score = tf_idf[key]
 
-        tmp[key] = textr_score * (1-a) + tfidf_score * a
+    #     tmp[key] = textr_score * (1-a) + tfidf_score * a
 
-    keys = sorted(tmp, key=tmp.get)
-    results = { k: tmp[k] for k in keys }
+    # keys = sorted(tmp, key=tmp.get)
+    
+    keys = sorted(textrank, key=textrank.get)
+    # results = { k: tmp[k] for k in keys }
+    results = { k: textrank[k] for k in keys }
     return results
