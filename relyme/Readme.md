@@ -1,6 +1,6 @@
 # ReLyMe
 
-[ReLyMe: Improving Lyric-to-Melody Generation by Incorporating Lyric-Melody Relationships](https://arxiv.org/pdf/2207.05688.pdf), by Chen Zhang, LuChin Chang, Songruoyao Wu, Xu Tan, Tao Qin, Tie-Yan Liu, Kejun Zhang, ACMMM 2022, is a method that leverages lyric-melody relationships from music theory to alleviate the dissonance between lyrics and melodies. Specifically, we first introduce several principles that lyrics and melodies should follow in terms of tone, rhythm, and structure relationships according to musicians and composers. These principles are then integrated into neural network based lyric-to-melody models by adding corresponding constraints during the decoding process to improve the harmony between lyrics and melodies. We further design a series of objective and subjective metrics to evaluate the generated melodies. Experiments on both English and Chinese song datasets show the effectiveness of ReLyMe, demonstrating the superiority of leveraging the principles (lyric-melody relationships) from music domain for neural based lyric-to-melody generation.
+[ReLyMe: Improving Lyric-to-Melody Generation by Incorporating Lyric-Melody Relationships](https://arxiv.org/pdf/2207.05688.pdf), by Chen Zhang, LuChin Chang, Songruoyao Wu, Xu Tan, Tao Qin, Tie-Yan Liu, Kejun Zhang, ACM Multimedia 2022, is a method that leverages lyric-melody relationships from music theory to alleviate the dissonance between lyrics and melodies. Specifically, we first introduce several principles that lyrics and melodies should follow in terms of tone, rhythm, and structure relationships according to musicians and composers. These principles are then integrated into neural network based lyric-to-melody models by adding corresponding constraints during the decoding process to improve the harmony between lyrics and melodies. We further design a series of objective and subjective metrics to evaluate the generated melodies. Experiments on both English and Chinese song datasets show the effectiveness of ReLyMe, demonstrating the superiority of leveraging the principles (lyric-melody relationships) from music domain for neural based lyric-to-melody generation.
 
 https://user-images.githubusercontent.com/34224695/182017560-cd533b64-f67e-4790-9a1a-19aa243b615c.mp4
 
@@ -19,7 +19,7 @@ pip install -r requirements.txt
 For the training details of TeleMelody and SongMASS, please refer to [https://github.com/microsoft/muzic/tree/main/telemelody](https://github.com/microsoft/muzic/tree/main/telemelody) and [https://github.com/microsoft/muzic/tree/main/songmass](https://github.com/microsoft/muzic/tree/main/songmass).
 
 
-## 3 TeleMelody
+## 3 ReLyMe based on TeleMelody
 
 To use ReLyMe in TeleMelody, please first follow the instructions [here](https://github.com/microsoft/muzic/tree/main/telemelody), and have it run successfully on your machine. After having TeleMelody work successfully, please follow the steps below:
 
@@ -46,7 +46,7 @@ GEN_MODE = "BASE"
 python main.py
 ```
 
-## 4 SongMASS
+## 4 ReLyMe based on SongMASS
 (TBD)
 
 ## 5 Evaluation
