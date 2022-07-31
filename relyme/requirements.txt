@@ -57,7 +57,7 @@ miditoolkit==0.1.14
 mido==1.2.10
 murmurhash==1.0.6
 networkx==2.6.3
-nltk==3.4.5
+nltk==3.6.6
 numpy==1.21.3
 omegaconf==2.1.0
 packaging==21.0
