@@ -56,7 +56,7 @@ The operating system is Linux. We test on Ubuntu 16.04.6 LTS, CUDA 10, with Pyth
 ```bash
 pip install -r requirements.txt
 ```
-We initially release the code of 6 research work: [MusicBERT](musicbert), [PDAugment](pdaugment), [DeepRapper](deeprapper), [SongMASS](songmass), [TeleMelody](telemelody), [ReLyMe](relyme), and [Re-creation of Creations (ROC)](ROC). You can find the README in the corresponding folder for detailed instructions on how to use. 
+We initially release the code of 6 research work: [MusicBERT](musicbert), [PDAugment](pdaugment), [DeepRapper](deeprapper), [SongMASS](songmass), [TeleMelody](telemelody), [ReLyMe](relyme), and [Re-creation of Creations (ROC)](roc). You can find the README in the corresponding folder for detailed instructions on how to use. 
 
 
 
