@@ -56,7 +56,7 @@ The operating system is Linux. We test on Ubuntu 16.04.6 LTS, CUDA 10, with Pyth
 ```bash
 pip install -r requirements.txt
 ```
-We initially release the code of 6 research work: [MusicBERT](musicbert), [PDAugment](pdaugment), [DeepRapper](deeprapper), [SongMASS](songmass), [TeleMelody](telemelody), and [ReLyMe](relyme). You can find the README in the corresponding folder for detailed instructions on how to use. 
+We initially release the code of 6 research work: [MusicBERT](musicbert), [PDAugment](pdaugment), [DeepRapper](deeprapper), [SongMASS](songmass), [TeleMelody](telemelody), [ReLyMe](relyme), and [Re-creation of Creations (ROC)](ROC). You can find the README in the corresponding folder for detailed instructions on how to use. 
 
 
 
@@ -70,6 +70,7 @@ If you find the Muzic project useful in your work, you can cite the following pa
 * *SongMASS: Automatic Song Writing with Pre-training and Alignment Constraint*, Zhonghao Sheng, Kaitao Song, Xu Tan, Yi Ren, Wei Ye, Shikun Zhang, Tao Qin, AAAI 2021.
 * *TeleMelody: Lyric-to-Melody Generation with a Template-Based Two-Stage Method*, Zeqian Ju, Peiling Lu, Xu Tan, Rui Wang, Chen Zhang, Songruoyao Wu, Kejun Zhang, Xiangyang Li, Tao Qin, Tie-Yan Liu, arXiv 2021.
 * *ReLyMe: Improving Lyric-to-Melody Generation by Incorporating Lyric-Melody Relationships*, Chen Zhang, LuChin Chang, Songruoyao Wu, Xu Tan, Tao Qin, Tie-Yan Liu, Kejun Zhang, ACM Multimedia 2022.
+* *Re-creation of Creations: A New Paradigm for Lyric-to-Melody Generation*, Ang Lv, Xu Tan, Tao Qin, Tie-Yan Liu, Rui Yan, arXiv 2022. 
 * *PopMAG: Pop Music Accompaniment Generation*, Yi Ren, Jinzheng He, Xu Tan, Tao Qin, Zhou Zhao, Tie-Yan Liu, ACM Multimedia 2020.
 * *HiFiSinger: Towards High-Fidelity Neural Singing Voice Synthesis*, Jiawei Chen, Xu Tan, Jian Luan, Tao Qin, Tie-Yan Liu, arXiv 2020.
 
