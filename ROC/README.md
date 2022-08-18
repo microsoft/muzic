@@ -1,6 +1,6 @@
-# ROC
+# Re-creation of Creations (ROC)
 
-[Re-creation of Creations: A New Paradigm for Lyric-to-Melody Generation](https://arxiv.org/pdf/2208.05697.pdf), by Ang Lv, Xu Tan, Tao Qin, Tie-Yan Liu, Rui Yan, arXiv 2022, a new paradigm for lyric-to-melody generation to address the following issues through a generation-retrieval pipeline: (1) lack of aligned lyric-melody training data to sufficiently learn lyric-melody feature alignment. (2) lack of controllability in generation to explicitly guarantee the lyric-melody feature alignment. ROC has no requirement on paired lyric-melody data, and considers music theories and composition guidelines explicitly, which provides great controllability.
+[Re-creation of Creations: A New Paradigm for Lyric-to-Melody Generation](https://arxiv.org/pdf/2208.05697.pdf), by Ang Lv, Xu Tan, Tao Qin, Tie-Yan Liu, Rui Yan, arXiv 2022, is a new paradigm for lyric-to-melody generation to address the following issues through a generation-retrieval pipeline: (1) lack of aligned lyric-melody training data to sufficiently learn lyric-melody feature alignment; (2) lack of controllability in generation to explicitly guarantee the lyric-melody feature alignment. ROC has no requirement on paired lyric-melody data, and considers music theories and composition guidelines explicitly, which provides great controllability.
 
 
 <p align="center"><img src="../img/ROC.PNG" width="900"><br/> Pipeline of ROC </p>
@@ -83,4 +83,4 @@ To evaluate DIST and ENT, we use the script from this repo: https://github.com/l
 
 
 
-You can find demo samples by ROC from [https://ai-muzic.github.io/ROC/](https://ai-muzic.github.io/ROC/).
+You can find demo samples by ROC from [https://ai-muzic.github.io/roc/](https://ai-muzic.github.io/roc/).
