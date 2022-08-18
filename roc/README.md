@@ -5,7 +5,7 @@
 
 <p align="center"><img src="../img/ROC.PNG" width="900"><br/> Pipeline of ROC </p>
 
-## 1. Generate
+## 1. Inference
 
 (1) Put melody language model and the database into the folder 'music-ckps' and 'database', respectively. The model and the database can be downloaded [here](https://drive.google.com/drive/folders/1TpWOMlRAaUL-R6CRLWfZK1ZeE1VCaubp?usp=sharing)
 
