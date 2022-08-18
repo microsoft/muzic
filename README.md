@@ -31,7 +31,7 @@ The current work in [Muzic](https://www.microsoft.com/en-us/research/project/ai-
 * Music Generation
   + Song Writing: [SongMASS](https://arxiv.org/pdf/2012.05168.pdf)
   + Lyric Generation: [DeepRapper](https://arxiv.org/pdf/2107.01875.pdf)
-  + Melody Generation: [TeleMelody](https://arxiv.org/pdf/2109.09617.pdf), [ReLyMe](https://arxiv.org/pdf/2207.05688.pdf)
+  + Lyric-to-Melody Generation: [TeleMelody](https://arxiv.org/pdf/2109.09617.pdf), [ReLyMe](https://arxiv.org/pdf/2207.05688.pdf), [Re-creation of Creations (ROC)](https://arxiv.org/pdf/2208.05697.pdf)
   + Accompaniment Generation: [PopMAG](https://arxiv.org/pdf/2008.07703.pdf)
   + Singing Voice Synthesis: [HiFiSinger](https://arxiv.org/pdf/2009.01776.pdf)
 
