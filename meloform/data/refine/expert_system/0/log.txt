@@ -1,0 +1,254 @@
+xxxxxxxxxxxxxxxxxxxxxxx
+processing  0
+template: {'para structure': ('A', 'A', 'B'), 'phrase structure': [('a1', 'a2', 'a2', 'a2'), ('a1', 'a2', 'a2', 'a2'), ('b1', 'b2', 'b1', 'b1')], 'dev structure': {'a1': ('motive|dev|repeat|dev', 1), 'a2': ('motive|cadence', 2), 'b1': ('motive|dev', 2), 'b2': ('motive|repeat|dev|cadence', 1)}, 'chord progress': {'a1': [[2], [5], [1], [1]], 'a2': [[2, 5], [1, 1]], 'b1': [[5, 1], [4, 1]], 'b2': [[3], [6], [2], [1]]}} 
+
+a1
+motive [['D', 'F', 'A']] [[0, 0.0, 0.25], [0, 0.25, 0.25], [0, 0.5, 0.5], [0, 1.0, 0.5], [0, 1.5, 0.25], [0, 1.75, 0.5], [0, 2.25, 0.25], [0, 2.5, 0.25], [0, 2.75, 1.25]]
+using  ['ornament']  for generation motive.
+motive trend: steady
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: -1 -1 0.2
+dev [['G', 'B', 'D']] [[0, 0.0, 0.25], [0, 0.25, 0.25], [0, 0.5, 0.75], [0, 1.25, 0.25], [0, 1.5, 0.5], [0, 2.0, 0.25], [0, 2.25, 1.75]]
+using  ['new'] to develop.
+chords_in_motive: [['D', 'F', 'A']] chords_in_dev: [['G', 'B', 'D']]
+doing  new ..............
+第一个音符： 0 ['D3', 'G3', 'B3']
+高潮前： 1 ['G3'] B3
+高潮前： 2 ['G3', 'B3'] G3
+高潮前： 3 ['B3', 'D4'] B3
+高潮： 4 ['B3']
+高潮后第一个： 5 ['G3']
+高潮后： 6 ['G3']
+repeat [['C', 'E', 'G']] [[0, 0.0, 1.0], [0, 1.0, 0.5], [0, 1.5, 0.5], [0, 2.0, 2.0]]
+repeat progress method: sequential
+dev [['C', 'E', 'G']] [[0, 0.0, 0.25], [0, 0.25, 0.25], [0, 0.5, 0.5], [0, 1.0, 0.5], [0, 1.5, 0.25], [0, 1.75, 0.5], [0, 2.25, 0.25], [0, 2.5, 0.25], [0, 2.75, 1.25]]
+using  ['new'] to develop.
+chords_in_motive: [['D', 'F', 'A']] chords_in_dev: [['C', 'E', 'G']]
+doing  new ..............
+第一个音符： 0 ['G2', 'C3', 'E3']
+高潮前： 1 ['G2', 'C3'] G2
+高潮前： 2 ['C3', 'E3'] C3
+高潮前： 3 ['G2'] C3
+高潮前： 4 ['G2', 'C3'] G2
+高潮前： 5 ['G2', 'C3'] G2
+高潮： 6 ['D3']
+高潮后第一个： 7 ['C3']
+高潮后： 8 ['G2']
+shift  0  measures.
+shift  1  measures.
+edge may smoothed.
+shift  2  measures.
+edge may smoothed.
+shift  3  measures.
+edge may smoothed.
+a2
+get ref notes for a2  from  a1
+get ref notes by  ['fragmentation', 'fine_tune', 'ornament']
+doing  fragmentation ..............
+start: 0  win_size: 9 measure: 0
+using  similar  for fragmentation
+using  similar  for fragmentation
+using  similar  for fragmentation
+using  similar  for fragmentation
+using  similar  for fragmentation
+doing  fine_tune ..............
+climax idx: 4
+progress interval: [3, 0, 3]
+if descending neccessary: False
+高潮前： 0 D3
+高潮前： 1 D3
+高潮前： 2 D3
+高潮前： 3 D3
+climax intervals [0, 1, 2, 3] 0 3
+高潮： 4 ['D3']
+高潮后第一个： 5 ['A2']
+高潮后： 6 ['F2', 'A2', 'D3']
+高潮后： 7 ['F2', 'A2']
+高潮后： 8 ['F2', 'A2']
+高潮后： 9 ['G2', 'B2', 'D3']
+高潮后： 10 ['B2', 'D3', 'G3']
+高潮后： 11 ['G2', 'B2', 'D3']
+高潮后： 12 ['G2', 'B2']
+高潮后： 13 ['G2', 'B2', 'D3']
+高潮后： 14 ['B2', 'D3', 'G3']
+高潮后： 15 ['G2', 'B2', 'D3']
+高潮后： 16 ['G2', 'B2', 'D3']
+高潮后： 17 ['G2', 'B2', 'D3']
+经过音 1
+双邻音 4
+邻音 11
+doing  ornament ..............
+ornament from [start, end, prob]: -1 -1 0.2
+motive [['D', 'F', 'A'], ['G', 'B', 'D']] [[0, 0.0, 0.25], [0, 0.25, 0.25], [0, 0.5, 0.75], [0, 1.25, 0.25], [0, 1.5, 0.5], [0, 2.0, 0.25], [0, 2.25, 1.75], [1, 0.0, 0.25], [1, 0.25, 0.25], [1, 0.5, 0.75], [1, 1.25, 0.25], [1, 1.5, 0.5], [1, 2.0, 0.25], [1, 2.25, 1.75]]
+using  ['ornament']  for generation motive.
+motive is from ref notes, choose from rhythm repeat or motive repeat
+cadence [['C', 'E', 'G'], ['C', 'E', 'G']] [[0, 0.0, 0.5], [0, 0.5, 0.5], [0, 1.0, 1.0], [0, 2.0, 0.5], [0, 2.5, 0.5], [0, 3.0, 1.0], [1, 0.0, 0.5], [1, 0.5, 3.5]]
+终止--------------------------------------------
+based on note: D3
+candence trend: steady
+邻音 2
+邻音 4
+邻音 5
+shift  0  measures.
+shift  2  measures.
+edge may smoothed.
+b1
+motive [['G', 'B', 'D'], ['C', 'E', 'G']] [[0, 0.0, 0.5], [0, 0.5, 1.0], [0, 1.5, 0.5], [0, 2.0, 1.5], [0, 3.5, 1.0], [1, 0.5, 1.5]]
+using  ['ornament']  for generation motive.
+motive trend: ascending
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: -1 -1 0.2
+邻音 1
+双邻音 4
+dev [['F', 'A', 'C'], ['C', 'E', 'G']] [[0, 0.0, 0.5], [0, 0.5, 0.5], [0, 1.0, 0.5], [0, 1.5, 0.5], [0, 2.0, 4.0]]
+using  ['new'] to develop.
+chords_in_motive: [['G', 'B', 'D'], ['C', 'E', 'G']] chords_in_dev: [['F', 'A', 'C'], ['C', 'E', 'G']]
+doing  new ..............
+第一个音符： 0 ['F3', 'A3', 'C4', 'F4']
+高潮前： 1 ['F3', 'A3', 'C4'] F3
+高潮前： 2 ['C4', 'F4'] C4
+高潮： 3 ['F4']
+高潮后第一个： 4 ['C4']
+shift  0  measures.
+shift  2  measures.
+edge may smoothed.
+b2
+get ref notes for b2  from  b1
+get ref notes by  ['fragmentation', 'fine_tune', 'ornament']
+doing  fragmentation ..............
+start: 0  win_size: 7 measure: 0
+using  similar  for fragmentation
+using  similar  for fragmentation
+doing  fine_tune ..............
+climax idx: 3
+progress interval: [3, 0, 3]
+if descending neccessary: False
+高潮前： 0 G3
+高潮前： 1 G3
+高潮前： 2 A3
+climax intervals [0, 1, 2, 3] 0 3
+高潮： 3 ['B3']
+高潮后第一个： 4 ['G3']
+高潮后： 5 ['E3', 'G3', 'B3']
+高潮后： 6 ['E3', 'G3', 'B3']
+邻音 1
+doing  ornament ..............
+ornament from [start, end, prob]: -1 -1 0.2
+motive [['E', 'G', 'B']] [[0, 0.0, 0.25], [0, 0.25, 0.25], [0, 0.75, 0.25], [0, 1.0, 0.25], [0, 1.5, 0.25]]
+change the fine tune interval for  b2
+using  ['fine_tune']  for generation motive.
+motive is from ref notes, choose from rhythm repeat or motive repeat
+repeat [['A', 'C', 'E']] [[0, 0.0, 0.25], [0, 0.25, 0.25], [0, 0.5, 0.5], [0, 1.0, 0.5], [0, 1.5, 0.25], [0, 1.75, 0.75], [0, 2.5, 1.5]]
+repeat progress method: similar
+dev [['D', 'F', 'A']] [[0, 0.0, 0.25], [0, 0.25, 0.25], [0, 0.75, 0.25], [0, 1.0, 0.25], [0, 1.5, 0.25]]
+using  ['fragmentation', 'fine_tune', 'ornament'] to develop.
+chords_in_motive: [['E', 'G', 'B']] chords_in_dev: [['D', 'F', 'A']]
+doing  fragmentation ..............
+start: 0  win_size: 3 measure: 0
+using  exact  for fragmentation
+using  same  for fragmentation
+using  exact  for fragmentation
+doing  fine_tune ..............
+climax idx: 2
+progress interval: [3, 4, 7]
+if descending neccessary: False
+高潮前： 0 A3
+高潮前： 1 A3
+climax intervals [4, 5] 4 7
+高潮： 2 ['F4']
+高潮后第一个： 3 ['D4']
+高潮后： 4 ['A3', 'D4', 'F4']
+高潮后： 5 ['A3', 'D4', 'F4']
+高潮后： 6 ['F3', 'A3', 'D4']
+高潮后： 7 ['D3', 'F3', 'A3']
+经过音 3
+doing  ornament ..............
+ornament from [start, end, prob]: -1 -1 0.5
+cadence [['C', 'E', 'G']] [[0, 0.0, 0.5], [0, 0.5, 0.5], [0, 1.0, 0.5], [0, 1.5, 0.5], [0, 2.0, 0.5], [0, 2.5, 1.5]]
+终止--------------------------------------------
+based on note: F3
+candence trend: steady
+邻音 1
+shift  0  measures.
+shift  1  measures.
+edge may smoothed.
+shift  2  measures.
+edge may smoothed.
+shift  3  measures.
+edge may smoothed.
+shift measures for each phrase
+shift  0  measures for phrase  a1
+a1  is going to be visited.
+shift  4  measures for phrase  a2
+a2  is going to be visited.
+edge may smoothed.
+shift  8  measures for phrase  a2
+need sturbing .........................
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: 7 32 0.1
+a2  was already visited.
+edge may smoothed.
+shift  12  measures for phrase  a2
+need sturbing .........................
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: 4 32 0.1
+经过音 17
+a2  was already visited.
+edge may smoothed.
+shift  16  measures for phrase  a1
+need sturbing .........................
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: 8 34 0.1
+a1  was already visited.
+edge may smoothed.
+shift  20  measures for phrase  a2
+need sturbing .........................
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: 8 32 0.1
+a2  was already visited.
+edge may smoothed.
+shift  24  measures for phrase  a2
+need sturbing .........................
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: 3 32 0.1
+邻音 3
+邻音 25
+a2  was already visited.
+edge may smoothed.
+shift  28  measures for phrase  a2
+need sturbing .........................
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: 3 32 0.1
+a2  was already visited.
+edge may smoothed.
+shift  32  measures for phrase  b1
+b1  is going to be visited.
+edge may smoothed.
+shift  36  measures for phrase  b2
+b2  is going to be visited.
+edge may smoothed.
+shift  40  measures for phrase  b1
+need sturbing .........................
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: 6 15 0.1
+b1  was already visited.
+edge may smoothed.
+shift  44  measures for phrase  b1
+need sturbing .........................
+only have ornament as development method
+doing  ornament ..............
+ornament from [start, end, prob]: 4 15 0.1
+b1  was already visited.
+edge may smoothed.
+F3
+generating chords....
+Successfully completed  0 . Elapsed time: 0:00:00.261928
