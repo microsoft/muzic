@@ -3,9 +3,9 @@ MeloForm: Generating Melody with Musical Form based on Expert Systems and Neural
 
 <p align="center"><img src="../img/meloform_structure.jpg" width="900"><br/> The overall architecture of our MeloForm framework. </p>
 
-<p align="center"><img src="../img/meloform_expertsystem.jpg" width="400"><br/> The expert system of MeloForm. </p>
+<p align="center"><img src="../img/meloform_expertsystem.jpg" width="900"><br/> The expert system of MeloForm. </p>
 
-<p align="center"><img src="../img/meloform_nn.jpg" width="400"><br/> The neural network of MeloForm. </p>
+<p align="center"><img src="../img/meloform_nn.jpg" width="900"><br/> The neural network of MeloForm. </p>
 
 ## 1. Data 
 We obtain LMD dataset from [here](https://colinraffel.com/projects/lmd/) and process them to be monophonic. We privode a [script](./process_lmd.py) to parse LMD data in our experiments. We give some raw data in melody tracks in [here](./data/train/raw) as examples to run scripts. 
