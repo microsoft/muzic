@@ -1,7 +1,7 @@
 # MeloForm
 MeloForm: Generating Melody with Musical Form based on Expert Systems and Neural Networks, by Peiling Lu, Xu Tan, Botao Yu, Tao Qin, Sheng Zhao, Tie-Yan Liu, ISMIR 2022, is a melody generation system that leverages expert system and neural networks to generate melodies with musical form.
 
-<p align="center"><img src="../img/meloform_structure.jpg" width="1000"><br/> The overall architecture of our MeloForm framework. </p>
+<p align="center"><img src="../img/meloform_structure.jpg" width="900"><br/> The overall architecture of our MeloForm framework. </p>
 
 <p align="center"><img src="../img/meloform_expertsystem.jpg" width="400"><br/> The expert system of MeloForm. </p>
 
