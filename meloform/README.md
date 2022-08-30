@@ -58,3 +58,5 @@ bash meloform_refine_melody.sh $data_dir $song_id $model_path $res_dir
 ```
 
 The final refined melody will be located in `{res_dir}/out_midi/{song_id}/b1/src_res.mid`
+
+Notice that we only release the code of neural networks this time, the melody data from expert systems will be released soon.
