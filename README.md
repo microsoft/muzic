@@ -65,16 +65,17 @@ We initially release the code of 7 research work: [MusicBERT](musicbert), [PDAug
 
 If you find the Muzic project useful in your work, you can cite the following papers if there's a need:
 
-* [1] *MusicBERT: Symbolic Music Understanding with Large-Scale Pre-Training*, Mingliang Zeng, Xu Tan, Rui Wang, Zeqian Ju, Tao Qin, Tie-Yan Liu, ACL 2021.  
-* [2] *PDAugment: Data Augmentation by Pitch and Duration Adjustments for Automatic Lyrics Transcription*, Chen Zhang, Jiaxing Yu, Luchin Chang, Xu Tan, Jiawei Chen, Tao Qin, Kejun Zhang, ISMIR 2022.
-* [3] *DeepRapper: Neural Rap Generation with Rhyme and Rhythm Modeling*, Lanqing Xue, Kaitao Song, Duocai Wu, Xu Tan, Nevin L. Zhang, Tao Qin, Wei-Qiang Zhang, Tie-Yan Liu, ACL 2021. 
-* [4] *SongMASS: Automatic Song Writing with Pre-training and Alignment Constraint*, Zhonghao Sheng, Kaitao Song, Xu Tan, Yi Ren, Wei Ye, Shikun Zhang, Tao Qin, AAAI 2021.
-* [5] *TeleMelody: Lyric-to-Melody Generation with a Template-Based Two-Stage Method*, Zeqian Ju, Peiling Lu, Xu Tan, Rui Wang, Chen Zhang, Songruoyao Wu, Kejun Zhang, Xiangyang Li, Tao Qin, Tie-Yan Liu, arXiv 2021.
-* [6] *ReLyMe: Improving Lyric-to-Melody Generation by Incorporating Lyric-Melody Relationships*, Chen Zhang, LuChin Chang, Songruoyao Wu, Xu Tan, Tao Qin, Tie-Yan Liu, Kejun Zhang, ACM Multimedia 2022.
-* [7] *Re-creation of Creations: A New Paradigm for Lyric-to-Melody Generation*, Ang Lv, Xu Tan, Tao Qin, Tie-Yan Liu, Rui Yan, arXiv 2022. 
-* [8] *MeloForm: Generating Melody with Musical Form based on Expert Systems and Neural Networks*, Peiling Lu, Xu Tan, Botao Yu, Tao Qin, Sheng Zhao, Tie-Yan Liu, arXiv 2022. 
-* [9] *PopMAG: Pop Music Accompaniment Generation*, Yi Ren, Jinzheng He, Xu Tan, Tao Qin, Zhou Zhao, Tie-Yan Liu, ACM Multimedia 2020.
-* [10] *HiFiSinger: Towards High-Fidelity Neural Singing Voice Synthesis*, Jiawei Chen, Xu Tan, Jian Luan, Tao Qin, Tie-Yan Liu, arXiv 2020.
+* [1] ***MusicBERT**: Symbolic Music Understanding with Large-Scale Pre-Training*, Mingliang Zeng, Xu Tan, Rui Wang, Zeqian Ju, Tao Qin, Tie-Yan Liu, **ACL 2021**.  
+* [2] ***PDAugment**: Data Augmentation by Pitch and Duration Adjustments for Automatic Lyrics Transcription*, Chen Zhang, Jiaxing Yu, Luchin Chang, Xu Tan, Jiawei Chen, Tao Qin, Kejun Zhang, **ISMIR 2022**.
+* [3] ***DeepRapper**: Neural Rap Generation with Rhyme and Rhythm Modeling*, Lanqing Xue, Kaitao Song, Duocai Wu, Xu Tan, Nevin L. Zhang, Tao Qin, Wei-Qiang Zhang, Tie-Yan Liu, **ACL 2021**. 
+* [4] ***SongMASS**: Automatic Song Writing with Pre-training and Alignment Constraint*, Zhonghao Sheng, Kaitao Song, Xu Tan, Yi Ren, Wei Ye, Shikun Zhang, Tao Qin, **AAAI 2021**.
+* [5] ***TeleMelody**: Lyric-to-Melody Generation with a Template-Based Two-Stage Method*, Zeqian Ju, Peiling Lu, Xu Tan, Rui Wang, Chen Zhang, Songruoyao Wu, Kejun Zhang, Xiangyang Li, Tao Qin, Tie-Yan Liu, **EMNLP 2022**.
+* [6] ***ReLyMe**: Improving Lyric-to-Melody Generation by Incorporating Lyric-Melody Relationships*, Chen Zhang, LuChin Chang, Songruoyao Wu, Xu Tan, Tao Qin, Tie-Yan Liu, Kejun Zhang, **ACM Multimedia 2022**.
+* [7] ***Re-creation of Creations**: A New Paradigm for Lyric-to-Melody Generation*, Ang Lv, Xu Tan, Tao Qin, Tie-Yan Liu, Rui Yan, arXiv 2022. 
+* [8] ***MeloForm**: Generating Melody with Musical Form based on Expert Systems and Neural Networks*, Peiling Lu, Xu Tan, Botao Yu, Tao Qin, Sheng Zhao, Tie-Yan Liu, **ISMIR 2022**. 
+* [9] ***Museformer**: Transformer with Fine- and Coarse-Grained Attention for Music Generation*, Botao Yu, Peiling Lu, Rui Wang, Wei Hu, Xu Tan, Wei Ye, Shikun Zhang, Tao Qin, Tie-Yan Liu, **NeurIPS 2022**.
+* [10] ***PopMAG**: Pop Music Accompaniment Generation*, Yi Ren, Jinzheng He, Xu Tan, Tao Qin, Zhou Zhao, Tie-Yan Liu, **ACM Multimedia 2020**.
+* [11] ***HiFiSinger**: Towards High-Fidelity Neural Singing Voice Synthesis*, Jiawei Chen, Xu Tan, Jian Luan, Tao Qin, Tie-Yan Liu, arXiv 2020.
 
 
 ## Contributing
