@@ -99,6 +99,8 @@ In our experiment, we run it on 4 GPUs, and the batch size is set to 1, so the r
 
 In your first run, it may take some time to build up auxiliary information and compile CUDA kernels, so you may take a cup of coffee at this moment.
 
+You can download a checkpoint [here](https://1drv.ms/u/s!Aq3YEPZCcV5ibz9ySjjNsEB74CQ).
+
 ## 4. Evaluation
 
 You can obtain perplexity on the test set with the following command:
