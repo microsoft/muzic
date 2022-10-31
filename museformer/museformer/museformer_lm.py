@@ -120,11 +120,11 @@ def base_lm_architecture(args):
         args.sum2sum = ((None,),)
 
     args.attention_impl = getattr(args, "attention_impl", "triton")
-    if args.attention_impl == 'triton':
+    if args.attention_impl == 'blocksparse':
         args.block_size = getattr(args, "block_size", 64)
 
 
-@register_model_architecture("museformer_lm", "museformer_lm")
+@register_model_architecture("museformer_lm", "museformer_lm_v2s1")
 def museformer_lm_v2s1(args):
     args.attention_mode = getattr(args, 'attention_mode', 'v2s1')
 

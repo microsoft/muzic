@@ -23,7 +23,7 @@ def add_args(parser):
 def create_attention_v2_s1(
     *args, implementation='mask', block_size=64, **kwargs
 ):
-    if implementation == 'triton':
+    if implementation == 'blocksparse':
         from .self_attention_v2s1.blocksparse_rpe_self_attention_v2s1 import BlocksparseRpeSelfAttentionV2S1
         return BlocksparseRpeSelfAttentionV2S1(
             *args, block_size=block_size, **kwargs

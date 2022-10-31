@@ -44,7 +44,7 @@ class RpeSelfAttentionV2S1(nn.Module):
         **kwargs
     ):
         assert single_head_masks, "Currently, we only support single head masks."
-        common_funcs.print_redundant_params(kwargs, self.__class__.__name__)
+        # common_funcs.print_redundant_params(kwargs, self.__class__.__name__)
 
         super().__init__()
         self.layer_idx = layer_idx

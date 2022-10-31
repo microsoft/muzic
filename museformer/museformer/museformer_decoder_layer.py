@@ -386,7 +386,7 @@ class MuseformerDecoderLayer(nn.Module):
                     key_padding_mask=key_padding_mask,
                     highlight_prefix=False,
                     combine_parts=self.attn_mask_combination,
-                    block_size=self.block_size if self.attention_impl == 'triton' else None,
+                    block_size=self.block_size if self.attention_impl == 'blocksparse' else None,
                     avoid_empty_row_or_column=True
                 )
                 self.pocket_instant[attn_mask_label] = attn_mask

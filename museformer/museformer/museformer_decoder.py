@@ -53,7 +53,7 @@ class MuseformerDecoder(FairseqDecoder):
     @classmethod
     def add_args(cls, parser):
         # === Implementation ===
-        parser.add_argument('--attention-impl', choices=('mask', 'triton', 'sparta'))
+        parser.add_argument('--attention-impl', choices=('mask', 'blocksparse', 'sparta'))
         parser.add_argument('--block-size', type=int, choices=(64, 32))
         parser.add_argument('--attention-mode', choices=('v2s1',))
 
@@ -150,7 +150,7 @@ class MuseformerDecoder(FairseqDecoder):
         # --- control parameters ---
         self.attention_impl = self.args.attention_impl
         self.block_size = getattr(self.args, "block_size", None)
-        if self.attention_impl == 'triton':
+        if self.attention_impl == 'blocksparse':
             if self.block_size is None:
                 self.block_size = 64
         self.attention_mode = getattr(self.args, "attention_mode", "simu")
