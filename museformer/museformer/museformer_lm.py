@@ -119,7 +119,7 @@ def base_lm_architecture(args):
         args.sum2con = ((None,),)
         args.sum2sum = ((None,),)
 
-    args.attention_impl = getattr(args, "attention_impl", "triton")
+    args.attention_impl = getattr(args, "attention_impl", "blocksparse")
     if args.attention_impl == 'blocksparse':
         args.block_size = getattr(args, "block_size", 64)
 

@@ -28,7 +28,7 @@ def create_attention_v2_s1(
         return BlocksparseRpeSelfAttentionV2S1(
             *args, block_size=block_size, **kwargs
         )
-    return NotImplementedError(implementation)
+    raise NotImplementedError(implementation)
 
 
 def create_attention(
