@@ -41,7 +41,7 @@ The current work in [Muzic](https://www.microsoft.com/en-us/research/project/ai-
 
 
 ### We are hiring! 
-We are hiring researchers on **AI music, speech, audio, language, and machine learning**. Please contact Xu Tan (xuta@microsoft.com) if you have interests. 
+We are hiring both research FTEs and research interns on **AI music, speech, audio, language, and machine learning**. Please contact Xu Tan (xuta@microsoft.com) if you have interests. 
 
 
 ### What is New!
