@@ -11,8 +11,6 @@ from . import attention
 from .attention_mask_generation.attention_mask_generation import LayerAttentionMaskGeneration, \
     combine_part_masks, transfer_attn_mask_to_block_layout, combine_attn_mask_and_key_padding_mask_
 from .data_structures.four_dim_pocket import FourDimPocket
-from .embedding.embedding_weight_generation import \
-    generate_sinusoid_position_embedding_with_padding, generate_randomly_initialized_position_embedding_with_padding
 
 logger = logging.getLogger(__name__)
 
@@ -33,8 +31,6 @@ def generate_layer_attn_mask(
         reg_chunk_ranges, num_chunks, num_complete_chunks,
         num_summary, num_pref, sum_len, reg_len
     )  # each part: (bsz, 1, part_tgt_len, part_src_len)
-
-    # assert (~attn_mask['ss']).any()
 
     # combine key_padding_mask into attn_mask
     if key_padding_mask is not None:
@@ -187,51 +183,12 @@ class MuseformerDecoderLayer(nn.Module):
                                                                                gen_parts=self.attn_mask_gen_parts)
             self.pocket_constant[layer_attention_mask_generator_label] = self.layer_attention_mask_generator
 
-        # === Construct Relative Embeddings ===
-        self.use_token_rel_pos = getattr(self.args, 'use_token_rel_pos', False)
-        if self.use_token_rel_pos:
-            self.max_token_rel_pos = args.max_token_rel_pos
-            token_rel_pos_embed_dim = getattr(self.args, 'token_rel_pos_embed_dim', self.embed_dim)
-            if getattr(self.args, 'learned_token_rel_pos', False):
-                token_rel_embed = generate_randomly_initialized_position_embedding_with_padding(
-                    self.max_token_rel_pos + 1, token_rel_pos_embed_dim
-                )
-                self.register_parameter('token_rel_embed', nn.Parameter(token_rel_embed, requires_grad=True))
-            else:
-                token_rel_embed = generate_sinusoid_position_embedding_with_padding(
-                    self.max_token_rel_pos + 1, token_rel_pos_embed_dim
-                )
-                self.register_buffer('token_rel_embed', token_rel_embed, persistent=False)
-        else:
-            self.token_rel_embed = None
-
-        self.no_token_rel_pos_for_prefix = getattr(self.args, 'no_token_rel_pos_for_prefix', False)
-
-        self.use_bar_rel_pos = getattr(self.args, 'use_bar_rel_pos', False)
-        if self.use_bar_rel_pos:
-            self.max_bar_rel_pos = args.max_bar_rel_pos
-            bar_rel_pos_embed_dim = getattr(self.args, 'bar_rel_pos_embed_dim', self.embed_dim)
-            if getattr(self.args, 'learned_bar_rel_pos', False):
-                bar_rel_embed = generate_randomly_initialized_position_embedding_with_padding(
-                    self.max_bar_rel_pos + 1, bar_rel_pos_embed_dim
-                )
-                self.register_parameter('bar_rel_embed', nn.Parameter(bar_rel_embed, requires_grad=True))
-            else:
-                bar_rel_embed = generate_sinusoid_position_embedding_with_padding(
-                    self.max_bar_rel_pos + 1, bar_rel_pos_embed_dim
-                )
-                self.register_buffer('bar_rel_embed', bar_rel_embed, persistent=False)
-        else:
-            self.bar_rel_embed = None
-
         # === Self Attention ===
         self.self_attn = self.build_self_attention(
             self.args,
             self.embed_dim,
             self.num_attention_heads,
             attention_dropout,
-            token_rel_pos_embeddings=self.token_rel_embed,
-            bar_rel_pos_embeddings=self.bar_rel_embed
         )
 
         # === Other Modules ===
@@ -291,19 +248,8 @@ class MuseformerDecoderLayer(nn.Module):
         embed_dim,
         num_attention_heads,
         dropout,
-        token_rel_pos_embeddings,
-        bar_rel_pos_embeddings,
         **kwargs,
     ):
-        rel_embeddings = []
-        no_rel_projections = []
-        if self.use_token_rel_pos:
-            rel_embeddings.append(token_rel_pos_embeddings)
-            no_rel_projections.append(getattr(args, 'no_token_rel_pos_proj', False))
-        if self.use_bar_rel_pos:
-            rel_embeddings.append(bar_rel_pos_embeddings)
-            no_rel_projections.append(getattr(args, 'no_bar_rel_pos_proj', False))
-
         return attention.create_attention(
             implementation=self.attention_impl,
             attention_mode=self.attention_mode,
@@ -314,8 +260,6 @@ class MuseformerDecoderLayer(nn.Module):
 
             num_summary=self.args.num_summary_tokens_each_chunk,
 
-            rel_embeddings=rel_embeddings,
-
             layer_idx=self.layer_idx,
 
             dropout=dropout,
@@ -325,16 +269,11 @@ class MuseformerDecoderLayer(nn.Module):
             value_proj_bias=getattr(args, 'attn_value_proj_bias', False),
             out_proj_bias=getattr(args, 'attn_out_proj_bias', False),
 
-            no_rel_proj=no_rel_projections,
-            rel_proj_bias=getattr(args, 'rel_proj_bias', False),
-
             single_head_masks=self.layer_attention_mask_generator.single_head,
 
-            # For v1, v2, v2.1
             add_different_kqv_bias_for_sum_and_reg=getattr(args, 'add_different_kqv_bias_for_sum_and_reg', False),
             add_different_out_bias_for_sum_and_reg=getattr(args, 'add_different_out_bias_for_sum_and_reg', False),
 
-            # For v2, v2.1
             sum_key2_proj_bias=getattr(args, 'attn_sum_key2_proj_bias', False),
             sum_value2_proj_bias=getattr(args, 'attn_sum_value2_proj_bias', False),
             share_query_proj=getattr(args, 'attn_share_query_proj', False),
@@ -346,12 +285,6 @@ class MuseformerDecoderLayer(nn.Module):
             no_sum_out=((self.layer_idx == self.args.num_layers - 1)
                         if getattr(args, 'add_different_out_bias_for_sum_and_reg', False) else False
                         ), # to make compatible with previous checkpoints
-
-            # For v5 (sum_then_reg_3)
-            share_reg_kv_proj=getattr(args, 'share_reg_kv_proj', False),
-            #
-            # key_rel_proj_bias=getattr(args, 'attn_key_rel_proj_bias', True),  # renamed to rel_proj_bias
-            # add_global_rel_bias=getattr(args, 'attn_add_global_rel_bias', True),
         )
 
     def forward(
@@ -394,19 +327,12 @@ class MuseformerDecoderLayer(nn.Module):
             raise NotImplementedError('Passing attn_mask into a Museformer layer is not supported yet.')
         key_padding_mask = None  # key_padding_mask is useless, after combined into attn_mask
 
-        token_rel_indices = None
-        bar_rel_indices = None
-
         residual = x
         if self.normalize_before:
             x = computation_tools.may_bi_op(
                 self.sum_self_attn_layer_norm, self.reg_self_attn_layer_norm,
                 x, sum_len, reg_len, self.embed_dim, as_tuple=True
             )
-
-        # print(attn_mask)
-        # print(token_rel_indices)
-        # print(bar_rel_indices)
 
         # st = time.time()
         # try:
@@ -416,7 +342,6 @@ class MuseformerDecoderLayer(nn.Module):
             key_padding_mask=key_padding_mask, attn_mask=attn_mask,
             incremental_state=None,
             need_weights=need_weights, need_head_weights=need_head_weights,
-            token_rel_indices=token_rel_indices, bar_rel_indices=bar_rel_indices,
         )
         # except RuntimeError:
         #     print('x:', x.shape)
@@ -473,21 +398,13 @@ class MuseformerDecoderLayer(nn.Module):
         incremental_state=None,
         need_weights=True,
         need_head_weights=False,
-        token_rel_indices=None,
-        bar_rel_indices=None,
         **kwargs,
     ):
         assert incremental_state is None
-        rel_indices = []
-        if self.use_token_rel_pos:
-            rel_indices.append(token_rel_indices)
-        if self.use_bar_rel_pos:
-            rel_indices.append(bar_rel_indices)
         r, weight = self.self_attn(
             query,
             self.pocket_instant['sum_token_ids'],
             sum_len, reg_len,
-            rel_indices,
             key_padding_mask=key_padding_mask,
             attn_mask=attn_mask,
             need_weights=need_weights,

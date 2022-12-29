@@ -22,6 +22,7 @@ fairseq-train \
   --con2con '((((-2, 0), -4, -8, -12, -16, -24, -32),),)' \
   --con2sum '((((None, -32), (-31, -24), (-23, -16), (-15, -12), (-11, -8), (-7, -4), -3,),),)' \
   --num-layers 4 \
+  --tokens-per-sample 100000 \
   --truncate-train 15360 \
   --truncate-valid 10240 \
   --batch-size 1 \
