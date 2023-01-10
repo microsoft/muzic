@@ -12,7 +12,9 @@ The following content describes the steps to run Museformer. All the commands ar
 
 ## 1. Dataset
 
-We use [the Lakh MIDI dataset](https://colinraffel.com/projects/lmd/) (LMD-full). Specifically, we first preprocess it as described in the Appendix of our paper. The final dataset (see the file lists [here](data/meta)) contains 29,940 MIDI files. Their time signatures are all 4/4, and the instruments are normalized to 6 basic ones: square synthesizer (80), piano (0), guitar (25), string (48), bass (43), drum, where in the parentheses are MIDI program IDs if applicable. We put all the MIDI files in `data/midi`.
+We use [the Lakh MIDI dataset](https://colinraffel.com/projects/lmd/) (LMD-full). Specifically, we first preprocess it as described in the Appendix of our paper. The final dataset (see the file lists [here](data/meta)) contains 29,940 MIDI files. Their time signatures are all 4/4, and the instruments are normalized to 6 basic ones: square synthesizer (80), piano (0), guitar (25), string (48), bass (43), drum, where in the parentheses are MIDI program IDs if applicable. Put all the MIDI files in `data/midi`.
+
+**Note:** If you want to train Museformer on an arbitrary dataset with various time signatures and instruments instead of only the ones mentioned above, please see all the **[General Use]** part throughout the document.
 
 Install [MidiProcessor](https://github.com/btyu/MidiProcessor). Then, encode the MIDI files into tokens:
 
@@ -30,6 +32,8 @@ where the arguments are explained as follows:
 - `ignore-ts`: do not add the tokens of time signature. Since the used data are all 4/4, we do not encode it.
 - `sort-insts`: designate a method that sorts the instruments. `6tracks_cst1` sorts the instruments in order: square synthesizer, drum, bass, guitar, piano, string.
 
+**[General Use]** To make the representation support various time signatures and instruments, please set `--encoding-method REMIGEN` and `--sort-insts id` instead of the ones in the above commend, and also remove the `--ignore-ts` parameter.
+
 After encoding, you should see the token representation of each MIDI file in `output_dir`. 
 
 Then, run the following command to gather the tokens for each split.
@@ -41,6 +45,8 @@ for split in train valid test :
 	do python tools/generate_token_data_by_file_list.py data/meta/${split}.txt $token_dir $split_dir ;
 done
 ```
+
+**[General Use]** To use an arbitrary dataset, please create the MIDI file lists for your dataset on your own as `data/meta/{train,valid,test}.txt` before running the above command.
 
 Next, use `fairseq-preprocess` to make binary data:
 
@@ -60,6 +66,8 @@ fairseq-preprocess \
 ```
 
  Now, you should see the binary data in `data-bin/lmd6remi`.
+
+**[General Use]** Set `--srcdict data/meta/general_use_dict.txt`, which is a vocabulary list that contains various time signatures and instruments.
 
 ##  2. Environment
 
@@ -98,6 +106,8 @@ bash ttrain/mf-lmd6remi-1.sh
 In our experiment, we run it on 4 GPUs, and the batch size is set to 1, so the real batch size is 4. Current implementation only supports batch size = 1. You may change `UPDATE_FREQ` to modify the real batch size.
 
 By modifying `con2con` and `con2sum`, you can control the bars for the fine-grained attention and the coarse-grained attention, respectively.
+
+**[General Use]** Please add `--beat-mask-ts True` for the `fairseq-train` commend.
 
 In your first run, it may take some time to build up auxiliary information and compile CUDA kernels, so you may take a cup of coffee at this moment.
 
