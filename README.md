@@ -4,7 +4,7 @@
 <br/>
 
 **Muzic** is a research project on AI music that empowers music understanding and generation with deep learning and artificial intelligence. 
-Muzic is pronounced as [ˈmjuːzeik] and '谬贼客' (in Chinese). Besides the logo in image version (see above), Muzic also has a logo in video version (you can click here to watch <a href="https://ai-muzic.github.io/muzic_logo/"><img src="img/muzic_video_logo.PNG" title="Muzic Video Logo" height="15"/></a>). Muzic was started by [some researchers](https://www.microsoft.com/en-us/research/project/ai-music/) from [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/).  
+Muzic is pronounced as [ˈmjuːzeik] and '谬贼客' (in Chinese). Besides the logo in image version (see above), Muzic also has a logo in video version (you can click here to watch <a href="https://ai-muzic.github.io/muzic_logo/"><img src="img/muzic_video_logo.PNG" title="Muzic Video Logo" height="15"/></a>). Muzic was started by [some researchers](https://www.microsoft.com/en-us/research/project/ai-music/) from [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/) and also contributed by outside collaborators.  
 
 
 
@@ -28,6 +28,7 @@ The current work in [Muzic](https://www.microsoft.com/en-us/research/project/ai-
 * Music Understanding
   + Symbolic Music Understanding: [MusicBERT](https://arxiv.org/abs/2106.05630)
   + Automatic Lyrics Transcription: [PDAugment](https://arxiv.org/abs/2109.07940) 
+  + Text-Music Pre-training: [CLaMP](https://arxiv.org/abs/2304.xxxxx)
 * Music Generation
   + Song Writing: [SongMASS](https://arxiv.org/abs/2012.05168)
   + Lyric Generation: [DeepRapper](https://arxiv.org/abs/2107.01875)
