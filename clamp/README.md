@@ -1,14 +1,3 @@
----
-license: mit
-datasets:
-- sander-wood/wikimusictext
-language:
-- en
-pipeline_tag: feature-extraction
-tags:
-- music
----
-
 # CLaMP: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval
 
 ## Model description
