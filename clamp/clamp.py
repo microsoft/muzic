@@ -183,7 +183,7 @@ if __name__ == "__main__":
         for root, dirs, files in os.walk("inference/music_keys"):
             for file in files:
                 filename = root+"/"+file
-                if filename.endswith(".mxl") or filename.endswith(".xml") or filename.endswith(".musicxml"):
+                if filename.endswith(".mxl"):
                     key_filenames.append(filename)
         print("Loading music...")
 
