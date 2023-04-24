@@ -70,6 +70,7 @@ Note that the first time you run the CLaMP script, it will automatically downloa
 7. After running the command, the script will generate a list of the top results for the given query. Each result correspond to a music file in the `music_keys` folder or a line in the `text_keys.txt` file, depending on the type of key modal you used.
 
 ## BibTeX entry and citation info
+```
 @misc{wu2023clamp,
       title={CLaMP: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval}, 
       author={Shangda Wu and Dingyao Yu and Xu Tan and Maosong Sun},
@@ -78,3 +79,4 @@ Note that the first time you run the CLaMP script, it will automatically downloa
       archivePrefix={arXiv},
       primaryClass={cs.SD}
 }
+```
