@@ -47,7 +47,7 @@ We are hiring both research FTEs and research interns on **AI music, speech, aud
 
 
 ### What is New!
-+ We release the first model for cross-modal symbolic MIR: [CLaMP](https://arxiv.org/abs/2304.xxxxx).
++ We release the first model for cross-modal symbolic MIR: [CLaMP](https://arxiv.org/abs/2304.11029).
 + We release two new research work on music structure modeling: [MeloForm](https://arxiv.org/abs/2208.14345) and [Museformer](https://arxiv.org/abs/2210.10349).
 + We give a tutorial on [AI Music Composition](https://www.microsoft.com/en-us/research/uploads/prod/2021/10/Tutorial-on-AI-Music-Composition-@ACM-MM-2021.pdf) at [ACM Multimedia 2021](https://2021.acmmm.org/).
 
