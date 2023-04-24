@@ -28,7 +28,7 @@ The current work in [Muzic](https://www.microsoft.com/en-us/research/project/ai-
 * Music Understanding
   + Symbolic Music Understanding: [MusicBERT](https://arxiv.org/abs/2106.05630)
   + Automatic Lyrics Transcription: [PDAugment](https://arxiv.org/abs/2109.07940) 
-  + Contrastive Language-Music Pre-training: [CLaMP](https://arxiv.org/abs/2304.xxxxx)
+  + Contrastive Language-Music Pre-training: [CLaMP](https://arxiv.org/abs/2304.11029)
 * Music Generation
   + Song Writing: [SongMASS](https://arxiv.org/abs/2012.05168)
   + Lyric Generation: [DeepRapper](https://arxiv.org/abs/2107.01875)
