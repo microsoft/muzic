@@ -31,7 +31,7 @@ Zero-shot classification refers to the classification of new items into any desi
 2. The model may not perform well on tasks outside its pre-training scope.
 3. It may require fine-tuning for some specific tasks.
 
-### How to use
+## How to use
 
 To use CLaMP, you can follow these steps:
 
@@ -68,3 +68,13 @@ python clamp.py -clamp_model_name sander-wood/clamp-small-512 -query_modal text 
 Note that the first time you run the CLaMP script, it will automatically download the model checkpoint from Hugging Face. This may take a few minutes, depending on your internet speed.
 
 7. After running the command, the script will generate a list of the top results for the given query. Each result correspond to a music file in the `music_keys` folder or a line in the `text_keys.txt` file, depending on the type of key modal you used.
+
+## BibTeX entry and citation info
+@misc{wu2023clamp,
+      title={CLaMP: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval}, 
+      author={Shangda Wu and Dingyao Yu and Xu Tan and Maosong Sun},
+      year={2023},
+      eprint={2304.11029},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD}
+}
