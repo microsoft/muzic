@@ -80,3 +80,5 @@ Note that the first time you run the CLaMP script, it will automatically downloa
       primaryClass={cs.SD}
 }
 ```
+
+This project uses xml2abc.py (source: https://wim.vree.org/svgParse/xml2abc.html) for converting XML music notation to ABC format. We would like to acknowledge and thank the author, Wim Vree, for developing this helpful tool.
