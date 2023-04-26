@@ -79,6 +79,7 @@ If you find the Muzic project useful in your work, you can cite the following pa
 * [9] ***Museformer**: Transformer with Fine- and Coarse-Grained Attention for Music Generation*, Botao Yu, Peiling Lu, Rui Wang, Wei Hu, Xu Tan, Wei Ye, Shikun Zhang, Tao Qin, Tie-Yan Liu, **NeurIPS 2022**.
 * [10] ***PopMAG**: Pop Music Accompaniment Generation*, Yi Ren, Jinzheng He, Xu Tan, Tao Qin, Zhou Zhao, Tie-Yan Liu, **ACM Multimedia 2020**.
 * [11] ***HiFiSinger**: Towards High-Fidelity Neural Singing Voice Synthesis*, Jiawei Chen, Xu Tan, Jian Luan, Tao Qin, Tie-Yan Liu, arXiv 2020.
+* [12] ***CLaMP**: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval*, Shangda Wu, Dingyao Yu, Xu Tan, Maosong Sun, arXiv 2023.
 
 
 ## Contributing
