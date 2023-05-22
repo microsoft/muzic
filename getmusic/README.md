@@ -7,7 +7,7 @@ Python environment:
 ```
 pip install -r requirements.txt
 ```
-Click [here](http://modelcheckpointlink) to download the model checkpoint.
+Click [here](https://1drv.ms/u/s!ArHNvccy1VzPkWGKXZDQY5k-kDi4?e=fFxcEq) to download the model checkpoint.
 
 
 ## 2. Inference
