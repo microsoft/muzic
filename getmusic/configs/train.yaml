@@ -62,11 +62,11 @@ dataloader:
     - target: getmusic.data.bigdata.BigDataset
       params:
         prefix: train
-        path: /home/v-anglv/test_data/bigdata2 # can be ignored if you use our checkpoints for just inference
+        path: /your-data-path # can be ignored if you use our checkpoints for just inference
         vocab_size: 11880
   validation_datasets:
     - target: getmusic.data.bigdata.BigDataset
       params:
         prefix: valid
-        path: /home/v-anglv/test_data/bigdata2
+        path: /your-data-path
         vocab_size: 11880
