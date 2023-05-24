@@ -96,18 +96,20 @@ Unfortunately, we haven't found a user-friendly solution to specify the desired 
 
 Here are some tips to enhance your experience with GETMusic:
 
-1.  About 'bass': if you want to generate a 'bass' track, the default instrument in Musescore is '低音提琴' (Double Bass), which may not sound harmonious. Change it to '原音贝斯' (Electric Bass Guitar).
+1.  Check MIDI program ID: GETMusic supports the following instruments (MIDI program): '0': piano, '25':guitar, '32':bass, '48':string, '80':lead melody. You do not need to worry about the percussion program.
 
-2.  Tune the volume: GETScore does not involve volume information. To obtain satisfactory composition results, you may tune the volume of each instrument. For example, our default volume for 'string' may be too loud that covers the lead melody, you may need to turn it down.
+2.  About 'bass': if you want to generate a 'bass' track, the default instrument in Musescore is '低音提琴' (Double Bass), which may not sound harmonious. Change it to '原音贝斯' (Electric Bass/Bass Guitar).
 
-3.  Enable Chord Guidance: We recommend always enabling chord guidance when generating music to achieve a regular pattern in the generated music score.
+3.  Tune the volume: GETScore does not involve volume information. To obtain satisfactory composition results, you may tune the volume of each instrument. For example, our default volume for 'string' may be too loud that covers the lead melody, you may need to turn it down.
+
+4.  Enable Chord Guidance: We recommend always enabling chord guidance when generating music to achieve a regular pattern in the generated music score.
     
-4. Incremental generation: Our experience indicates that employing incremental generation when generating multiple tracks from scratch yields improved results in terms of both regularity in music patterns and overall quality. For example, you can conduct a two-stage generation: 
+5. Incremental generation: Our experience indicates that employing incremental generation when generating multiple tracks from scratch yields improved results in terms of both regularity in music patterns and overall quality. For example, you can conduct a two-stage generation: 
 
    -   Stage 1: chord -> lead  
    -   Stage 2: chord, lead -> bass, drum, guitar, piano, string
 
-5.  Avoid Domain Gap:
+6.  Avoid Domain Gap:
 
    -   Consider Input Style: GETMusic is trained on a dataset of crawled pop music. If the style of your input MIDI has a significant domain gap from the training data, the generated results may not meet your expectations.
    -   Change Tracks: In some cases, even if your input music is of the pop genre, the generated results may still be unsatisfactory. One possible reason is that: for example, if you want to generate tracks based on your input guitar, and the guitar pattern in your input is more similar to the lead track in the training data, the domain gap appears. In this case, modifying the MIDI program ID of your guitar track to serve as a lead track can help reduce the track-wise domain gap.
