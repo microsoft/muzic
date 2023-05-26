@@ -39,7 +39,6 @@ skip?
 skip?n
 Select condition tracks ('b' for bass, 'd' for drums, 'g' for guitar, 'l' for lead, 'p' for piano, 's' for strings, 'c' for chords; multiple choices; input any other key to skip): lc
 Select content tracks ('l' for lead, 'b' for bass, 'd' for drums, 'g' for guitar, 'p' for piano, 's' for strings; multiple choices): dgp
-Truncate to a length of 512? (y/n): y
 ```
 
 In this example, we generate drum, guitar, and piano tracks based on the lead and chord tracks. We also truncate the song at a length of 512 to avoid extrapolation.
@@ -177,7 +176,7 @@ After executing these commands, you will find the following files in the "proces
 ```
 
 4. Before training the model, modify the "config/train.yaml" file as follows:
-   - In line 14, 66, and 72, change the value of 'vocab_size' to the number of lines in "pitch_dict.txt" plus 1.
+   - In line 14, 66, and 72, change the value of 'vocab_size' to the number of tokens in "pitch_dict.txt" plus 1 (Added 1 is for \[EMPTY\], and you do not need to worry about \[MASK\] since it is considered in the code).
    - In line 25, change the value of 'vocab_path' to the path of the vocabulary file, which in this example is "example_data/processed_train/pitch_dict.txt".
    - In lines 65 and 71, change the value of 'data_folder' to the name of the data folder, which in this example is "example_data/processed_train".
 
