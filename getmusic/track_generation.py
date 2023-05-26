@@ -322,7 +322,7 @@ def MIDI_to_encoding(midi_obj, with_chord, condition_inst, chord_from_single):
         max_pos = 0
         note_items = []
         for note in encoding:
-            if 0 < note[3] < 128:
+            if (0 < note[3] < 128) and (note[2] in [0,25,32,48,80]):
                 if chord_from_single and (str(note[2]) not in condition_inst):
                     continue
                     
