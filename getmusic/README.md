@@ -1,5 +1,8 @@
 # GETMusic
 
+## 0.Tutorial Video
+
+We make a video to demonstrate how to use GETMusic at this [link](https://www.youtube.com/watch?v=M2TEQF5x6bc)
 
 ## 1. Environment
 
