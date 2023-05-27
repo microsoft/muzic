@@ -4,7 +4,7 @@
 <br/>
 
 **Muzic** is a research project on AI music that empowers music understanding and generation with deep learning and artificial intelligence. 
-Muzic is pronounced as [ˈmjuːzeik] and '谬贼客' (in Chinese). Besides the logo in image version (see above), Muzic also has a logo in video version (you can click here to watch <a href="https://ai-muzic.github.io/muzic_logo/"><img src="img/muzic_video_logo.PNG" title="Muzic Video Logo" height="15"/></a>). Muzic was started by [some researchers](https://www.microsoft.com/en-us/research/project/ai-music/) from [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/) and also contributed by outside collaborators.  
+Muzic is pronounced as [ˈmjuːzeik]. Besides the logo in image version (see above), Muzic also has a logo in video version (you can click here to watch <a href="https://ai-muzic.github.io/muzic_logo/"><img src="img/muzic_video_logo.PNG" title="Muzic Video Logo" height="15"/></a>). Muzic was started by [some researchers](https://www.microsoft.com/en-us/research/project/ai-music/) from [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/) and also contributed by outside collaborators.  
 
 
 
