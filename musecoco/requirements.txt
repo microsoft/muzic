@@ -1,0 +1,25 @@
+# Text-to-Attribute Understanding
+torch==1.11.0+cu113
+transformers==4.26.0
+accelerate
+datasets
+sentencepiece!=0.1.92
+protobuf
+tqdm
+scikit-learn
+wandb
+
+# Attribute-to-Music Generation
+fairseq==0.10.2
+miditoolkit
+matplotlib
+pytorch-fast-transformers
+scipy
+evaluate
+numpy==1.23.4
+music21
+msgpack
+seaborn
+tensorboardX
+matplotlib
+absl-py
