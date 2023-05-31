@@ -1,4 +1,4 @@
-# MuseCoco: generating symbolic music from text for composition copilot
+# MuseCoco: generating symbolic music from text
 
 # Environment
 ```bash
