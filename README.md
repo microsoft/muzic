@@ -40,6 +40,7 @@ The current work in [Muzic](https://www.microsoft.com/en-us/research/project/ai-
   + Multi-Track Generation 
     + Accompaniment Generation: [PopMAG](https://arxiv.org/abs/2008.07703)
     + Any Track Music Generation: [GETMusic](https://arxiv.org/abs/2305.10841)
+  + Text-to-Music Generation: [MuseCoco](https://arxiv.org/abs/2306.00110)
   + Singing Voice Synthesis: [HiFiSinger](https://arxiv.org/abs/2009.01776)
 
 
@@ -52,6 +53,7 @@ We are hiring both research FTEs and research interns on **AI music, speech, aud
 
 
 ### What is New!
++ We release [MuseCoco](https://arxiv.org/abs/2306.00110), a music composition copilot to generate symbolic music from text.
 + We release [GETMusic](https://arxiv.org/abs/2305.10841), a versatile music copliot with a universal representation and diffusion framework to generate any music tracks.
 + We release the first model for cross-modal symbolic MIR: [CLaMP](https://arxiv.org/abs/2304.11029).
 + We release two new research work on music structure modeling: [MeloForm](https://arxiv.org/abs/2208.14345) and [Museformer](https://arxiv.org/abs/2210.10349).
@@ -64,7 +66,7 @@ The operating system is Linux. We test on Ubuntu 16.04.6 LTS, CUDA 10, with Pyth
 ```bash
 pip install -r requirements.txt
 ```
-We release the code of several research work: [MusicBERT](musicbert), [PDAugment](pdaugment), [CLaMP](clamp), [DeepRapper](deeprapper), [SongMASS](songmass), [TeleMelody](telemelody), [ReLyMe](relyme), [Re-creation of Creations (ROC)](roc), [MeloForm](meloform), [Museformer](museformer), and [GETMusic](getmusic). You can find the README in the corresponding folder for detailed instructions on how to use. 
+We release the code of several research work: [MusicBERT](musicbert), [PDAugment](pdaugment), [CLaMP](clamp), [DeepRapper](deeprapper), [SongMASS](songmass), [TeleMelody](telemelody), [ReLyMe](relyme), [Re-creation of Creations (ROC)](roc), [MeloForm](meloform), [Museformer](museformer), [GETMusic](getmusic), and [MuseCoco](musecoco). You can find the README in the corresponding folder for detailed instructions on how to use. 
 
 
 
@@ -85,6 +87,7 @@ If you find the Muzic project useful in your work, you can cite the papers as fo
 * [11] ***HiFiSinger**: Towards High-Fidelity Neural Singing Voice Synthesis*, Jiawei Chen, Xu Tan, Jian Luan, Tao Qin, Tie-Yan Liu, arXiv 2020.
 * [12] ***CLaMP**: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval*, Shangda Wu, Dingyao Yu, Xu Tan, Maosong Sun, arXiv 2023.
 * [13] ***GETMusic**: Generating Any Music Tracks with a Unified Representation and Diffusion Framework*, Ang Lv, Xu Tan, Peiling Lu, Wei Ye, Shikun Zhang, Jiang Bian, Rui Yan, arXiv 2023.
+* [14] ***MuseCoco**: Generating Symbolic Music from Text
 
 
 ## Contributing
