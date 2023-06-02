@@ -87,7 +87,7 @@ If you find the Muzic project useful in your work, you can cite the papers as fo
 * [11] ***HiFiSinger**: Towards High-Fidelity Neural Singing Voice Synthesis*, Jiawei Chen, Xu Tan, Jian Luan, Tao Qin, Tie-Yan Liu, arXiv 2020.
 * [12] ***CLaMP**: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval*, Shangda Wu, Dingyao Yu, Xu Tan, Maosong Sun, arXiv 2023.
 * [13] ***GETMusic**: Generating Any Music Tracks with a Unified Representation and Diffusion Framework*, Ang Lv, Xu Tan, Peiling Lu, Wei Ye, Shikun Zhang, Jiang Bian, Rui Yan, arXiv 2023.
-* [14] ***MuseCoco**: Generating Symbolic Music from Text
+* [14] ***MuseCoco**: Generating Symbolic Music from Text*, Peiling Lu, Xin Xu, Chenfei Kang, Botao Yu, Chengyi Xing, Xu Tan, Jiang Bian, arXiv 2023.
 
 
 ## Contributing
