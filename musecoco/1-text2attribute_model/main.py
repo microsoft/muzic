@@ -267,7 +267,7 @@ def main():
         assert len(attributes) == len(raw_datasets[list(raw_datasets.keys())[0]][0]['labels']), "The attribute labels are not corresponding to the dataset."
         for idx in range(len(attributes)):
             num_labels[attributes[idx]] = len(raw_datasets[list(raw_datasets.keys())[0]][0]['labels'][idx])
-        json.dump(num_labels, open(os.path.join(training_args.output_dir, "num_labels.json"), "w"))
+        json.dump(num_labels, open("num_labels.json", "w"))
     if training_args.do_predict and not training_args.do_train and not training_args.do_eval:
         if data_args.num_labels:
             num_labels = json.load(open(data_args.num_labels))
