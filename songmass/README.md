@@ -77,7 +77,7 @@ model=checkpoint_best.pt # your model path
 
 bash infer_melody.sh  $data_dir $user_dir $model
 ```
-A pre-trained model can be downloaded from [here](https://msramllasc.blob.core.windows.net/modelrelease/songmass.pth)
+A pre-trained model can be downloaded from [here](https://msramldl.blob.core.windows.net/modelrelease/songmass.pth)
 
 ## 4. Evaluation
 We provide scripts under the [evaluation](evaluate/) folder to test the pitch/duration similarity and melody distance. The examples are as:
