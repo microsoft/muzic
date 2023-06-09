@@ -436,7 +436,7 @@ class BertForAttributModel(BertPreTrainedModel):
             i += 1
             logits[k] = self.classifieratt[idx](self.dropout(pooled_outputs[k]))
 
-        total_loss = 0
+        total_loss = torch.Tensor(0.0)
         loss = {}
         if labels is not None:
             for k in labels.keys():
