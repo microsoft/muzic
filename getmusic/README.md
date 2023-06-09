@@ -8,7 +8,13 @@ We make a video to demonstrate how to use GETMusic at this [link](https://www.yo
 
 Python environment:
 ```
-pip install -r requirements.txt
+pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113    
+pip install tensorboard    
+pip install pyyaml
+pip install tqdm
+pip install transformers
+pip install einops
+pip install miditoolkit
 ```
 Click [here](https://1drv.ms/u/s!ArHNvccy1VzPkWGKXZDQY5k-kDi4?e=fFxcEq) to download the model checkpoint.
 
