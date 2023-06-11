@@ -15,6 +15,7 @@ pip install tqdm
 pip install transformers
 pip install einops
 pip install miditoolkit
+pip install scipy
 ```
 Click [here](https://1drv.ms/u/s!ArHNvccy1VzPkWGKXZDQY5k-kDi4?e=fFxcEq) to download the model checkpoint.
 
@@ -104,7 +105,11 @@ Unfortunately, we haven't found a user-friendly solution to specify the desired 
 
 Here are some tips to enhance your experience with GETMusic:
 
-1.  Check MIDI program ID: GETMusic supports the following instruments (MIDI program): '0': piano, '25':guitar, '32':bass, '48':string, '80':lead melody. You do not need to worry about the percussion program.
+1.  Check MIDI program ID: GETMusic supports the following instruments (MIDI program): '0': piano, '25':guitar, '32':bass, '48':string, '80':lead melody. You do not need to worry about the percussion program. 
+
+  -  FAQ:
+   -   [What does these number mean?](https://github.com/microsoft/muzic/issues/132#issuecomment-1585748251)
+   -   [How to check program ids?](https://github.com/microsoft/muzic/issues/133#issuecomment-1586022683)
 
 2.  About 'bass': if you want to generate a 'bass' track, the default instrument in Musescore is '低音提琴' (Double Bass), which may not sound harmonious. Change it to '原音贝斯' (Electric Bass/Bass Guitar).
 
