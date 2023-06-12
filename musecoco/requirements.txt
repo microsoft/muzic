@@ -1,6 +1,6 @@
 # Text-to-Attribute Understanding
 torch==1.11.0
-transformers==4.26.0
+transformers==4.30.0
 accelerate
 datasets
 sentencepiece!=0.1.92
