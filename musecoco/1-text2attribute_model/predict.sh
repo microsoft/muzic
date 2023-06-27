@@ -3,6 +3,6 @@ python main.py \
     --model_name_or_path=CHECKPOINT_PATH \
     --test_file=data/predict.json \
     --attributes=data/att_key.json \
-    --num_labels=NUM_LABELS.JSON \
+    --num_labels=num_labels.json \
     --output_dir=./tmp \
     --overwrite_output_dir
