@@ -17,7 +17,7 @@ cd 1-text2attribute_dataprepare
 bash run.sh
 ```
 3. Obtain attribute-text pairs (the input dataset for the text-to-attribute understanding model) including *att_key.json* and *test.json*.
-We have provided the off-the-shelf standard test set in the [folder](1-text2attribute_model/text-attribute_understanding/data) too.
+We have provided the off-the-shelf standard test set in the [folder](https://github.com/microsoft/muzic/tree/main/musecoco/1-text2attribute_model/data) too.
 ### 2. Train the model
 ```bash
 cd 1-text2attribute_model
