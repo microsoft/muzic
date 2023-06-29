@@ -37,6 +37,7 @@ In principle, you can use any MIDI dataset to train the attribute-to-music gener
    ```
 
 3. Run the following command to extract attributes by jSymbolic.
+
   You are required to download the package jSymbolic_2_2_user.zip from https://sourceforge.net/projects/jmir/files/jSymbolic/jSymbolic%202.2/, and extract it into ./jSymbolic_lib.
 
    ```shell
