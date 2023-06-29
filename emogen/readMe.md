@@ -2,7 +2,7 @@
 
 EmoGen: Eliminating Subjective Bias in Emotional Music Generation, by Chenfei Kang, Peiling Lu, Botao Yu, Xu Tan, Wei Ye, Shikun Zhang, Jiang Bian, is an emotional music generation system that leverages a set of emotion-related music attributes as the bridge between emotion and music, and divides the generation into two stages: emotion-to-attribute mapping with supervised clustering, and attribute-to-music generation with self-supervised learning. Both stages are beneficial: in the first stage, the attribute values around the clustering center represent the general emotions of these samples, which help eliminate the impacts of the subjective bias of emotion labels; in the second stage, the generation is completely disentangled from emotion labels and thus free from the subjective bias. Both subjective and objective evaluations show that EMOGEN outperforms previous methods on emotion control accuracy and music quality respectively, which demonstrate our superiority in generating emotional music. 
 
-demo: [link](https://emo-gen.github.io/)
+demo: [link](https://ai-muzic.github.io/emogen/)
 
 The following content includes the steps for EMOGEN training and inference.
 
