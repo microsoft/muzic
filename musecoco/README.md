@@ -52,7 +52,7 @@ The mapping between keywords used in the code and musical attributes:
 
 ## I. Text-to-Attribute Understanding
 
-### 1 Construct attribute-text pairs
+### 1. Construct attribute-text pairs
 Switch to the `1-text2attribute_dataprepare` folder
 1. Attribute: We provide attributes of the standard test set in [text.bin](https://github.com/microsoft/muzic/tree/main/musecoco/1-text2attribute_dataprepare/test).
 2. Construct Text:
