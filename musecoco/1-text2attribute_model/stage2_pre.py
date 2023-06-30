@@ -2,8 +2,8 @@ import json, pickle
 from copy import deepcopy
 
 test = json.load(open('data/predict.json','r'))
-pred = json.load(open('predict_attributes.json','r'))
-probs = json.load(open('softmax_probs.json','r'))
+pred = json.load(open('tmp/predict_attributes.json','r'))
+probs = json.load(open('tmp/softmax_probs.json','r'))
 att_key = json.load(open('data/att_key.json','r'))
 
 final = []
@@ -49,4 +49,4 @@ for idx in range(len(final)):
     final[idx]['pred_labels']['I1s2'] = deepcopy(pred_labels_I1s2)
     final[idx]['pred_labels']['S4'] = deepcopy(pred_labels_S4)
 
-pickle.dump(final, open('stage1.bin','wb'))
+pickle.dump(final, open('infer_test.bin','wb'))

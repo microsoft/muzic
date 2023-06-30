@@ -1,8 +1,0 @@
-Namespace(align_suffix=None, alignfile=None, all_gather_list_size=16384, bf16=False, bpe=None, checkpoint_shard_count=1, checkpoint_suffix='', cpu=False, criterion='cross_entropy', dataset_impl='mmap', destdir='../data/truncated_5120/data-bin/', empty_cache_freq=0, fp16=False, fp16_init_scale=128, fp16_no_flatten_grads=False, fp16_scale_tolerance=0.0, fp16_scale_window=None, joined_dictionary=False, log_format=None, log_interval=100, lr_scheduler='fixed', memory_efficient_bf16=False, memory_efficient_fp16=False, min_loss_scale=0.0001, model_parallel_size=1, no_progress_bar=False, nwordssrc=-1, nwordstgt=-1, only_source=True, optimizer=None, padding_factor=8, profile=False, quantization_config_path=None, scoring='bleu', seed=1, source_lang=None, srcdict='../data/truncated_5120/dict.txt', target_lang=None, task='translation', tensorboard_logdir=None, testpref='../data/truncated_5120/test.txt', tgtdict=None, threshold_loss_scale=None, thresholdsrc=0, thresholdtgt=0, tokenizer=None, tpu=False, trainpref='../data/truncated_5120/train.txt', user_dir=None, validpref='../data/truncated_5120/valid.txt', workers=6)
-[None] Dictionary: 1253 types
-[None] ../data/truncated_5120/train.txt: 101 sents, 151822 tokens, 0.0% replaced by <unk>
-[None] Dictionary: 1253 types
-[None] ../data/truncated_5120/valid.txt: 101 sents, 145609 tokens, 0.0% replaced by <unk>
-[None] Dictionary: 1253 types
-[None] ../data/truncated_5120/test.txt: 101 sents, 131713 tokens, 0.0% replaced by <unk>
-Wrote preprocessed data to ../data/truncated_5120/data-bin/
