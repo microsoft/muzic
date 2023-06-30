@@ -1,7 +1,7 @@
 # MuseCoco: Generating Symbolic Music from Text
 ![MuseCoco](https://ai-muzic.github.io/images/musecoco/framework.png)
 
-- [MuseCoco: Generating Symbolic Music from Text](#musecoco-generating-symbolic-music-from-text)
+
 - [What's New!](#whats-new)
 - [Environment](#environment)
 - [Attributes](#attributes)
