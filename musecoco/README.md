@@ -17,12 +17,12 @@
   - [II. Attribute-to-Music Generation](#ii-attribute-to-music-generation-1)
   - [III. Evaluate Generated Music](#iii-evaluate-generated-music)
   - [Usage Tips](#usage-tips)
-- [BibTeX entry and citation info](#bibtex-entry-and-citation-info)
+- [Citation](#citation)
 
 # What's New!
 [2023.06.30] **Checkpoints are released!** 📣🎶
 
-[2023.06.01] **We create the repository and release the paper was released [here](https://arxiv.org/abs/2306.00110).** 🎉🎵
+[2023.06.01] **We create the repository and release the [paper](https://arxiv.org/abs/2306.00110).** 🎉🎵
 # Environment
 ```bash
 conda create -n MuseCoco python=3.8
@@ -162,7 +162,7 @@ To maximize your utilization of MuseCoco, here are some valuable tips to enhance
 3. Please use the attribute values we provided, other values or categories for each attribute will bring about undesired control accuracy.
 4. Please use the evaluation model above to calculate the control accuracy, and select the samples with the highest accuracy for improved performance. While it is difficult to guarantee 100% control accuracy, it is advisable to automatically filter out some samples to enhance the overall results.
 
-# BibTeX entry and citation info
+# Citation
 ```bibtex
 @article{musecoco2023,
   title={MuseCoco: Generating Symbolic Music from Text},
