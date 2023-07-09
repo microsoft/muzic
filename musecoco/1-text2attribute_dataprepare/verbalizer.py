@@ -245,7 +245,8 @@ class Verbalizer(object):
                     ["1 ~ 4", "about 3", "about 2"], 
                     ["5 ~ 8", "about 7", "about 6"],
                     ["9 ~ 12", "about 11", "about 10"],
-                    ["13 ~ 16", "about 15", "about 14"]
+                    ["13 ~ 16", "about 15", "about 14"],
+                        ["over 16"]
                     ]
                 _attribute_values["B1_1"] = random.choice(bar_range[v[1]])
             if att == "TS1s1":
