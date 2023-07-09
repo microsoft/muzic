@@ -56,8 +56,8 @@ ${DATA_DIR}/data-bin \
 --need_num ${need_num} \
 --start ${start} \
 --end ${end} \
---max-len-b 300 \
---min-len 100 \
+--max-len-b 2560 \
+--min-len 512 \
 --sampling \
 --beam 1 \
 --sampling-topk ${k} \
