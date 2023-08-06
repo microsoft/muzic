@@ -1,0 +1,20 @@
+# optional tools
+huggingface:
+  token: 
+spotify:
+  client_id: 
+  client_secret: 
+google:
+  api_key: 
+  custom_search_engine_id: 
+# agent settings
+debug: false
+use_azure_openai: false
+model: text-davinci-003
+device: cuda:0
+local_fold: models
+log_file: logs/debug.log
+src_fold: public/audios
+disabled_tools:
+history_len: 200
+candidate_tools: 5

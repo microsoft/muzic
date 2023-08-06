@@ -1,0 +1,8 @@
+Response Generation Stage: With the task execution logs, the AI assistant needs to describe the process and inference results.
+[DONE]
+{{$history}}
+[DONE]
+user: {{$input}}. 
+assistant: I want to introduce my workflow for your request, which is shown in the following JSON data: {{$processes}}.
+user: Please first think carefully and directly answer my request based on the inference results. Then detail your workflow including the used methods and inference results for my request in your friendly tone. Please filter out information that is not relevant to my request. Tell me the complete path or urls of files in inference results. If there is nothing in the results, please tell me you can't make it. Answer in the language of {{$input}}.
+assistant: 

@@ -1,0 +1,28 @@
+Task Planning Stage: The AI assistant can parse user input to several tasks: [{"task": task, "id": task_id, "dep": dependency_task_id, "args": list of {"track", "album", "artist", "description", "lyric", "score", "date", "genre", "language", and the value is text or <GENERATED>-dep_id, "audio": audio_url or <GENERATED>-dep_id, "sheet_music": midi_url or <GENERATED>-dep_id}}]. The special tag "<GENERATED>-dep_id" refer to the one generated text/audio/midi in the dependency task. Consider whether the dependency task generates resources of this type. and "dep_id" must be in "dep" list. The "args" field must in ["text", "audio", "midi"]. The task MUST be selected from: {{$tasks}}. Think step by step about all the tasks needed to resolve the user's request. Parse out as few tasks as possible. If the user input can't be parsed, you need to reply empty JSON [].
+[CONTEXT]
+user: 生成一首古风歌词的中文歌
+assistant: [{"task": "lyric-generation", "id": 0, "dep": [-1], "args": [{"description": "古风歌词的中文歌"}]}, {"task": "lyric-to-melody", "id": 1, "dep": [0], "args": [{"lyric": "<GENERATED>-0"}]}, {"task": "lyric-to-audio", "id": 2, "dep": [1], "args": [{"score": "<GENERATED>-1"}]}, {"task": "audio-mixing", "id": 3, "dep": [1,2], "args": [{"audio": "<GENERATED>-1"}, {"audio": "<GENERATED>-2"}]}]
+user: Give me the sheet music and lyrics in the song /a.wav
+assistant: [{"task": "separate-track", "id": 0, "dep": [-1], "args": [{"audio": "/a.wav"}]}, {"task": "score-transcription", "id": 1, "dep": [0], "args": [{"audio": "<GENERATED>-0"}]}, {"task": "lyric-recognition", "id": 2, "dep": [0], "args": [{"audio": "<GENERATED>-0"}]}]
+user: I want a rock song by Imagine Dragons.
+assistant: [{"task": "track-search", "id": 0, "dep": [-1], "args": [{"artist": ["Imagine Dragons"], "genre": "rock"}]}]
+user: 分析近期热门音乐风格趋势.
+assistant: [{"task": "playlist-search", "id": 0, "dep": [-1], "args": [{"description": "近期热门音乐"}]}, {"task": "music-classification", "id": 1, "dep": [0], "args": [{"audio": "<GENERATED>-0"}]}]
+user: 请给我周杰伦的千里之外的伴奏.
+assistant: [{"task": "track-search", "id": 0, "dep": [-1], "args": [{"track": "千里之外", "artist": ["周杰伦"], "language": "zh"}]}, {"task": "separate-track", "id": 1, "dep": [0], "args": [{"audio": "<GENERATED>-0"}]}]
+user: Rewind the music in /c.wav.
+assistant: [{"task": "separate-track", "id": 0, "dep": [-1], "args": [{"audio": "/c.wav"}]}, {"task": "score-transcription", "id": 1, "dep": [0], "args": [{"audio": ["<GENERATED>-0"]}]}, {"task": "reverse-music", "id": 2, "dep": [1], "args": [{"sheet_music": "<GENERATED>-1"}]}]
+user: Convert the vocals in /b.wav to a violin sound.
+assistant: [{"task": "separate-track", "id": 0, "dep": [-1], "args": [{"audio": "/b.wav"}]}, {"task": "timbre-transfer", "id": 1, "dep": [0], "args": [{"audio": "<GENERATED>-0"}]}]
+user: Splice the first 10s of /a.wav with the last 10s of /b.wav
+assistant: [{"task": "audio-crop", "id": 0, "dep": [-1], "args": [{"time": ["0.0", "10.0"], "audio": "/a.wav"}]}, {"task": "audio-crop", "id": 1, "dep": [-1], "args": [{"time": ["-10.00", "-0.00"], "audio": "/b.wav"}]}, {"task": "audio-splice", "id": 2, "dep": [0,1], "args": [{"audio": "<GENERATED>-0"}, {"audio": "<GENERATED>-1"}]}]
+user: Turning speech in /a.wav into music.
+assistant: [{"task": "lyric-recognition", "id": 0, "dep": [-1], "args": [{"audio": "/a.wav"}]}, {"task": "lyric-to-melody", "id": 1, "dep": [0], "args": [{"lyric": "<GENERATED>-0"}]}, {"task": "lyric-to-audio", "id": 2, "dep": [1], "args": [{"score": "<GENERATED>-1"}]}, {"task": "audio-mixing", "id": 3, "dep": [1,2], "args": [{"audio": "<GENERATED>-1"}, {"audio": "<GENERATED>-2"}]}]
+user: Write a piece of lyric about the World Cup.
+assistant: [{"task": "web-search", "id": 0, "dep": [-1], "args": [{"description": "World Cup"}]}, {"task": "lyric-generation", "id": 1, "dep": [0], "args": [{"description": "<GENERATED>-0"}]}]
+[END CONTEXT]
+[DONE]
+{{$history}}
+[DONE]
+user: {{$input}}
+assistant: 
