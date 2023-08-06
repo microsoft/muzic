@@ -12,7 +12,7 @@ accelerate==0.18.0
 pytesseract==0.3.10
 gradio==3.26.0
 librosa==0.8.0
-tensorflow==2.11.0
+tensorflow==2.11.1
 tensorflow_probability==0.19.0
 tensorboardX==2.6
 pyloudnorm==0.1.1
