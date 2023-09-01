@@ -84,7 +84,7 @@ class TokenConstraintor():
                 # probs = _config.PitchPara.P_WORST.value
                 probs = self.pitch_ruler._accept_notes(curr_note - prev_note, front, back)
                 
-                Structure Constraint Part
+                # Structure Constraint Part
                 if curr_token in buffer_pitch:
                     probs += _config.PitchPara.P_BEST.value
                 
