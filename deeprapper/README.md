@@ -74,7 +74,7 @@ For more generated samples, visit https://ai-muzic.github.io/deeprapper/.
 
 ## 3. Pretrained Model
 
-You can download a pretrained DeepRapper [here](https://msramldl.blob.core.windows.net/modelrelease/deeprapper-model.zip).
+You can download a pretrained DeepRapper [here](https://huggingface.co/msramuzic/deeprapper/resolve/main/deeprapper-model.zip).
 
 To generate by our provided pretrained DeepRapper, first unzip the pretrained DeepRapper. Then, put the unzipped directory `deeprapper-model` under the folder `model/`. So, the complete paths are like the follows:
 
