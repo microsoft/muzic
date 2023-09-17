@@ -97,7 +97,7 @@ if __name__ == "__main__":
     agent = MusicCoplilotAgent(args.config, mode="gradio")
 
     with gr.Blocks() as demo:
-        gr.Markdown("<h2><center>Music Copilot (Dev)</center></h2>")
+        gr.Markdown("<h2><center>Music Pilot (Dev)</center></h2>")
         with gr.Row():
             openai_api_key = gr.Textbox(
                 show_label=False,
@@ -107,7 +107,7 @@ if __name__ == "__main__":
             )
             state = gr.State([])
 
-        chatbot = gr.Chatbot([], elem_id="chatbot", label="music_copilot", visible=False).style(height=500)
+        chatbot = gr.Chatbot([], elem_id="chatbot", label="music_pilot", visible=False).style(height=500)
 
         with gr.Row(visible=False) as text_input_raws:
             with gr.Column(scale=0.8):

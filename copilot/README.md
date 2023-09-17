@@ -1,4 +1,4 @@
-<!-- <p align="center"> <b> Music Copilot </b> </p> -->
+<!-- <p align="center"> <b> Music Pilot </b> </p> -->
 
 <div align="center">
 
@@ -13,9 +13,9 @@
 
 ## Features
 
-- Accessibility: Music Copilot dynamically selects the most appropriate methods for each music-related task.
-- Unity: Music Copilot unifies a wide array of tools into a single system, incorporating Huggingface models, GitHub projects, and Web APIs.
-- Modularity: Music Copilot offers high modularity, allowing users to effortlessly enhance its capabilities by integrating new functions.
+- Accessibility: Music Pilot dynamically selects the most appropriate methods for each music-related task.
+- Unity: Music Pilot unifies a wide array of tools into a single system, incorporating Huggingface models, GitHub projects, and Web APIs.
+- Modularity: Music Pilot offers high modularity, allowing users to effortlessly enhance its capabilities by integrating new functions.
 
 ## Installation
 

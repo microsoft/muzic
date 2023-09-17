@@ -18,7 +18,7 @@ from semantic_kernel.connectors.ai.open_ai import AzureTextCompletion, OpenAITex
 from model_utils import lyric_format
 from plugins import get_task_map, init_plugins
 
-class MusicCoplilotAgent:
+class MusicPilotAgent:
     """
     Attributes:
         config_path: A path to a YAML file, referring to the example config.yaml
@@ -64,27 +64,27 @@ class MusicCoplilotAgent:
 
     def _init_semantic_kernel(self):
         skills_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), "skills")
-        copilot_funcs = self.kernel.import_semantic_skill_from_directory(skills_directory, "MusicCopilot")
+        pilot_funcs = self.kernel.import_semantic_skill_from_directory(skills_directory, "MusicPilot")
         
         # task planning
-        self.task_planner = copilot_funcs["TaskPlanner"]
+        self.task_planner = pilot_funcs["TaskPlanner"]
         self.task_context = self.kernel.create_new_context()
         self.task_context["history"] = ""
 
         # model selection
-        self.tool_selector = copilot_funcs["ToolSelector"]
+        self.tool_selector = pilot_funcs["ToolSelector"]
         self.tool_context = self.kernel.create_new_context()
         self.tool_context["history"] = ""
         self.tool_context["tools"] = ""
 
         # response
-        self.responder = copilot_funcs["Responder"]
+        self.responder = pilot_funcs["Responder"]
         self.response_context = self.kernel.create_new_context()
         self.response_context["history"] = ""
         self.response_context["processes"] = ""
 
         # chat
-        self.chatbot = copilot_funcs["ChatBot"]
+        self.chatbot = pilot_funcs["ChatBot"]
         self.chat_context = self.kernel.create_new_context()
         self.chat_context["history"] = ""
 
@@ -337,7 +337,7 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    agent = MusicCoplilotAgent(args.config, mode="cli")
+    agent = MusicPilotAgent(args.config, mode="cli")
     print("Input exit or quit to stop the agent.")
     while True:
         message = input("Send a message: ")
