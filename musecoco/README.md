@@ -73,19 +73,13 @@ The checkpoint of the fine-tuned model and `num_labels.json` are obtained.
 ## II. Attribute-to-Music Generation
 
 ### 1. Data processing
-Switch to the `2-attribute2music_dataprepare` folder, and set `midi_data_extractor_path` in `config.py` to the path that contains `midi_data_extractor`.
-
-Then, in `data_tool` folder, run the following command to obtain the packed data.
+Switch to the `2-attribute2music_dataprepare` folder. Then, run the following command to obtain the packed data.
 
 ```bash
 python extract_data.py path/to/the/folder/containing/midi/files path/to/save/the/dataset
 ```
 
-
-
 **Note:** The tool can only automatically extract the objective attributes' values from MIDI files. If you want to insert values for the subjective attributes' values, please input it manually at L40-L42 in `extract_data.py`.
-
-
 
 
 

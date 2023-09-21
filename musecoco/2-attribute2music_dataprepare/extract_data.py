@@ -1,14 +1,12 @@
 import argparse
 import os
-import sys
 from tqdm.auto import tqdm
 import msgpack
 import json
 
 from file_list import generate_file_list
-from config import midi_data_extractor_path, attribute_list
+from config import attribute_list
 
-sys.path.append(os.path.abspath(midi_data_extractor_path))
 import midi_data_extractor as mde
 # import midiprocessor as mp
 
