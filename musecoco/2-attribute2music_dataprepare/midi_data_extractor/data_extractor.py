@@ -25,6 +25,7 @@ def cut_by_random_1(num_bars, k, min_bar, max_bar, auto_k=True):
             r.add((begin, end))
     if auto_k:
         k = min(len(r), k)
+    r = list(r)
     r = random.sample(r, k)
     return r
 
@@ -40,6 +41,7 @@ def cut_by_random_2(num_bars, k, min_bar, max_bar, auto_k=True):
         r.add((0, num_bars))
     if auto_k:
         k = min(len(r), k)
+    r = list(r)
     r = random.sample(r, k)
     return r
 

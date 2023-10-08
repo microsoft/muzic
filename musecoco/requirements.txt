@@ -1,5 +1,4 @@
 # Text-to-Attribute Understanding
-torch==1.11.0
 transformers==4.26.0
 accelerate
 datasets

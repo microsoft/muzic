@@ -25,8 +25,11 @@
 [2023.06.01] **We create the repository and release the [paper](https://arxiv.org/abs/2306.00110).** 🎉🎵
 # Environment
 ```bash
+# Tested on Linux.
 conda create -n MuseCoco python=3.8
-pip install -r requirements.txt
+conda activate MuseCoco
+conda install pytorch=1.11.0 -c pytorch
+pip install -r requirements.txt  # g++ should be installed to let this line work.
 ```
 
 # Attributes
@@ -56,10 +59,10 @@ The mapping between keywords used in the code and musical attributes:
 Switch to the `1-text2attribute_dataprepare` folder
 1. Attribute: We provide attributes of the standard test set in [text.bin](https://github.com/microsoft/muzic/tree/main/musecoco/1-text2attribute_dataprepare/test).
 2. Construct Text:
-```bash
-cd 1-text2attribute_dataprepare
-bash run.sh
-```
+    ```bash
+    cd 1-text2attribute_dataprepare
+    bash run.sh
+    ```
 1. Obtain attribute-text pairs (the input dataset for the text-to-attribute understanding model) including `att_key.json` and `test.json`.
 We have provided the off-the-shelf standard test set in the [folder](https://github.com/microsoft/muzic/tree/main/musecoco/1-text2attribute_model/data) too.
 ### 2. Train the model
@@ -73,7 +76,7 @@ The checkpoint of the fine-tuned model and `num_labels.json` are obtained.
 ## II. Attribute-to-Music Generation
 
 ### 1. Data processing
-Switch to the `2-attribute2music_dataprepare` folder. Then, run the following command to obtain the packed data.
+Switch to the `2-attribute2music_dataprepare` folder. Then, run the following command to obtain the packed data. Note that `path/to/the/folder/containing/midi/files` is the path where you store the MIDI files, and `path/to/save/the/dataset` is an arbitrary folder you designate to store the extracted data.
 
 ```bash
 python extract_data.py path/to/the/folder/containing/midi/files path/to/save/the/dataset
@@ -81,14 +84,9 @@ python extract_data.py path/to/the/folder/containing/midi/files path/to/save/the
 
 **Note:** The tool can only automatically extract the objective attributes' values from MIDI files. If you want to insert values for the subjective attributes' values, please input it manually at L40-L42 in `extract_data.py`.
 
-
-
-
-Prepare  `Token.bin, Token_index.json, RID.bin, RID_index.json` in folder `data/`. Then run the following command to process the data into `train, validation, test`.
+The above commend would tokenize the music and extract the attributes from the MIDI files, and then save the information in 4 files named `Token.bin`,  `Token_index.json`, `RID.bin`, `RID_index.json` in your designated folder. Please move those files into `2-attribute2music_model/data`, and switch to `2-attribute2music_model/data_process`, then run the following command to process the data into `train, validation, test`.
 
 ```shell
-cd data_process
-
 # The following script splits the midi corpus into "train.txt", "valid.txt" and "test.txt", using "5120" as the maximum length of the token sequence.
 python split_data.py
 
