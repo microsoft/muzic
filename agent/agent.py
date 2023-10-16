@@ -18,7 +18,7 @@ from semantic_kernel.connectors.ai.open_ai import AzureTextCompletion, OpenAITex
 from model_utils import lyric_format
 from plugins import get_task_map, init_plugins
 
-class MusicPilotAgent:
+class MusicAgent:
     """
     Attributes:
         config_path: A path to a YAML file, referring to the example config.yaml
@@ -64,7 +64,7 @@ class MusicPilotAgent:
 
     def _init_semantic_kernel(self):
         skills_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), "skills")
-        pilot_funcs = self.kernel.import_semantic_skill_from_directory(skills_directory, "MusicPilot")
+        pilot_funcs = self.kernel.import_semantic_skill_from_directory(skills_directory, "MusicAgent")
         
         # task planning
         self.task_planner = pilot_funcs["TaskPlanner"]
@@ -168,6 +168,9 @@ class MusicPilotAgent:
         return result
 
     def run_task(self, input_text, command, results):
+        if self.error_event.is_set():
+            return
+
         id = command["id"]
         args = command["args"]
         task = command["task"]
@@ -226,7 +229,7 @@ class MusicPilotAgent:
             inference_result = []
 
             for arg in command["args"]:
-                chat_input = f"[{input_text}] contains a task in JSON format {command}. Now you are a {command['task']} system, the arguments are {arg}. Just help me do {command['task']} and give me the resultwithout any additional description. The result must be in text form without any urls."
+                chat_input = f"[{input_text}] contains a task in JSON format {command}. Now you are a {command['task']} system, the arguments are {arg}. Just help me do {command['task']} and give me the result without any additional description."
                 response = self.skillchat(chat_input, self.chatbot, self.chat_context)
                 inference_result.append({"lyric":lyric_format(response)})
 
@@ -263,7 +266,12 @@ class MusicPilotAgent:
             inference_result = self.model_inference(best_model_id, command, device=self.config["device"])
 
         results[id] = self.collect_result(command, choose, inference_result)
-        return True
+        for result in inference_result:
+            if "error" in result:
+                self.error_event.set()
+                break
+            
+        return
 
     def chat(self, input_text):
         start = time.time()
@@ -277,19 +285,22 @@ class MusicPilotAgent:
         except Exception as e:
             self.logger.debug(e)
             response = self.skillchat(input_text, self.chatbot, self.chat_context)
-            return response
+            return response, {"0": "Task parsing error, reply using ChatGPT."}
         
         if len(tasks) == 0:
             response = self.skillchat(input_text, self.chatbot, self.chat_context)
-            return response
+            return response, {"0": "No task detected, reply using ChatGPT."}
         
         tasks = self.fix_depth(tasks)
         results = {}
         threads = []
         d = dict()
         retry = 0
+        self.error_event = threading.Event()
         while True:
             num_thread = len(threads)
+            if self.error_event.is_set():
+                break
             for task in tasks:
                 # logger.debug(f"d.keys(): {d.keys()}, dep: {dep}")
                 for dep_id in task["dep"]:
@@ -326,10 +337,10 @@ class MusicPilotAgent:
         end = time.time()
         during = end - start
         self.logger.info(f"time: {during}s")
-        return response
+        return response, results
     
 def parse_args():
-    parser = argparse.ArgumentParser(description="A path to a YAML file")
+    parser = argparse.ArgumentParser(description="music agent config")
     parser.add_argument("--config", type=str, help="a YAML file path.")
 
     args = parser.parse_args()
@@ -337,10 +348,10 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    agent = MusicPilotAgent(args.config, mode="cli")
+    agent = MusicAgent(args.config, mode="cli")
     print("Input exit or quit to stop the agent.")
     while True:
-        message = input("Send a message: ")
+        message = input("User input: ")
         if message in ["exit", "quit"]:
             break
 

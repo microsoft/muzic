@@ -1,4 +1,4 @@
-<!-- <p align="center"> <b> Music Pilot </b> </p> -->
+<!-- <p align="center"> <b> Music Agent </b> </p> -->
 
 <div align="center">
 
@@ -9,13 +9,16 @@
 
 ## Demo Video
 
-![Download demo video](https://drive.google.com/file/d/1W0iJPHNPA6ENLJrPef0vtQytboSubxXe/view?usp=sharing)
+[![Watch the video](https://img.youtube.com/vi/tpNynjdcBqA/maxresdefault.jpg)](https://youtu.be/tpNynjdcBqA)
 
 ## Features
 
-- Accessibility: Music Pilot dynamically selects the most appropriate methods for each music-related task.
-- Unity: Music Pilot unifies a wide array of tools into a single system, incorporating Huggingface models, GitHub projects, and Web APIs.
-- Modularity: Music Pilot offers high modularity, allowing users to effortlessly enhance its capabilities by integrating new functions.
+- Accessibility: Music Agent dynamically selects the most appropriate methods for each music-related task.
+- Unity: Music Agent unifies a wide array of tools into a single system, incorporating Huggingface models, GitHub projects, and Web APIs.
+- Modularity: Music Agent offers high modularity, allowing users to effortlessly enhance its capabilities by integrating new functions.
+
+## Skills
+
 
 ## Installation
 
@@ -38,10 +41,11 @@ sudo apt-get install -y git-lfs
 sudo apt-get install -y libsndfile1-dev
 sudo apt-get install -y fluidsynth
 sudo apt-get install -y ffmpeg
+sudo apt-get install -y lilypond
 
-# Clone the repository from TODO 
-git clone https://github.com/TODO
-cd DIR
+# Clone the repository from muzic
+git clone https://github.com/muzic
+cd muzic/agent
 ```
 
 Next, install the dependent libraries. There might be some conflicts, but they should not affect the functionality of the system.
@@ -49,8 +53,8 @@ Next, install the dependent libraries. There might be some conflicts, but they s
 ```bash
 pip install --upgrade pip
 
-pip install -r requirements.txt
 pip install semantic-kernel
+pip install -r requirements.txt
 pip install numpy==1.23.0
 pip install protobuf==3.20.3
 ```

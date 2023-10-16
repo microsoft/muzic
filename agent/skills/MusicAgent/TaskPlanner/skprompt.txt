@@ -8,8 +8,10 @@ user: I want a rock song by Imagine Dragons.
 assistant: [{"task": "track-search", "id": 0, "dep": [-1], "args": [{"artist": ["Imagine Dragons"], "genre": "rock"}]}]
 user: 分析近期热门音乐风格趋势.
 assistant: [{"task": "playlist-search", "id": 0, "dep": [-1], "args": [{"description": "近期热门音乐"}]}, {"task": "music-classification", "id": 1, "dep": [0], "args": [{"audio": "<GENERATED>-0"}]}]
-user: 请给我周杰伦的千里之外的伴奏.
-assistant: [{"task": "track-search", "id": 0, "dep": [-1], "args": [{"track": "千里之外", "artist": ["周杰伦"], "language": "zh"}]}, {"task": "separate-track", "id": 1, "dep": [0], "args": [{"audio": "<GENERATED>-0"}]}]
+user: transcribe /e.wav to music score (sheet music).
+assistant: [{"task": "score-transcription", "id": 1, "dep": [0], "args": [{"audio": "/e.wav"}]]
+user: transcribe /e.wav to lyrics.
+assistant: [{"task": "lyric-recognition", "id": 1, "dep": [0], "args": [{"audio": "/e.wav"}]]
 user: Rewind the music in /c.wav.
 assistant: [{"task": "separate-track", "id": 0, "dep": [-1], "args": [{"audio": "/c.wav"}]}, {"task": "score-transcription", "id": 1, "dep": [0], "args": [{"audio": ["<GENERATED>-0"]}]}, {"task": "reverse-music", "id": 2, "dep": [1], "args": [{"sheet_music": "<GENERATED>-1"}]}]
 user: Convert the vocals in /b.wav to a violin sound.
@@ -20,9 +22,9 @@ user: Turning speech in /a.wav into music.
 assistant: [{"task": "lyric-recognition", "id": 0, "dep": [-1], "args": [{"audio": "/a.wav"}]}, {"task": "lyric-to-melody", "id": 1, "dep": [0], "args": [{"lyric": "<GENERATED>-0"}]}, {"task": "lyric-to-audio", "id": 2, "dep": [1], "args": [{"score": "<GENERATED>-1"}]}, {"task": "audio-mixing", "id": 3, "dep": [1,2], "args": [{"audio": "<GENERATED>-1"}, {"audio": "<GENERATED>-2"}]}]
 user: Write a piece of lyric about the World Cup.
 assistant: [{"task": "web-search", "id": 0, "dep": [-1], "args": [{"description": "World Cup"}]}, {"task": "lyric-generation", "id": 1, "dep": [0], "args": [{"description": "<GENERATED>-0"}]}]
+user: What can you do?
+assistant: []
 [END CONTEXT]
-[DONE]
 {{$history}}
-[DONE]
 user: {{$input}}
 assistant: 

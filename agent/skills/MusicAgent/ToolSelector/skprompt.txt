@@ -3,5 +3,6 @@ Given the user request and the parsed tasks, the AI assistant helps the user to 
 user: Determine the style of music /a.wav.
 assistant: {"id": "", "reason": ""}
 [END CONTEXT]
+{{$history}}
 user: Please choose the most suitable tool from {{$tools}} for the task {{$task}} with the input [{{$input}}]. Please focus on the {{$focus}}. The output must be in a strict JSON format: {"id": "id", "reason": "your detail reasons for the choice"}.
 assistant: 

@@ -3,8 +3,11 @@
 # Set models to download
 models=(
     "m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres"
+	"lewtun/distilhubert-finetuned-music-genres"
+	"dima806/music_genres_classification"
     "sander-wood/text-to-music"
     "jonatasgrosman/whisper-large-zh-cv11"
+	"cvssp/audioldm-m-full"
 )
 
 # Set the current directory

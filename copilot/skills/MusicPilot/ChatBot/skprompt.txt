@@ -1,7 +1,0 @@
-This is a conversation.
-[CONTEXT]
-user: I have a question. Can you help? 
-assistant: Of course. Go on!
-[END CONTEXT]
-user: {{$input}}
-assistant: 

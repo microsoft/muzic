@@ -8,11 +8,12 @@ from pydub import AudioSegment
 import requests
 import urllib
 import librosa
-
+import re
 import torch
 import torch.nn.functional as F
 # import torchaudio
 from fairseq.models.transformer_lm import TransformerLanguageModel
+from diffusers import AudioLDMPipeline
 import soundfile as sf
 import os
 import sys
@@ -25,11 +26,16 @@ def get_task_map():
         "text-to-sheet-music": [
             "sander-wood/text-to-music"
         ],
+        "text-to-audio": [
+            "cvssp/audioldm-m-full"
+        ],
         "music-classification": [
-            "m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres"
+            "lewtun/distilhubert-finetuned-music-genres",
+	        "dima806/music_genres_classification"
         ],
         "lyric-to-melody": [
-            "muzic/roc"
+            "muzic/roc",
+            "muzic/telemelody"
         ],
         "lyric-to-audio": [
             "DiffSinger"
@@ -90,10 +96,16 @@ def init_plugins(config):
     pipes = {}
     if "muzic/roc" not in disabled:
         pipes["muzic/roc"] = MuzicROC(config)
+    if "cvssp/audioldm-m-full" not in disabled:
+        pipes["cvssp/audioldm-m-full"] = AudioLDM(config)
     if "DiffSinger" not in disabled:
         pipes["DiffSinger"] = DiffSinger(config)
-    if "m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres" not in disabled:
-        pipes["m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres"] = Wav2Vec2Base(config)
+    # if "m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres" not in disabled:
+    #     pipes["m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres"] = Wav2Vec2Base(config)
+    if "dima806/music_genres_classification" not in disabled:
+        pipes["dima806/music_genres_classification"] = Text2AudioDima(config)
+    if "lewtun/distilhubert-finetuned-music-genres" not in disabled:
+        pipes["lewtun/distilhubert-finetuned-music-genres"] = Text2AudioLewtun(config)
     if "jonatasgrosman/whisper-large-zh-cv11" not in disabled:
         pipes["jonatasgrosman/whisper-large-zh-cv11"] = WhisperZh(config)
     if "spotify" not in disabled:
@@ -129,6 +141,22 @@ class BaseToolkit:
         for key in kwargs:
             self.attributes[key] = kwargs[key]
 
+    def mount_model(self, model, device):
+        try:
+            model.to(device)
+        except:
+            model.device = torch.device(device)
+            model.model.to(device)
+
+    def detach_model(self, model):
+        try:
+            model.to("cpu")
+            torch.cuda.empty_cache()
+        except:
+            model.device = torch.device("cpu")
+            model.model.to("cpu")
+            torch.cuda.empty_cache()
+
 
 class MuzicROC(BaseToolkit):
     def __init__(self, config):
@@ -155,16 +183,21 @@ class MuzicROC(BaseToolkit):
             if "lyric" in arg: 
                 prompt = arg["lyric"]
                 prompt = " ".join(prompt)
-
+                prompt = re.sub("[^\u4e00-\u9fa5]", "", prompt)
                 file_name = str(uuid.uuid4())[:4]
 
-                outputs = self.processer(
-                            self.model, 
-                            [prompt], 
-                            output_file_name=f"public/audios/{file_name}", 
-                            db_path=f"{self.local_fold}/muzic/roc/database/ROC.db"
-                        )
-                os.system(f"fluidsynth -l -ni -a file -z 2048 -F public/audios/{file_name}.wav 'MS Basic.sf3' public/audios/{file_name}.mid")
+                try:
+                    outputs = self.processer(
+                                self.model, 
+                                [prompt], 
+                                output_file_name=f"public/audios/{file_name}", 
+                                db_path=f"{self.local_fold}/muzic/roc/database/ROC.db"
+                            )
+                    os.system(f"fluidsynth -l -ni -a file -z 2048 -F public/audios/{file_name}.wav 'MS Basic.sf3' public/audios/{file_name}.mid")
+                except:
+                    results.append({"error": "Lyric-to-melody Error"})
+                    continue
+                
                 results.append(
                     {
                         "score": str(outputs),
@@ -177,6 +210,78 @@ class MuzicROC(BaseToolkit):
         self.model.to("cpu")
         return results
 
+
+class Text2AudioDima(BaseToolkit):
+    def __init__(self, config):
+        super().__init__(config)
+        self.id = "dima806/music_genres_classification"
+        self.attributes = {
+            "description": "The model is trained based on publicly available dataset of labeled music data — GTZAN Dataset",
+            "genres": "blues,classical,country,disco,hip-hop,jazz,metal,pop,reggae,rock.",
+            "downloads": 60
+        }
+
+    def _init_toolkit(self, config):
+        self.pipe = pipeline("audio-classification", model=os.path.join(self.local_fold, self.id), device="cpu")
+
+    def inference(self, args, task, device="cpu"):
+        self.mount_model(self.pipe, device)
+        results = []
+
+        for arg in args: 
+            if "audio" in arg:
+                prompt = arg["audio"]
+                sampling_rate = self.pipe.feature_extractor.sampling_rate
+                audio, _ = librosa.load(prompt, sr=sampling_rate)
+
+                try:
+                    output = self.pipe(audio)
+                    genre = output[0]["label"]
+                except:
+                    results.append({"error": "Genres Classification Error"})
+                    continue
+            
+                results.append({"genre": genre})
+
+        self.detach_model(self.pipe)
+        return results
+    
+
+class Text2AudioLewtun(BaseToolkit):
+    def __init__(self, config):
+        super().__init__(config)
+        self.id = "lewtun/distilhubert-finetuned-music-genres"
+        self.attributes = {
+            "description": "This model is a fine-tuned version of ntu-spml/distilhubert on the None dataset.",
+            "genres": "Pop,Classical,International,Ambient Electronic,Folk",
+            "downloads": 202
+        }
+
+    def _init_toolkit(self, config):
+        self.pipe = pipeline("audio-classification", model=os.path.join(self.local_fold, self.id), device="cpu")
+
+    def inference(self, args, task, device="cpu"):
+        self.mount_model(self.pipe, device)
+        results = []
+
+        for arg in args: 
+            if "audio" in arg:
+                prompt = arg["audio"]
+                sampling_rate = self.pipe.feature_extractor.sampling_rate
+                audio, _ = librosa.load(prompt, sr=sampling_rate)
+
+                try:
+                    output = self.pipe(audio)
+                    genre = output[0]["label"]
+                except:
+                    results.append({"error": "Genres Classification Error"})
+                    continue
+
+                results.append({"genre": genre})
+
+        self.detach_model(self.pipe)
+        return results
+    
 
 class DiffSinger(BaseToolkit):
     def __init__(self, config):
@@ -217,9 +322,13 @@ class DiffSinger(BaseToolkit):
                 prompt = arg["score"]
                 prompt = eval(prompt)
 
-                wav = self.model.infer_once(prompt)
-                file_name = str(uuid.uuid4())[:4]
-                self.processer(wav, f"public/audios/{file_name}.wav", sr=16000)
+                try:
+                    wav = self.model.infer_once(prompt)
+                    file_name = str(uuid.uuid4())[:4]
+                    self.processer(wav, f"public/audios/{file_name}.wav", sr=16000)
+                except:
+                    results.append({"error": "Singing Voice Synthesis Error"})
+                    continue
             
                 results.append({"audio": f"{file_name}.wav"})
         
@@ -229,46 +338,46 @@ class DiffSinger(BaseToolkit):
         return results
     
 
-class Wav2Vec2Base(BaseToolkit):
-    def __init__(self, config):
-        super().__init__(config)
-        self.id = "m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres"
-        self.attributes = {
-            "description": "Music Genre Classification using Wav2Vec 2.0"
-        }
-        self._init_toolkit(config)
+# class Wav2Vec2Base(BaseToolkit):
+#     def __init__(self, config):
+#         super().__init__(config)
+#         self.id = "m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres"
+#         self.attributes = {
+#             "description": "Music Genre Classification using Wav2Vec 2.0"
+#         }
+#         self._init_toolkit(config)
 
-    def _init_toolkit(self, config):
-        self.processer = Wav2Vec2FeatureExtractor.from_pretrained(f"{self.local_fold}/m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres")
-        self.model = Wav2Vec2ForSpeechClassification.from_pretrained(f"{self.local_fold}/m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres")
-        self.config = AutoConfig.from_pretrained(f"{self.local_fold}/m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres")
+#     def _init_toolkit(self, config):
+#         self.processer = Wav2Vec2FeatureExtractor.from_pretrained(f"{self.local_fold}/m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres")
+#         self.model = Wav2Vec2ForSpeechClassification.from_pretrained(f"{self.local_fold}/m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres")
+#         self.config = AutoConfig.from_pretrained(f"{self.local_fold}/m3hrdadfi/wav2vec2-base-100k-gtzan-music-genres")
 
-    def inference(self, args, task, device="cpu"):
-        results = []
-        self.model.to(device)
+#     def inference(self, args, task, device="cpu"):
+#         results = []
+#         self.model.to(device)
 
-        for arg in args:
-            if "audio" in arg:
-                prompt = arg["audio"]
+#         for arg in args:
+#             if "audio" in arg:
+#                 prompt = arg["audio"]
 
-                sampling_rate = self.processer.sampling_rate
-                #speech_array, _sampling_rate = torchaudio.load(prompt)
-                #resampler = torchaudio.transforms.Resample(_sampling_rate, sampling_rate)
-                #speech = resampler(speech_array).squeeze().numpy()
-                speech, _ = librosa.load(prompt, sr=sampling_rate)
-                inputs = self.processer(speech, sampling_rate=sampling_rate, return_tensors="pt", padding=True)
-                inputs = {k: v.to(device) for k, v in inputs.items()}
+#                 sampling_rate = self.processer.sampling_rate
+#                 #speech_array, _sampling_rate = torchaudio.load(prompt)
+#                 #resampler = torchaudio.transforms.Resample(_sampling_rate, sampling_rate)
+#                 #speech = resampler(speech_array).squeeze().numpy()
+#                 speech, _ = librosa.load(prompt, sr=sampling_rate)
+#                 inputs = self.processer(speech, sampling_rate=sampling_rate, return_tensors="pt", padding=True)
+#                 inputs = {k: v.to(device) for k, v in inputs.items()}
                 
-                with torch.no_grad():
-                    logits = self.model(**inputs).logits
+#                 with torch.no_grad():
+#                     logits = self.model(**inputs).logits
                 
-                scores = F.softmax(logits, dim=1).detach().cpu().numpy()[0]
-                genre = self.config.id2label[np.argmax(scores)]
-                # outputs = [{"Label": pipes[pipe_id]["config"].id2label[i], "Score": f"{round(score * 100, 3):.1f}%"} for i, score in enumerate(scores)]
-                results.append({"genre": genre})
+#                 scores = F.softmax(logits, dim=1).detach().cpu().numpy()[0]
+#                 genre = self.config.id2label[np.argmax(scores)]
+#                 # outputs = [{"Label": pipes[pipe_id]["config"].id2label[i], "Score": f"{round(score * 100, 3):.1f}%"} for i, score in enumerate(scores)]
+#                 results.append({"genre": genre})
 
-        self.model.to("cpu")
-        return results
+#         self.model.to("cpu")
+#         return results
     
 
 class WhisperZh(BaseToolkit):
@@ -292,13 +401,17 @@ class WhisperZh(BaseToolkit):
             if "audio" in arg:
                 prompt = arg["audio"]
 
-                self.model.model.config.forced_decoder_ids = (
-                    self.model.tokenizer.get_decoder_prompt_ids(
-                        language="zh", 
-                        task="transcribe"
+                try:
+                    self.model.model.config.forced_decoder_ids = (
+                        self.model.tokenizer.get_decoder_prompt_ids(
+                            language="zh", 
+                            task="transcribe"
+                        )
                     )
-                )
-                results.append({"lyric": self.model(prompt)})
+                    results.append({"lyric": self.model(prompt)})
+                except:
+                    results.append({"error": "Lyric-recognition Error"})
+                    continue
         
         self.model.model.to("cpu")
         return results
@@ -340,26 +453,26 @@ class Spotify(BaseToolkit):
         for arg in args:
             tgt = task.split("-")[0]
             
-            query = ["remaster"]
-            for key in arg:
-                if key in ["track", "album", "artist", "genre"]:
-                    if isinstance(arg[key], list):
-                        value = " ".join(arg[key])
-                    else: 
-                        value = arg[key]
-                    query.append(f"{key}:{value}")
+            url = "https://api.spotify.com/v1/"
+            endpoint = "search"
+            
+            data = {
+                "q": " ".join([f"{key}:{value}" for key, value in arg.items() if key in ["track", "album", "artist", "genre", "description"]]),
+                "type" : [tgt]
+            }
 
-            if tgt == "playlist":
-                query[0] = arg["description"]
-
-            query = " ".join(query).replace(" ", "%20")
-            query = urllib.parse.quote(query)
-            url = f"https://api.spotify.com/v1/search?query={query}&type={tgt}"
-            headers = {"Authorization": f"Bearer {self.access_token}"}
-
-            response = requests.get(url, headers=headers)
+            headers = {
+                "Authorization": f"Bearer {self.access_token}",
+                "Accept" : "application/json",
+                "Content-Type" : "application/json"
+            }
+            response = requests.get(url=url+endpoint, params=data, headers=headers)
             if response.status_code == 200:
-                data = response.json()[tgt + "s"]["items"][0]
+                data = response.json()
+                if not (tgt + "s" in data):
+                    results.append({"error": "No corresponding song found."})
+                    continue
+                data = data[tgt + "s"]["items"][0]
                 text = dict()
                 spotify_id = data["id"]
                 text[tgt] = data["name"]
@@ -466,12 +579,20 @@ class Demucs(BaseToolkit):
         for arg in args:
             if "audio" in arg:
                 prompt = arg["audio"]
+                try:
+                    os.system(f"python -m demucs --two-stems=vocals -o public/audios/ {prompt}")
+                except:
+                    results.append({"error": "Music Source Separation Error"})
+                    continue
 
                 file_name = str(uuid.uuid4())[:4]
-                os.system(f"python -m demucs --two-stems=vocals -o public/audios/ {prompt}")
                 os.system(f"cp public/audios/htdemucs/{prompt.split('/')[-1].split('.')[0]}/no_vocals.wav public/audios/{file_name}.wav")
+                results.append({"audio": f"{file_name}.wav", "instrument": "accompaniment"})
 
-                results.append({"audio": f"{file_name}.wav"})
+                file_name = str(uuid.uuid4())[:4]
+                os.system(f"cp public/audios/htdemucs/{prompt.split('/')[-1].split('.')[0]}/vocals.wav public/audios/{file_name}.wav")
+                results.append({"audio": f"{file_name}.wav", "instrument": "vocal"})
+
 
         return results
     
@@ -521,7 +642,12 @@ class DDSP(BaseToolkit):
             if "audio" in arg:
                 prompt = arg["audio"]
                 file_name = str(uuid.uuid4())[:4]
-                timbre_transfer(prompt, f"public/audios/{file_name}.wav", instrument="violin")
+                try:
+                    timbre_transfer(prompt, f"public/audios/{file_name}.wav", instrument="violin")
+                except:
+                    results.append({"error": "Convert Style Error"})
+                    continue
+
                 results.append({"audio": f"{file_name}.wav"})
 
         return results
@@ -532,7 +658,7 @@ class BasicPitch(BaseToolkit):
         super().__init__(config)
         self.id = "basic-pitch"
         self.attributes = {
-            "description": "Demucs Music Source Separation"
+            "description": "A Python library for Automatic Music Transcription (AMT), using lightweight neural network developed by Spotify's Audio Intelligence Lab."
         }
 
     def inference(self, args, task, device="cpu"):
@@ -542,7 +668,12 @@ class BasicPitch(BaseToolkit):
                 prompt = arg["audio"]
 
                 file_name = str(uuid.uuid4())[:4]
-                os.system(f"basic-pitch public/audios/ {prompt}")
+                try:
+                    os.system(f"basic-pitch public/audios/ {prompt}")
+                except:
+                    results.append({"error": "Music Transcription Error"})
+                    continue
+
                 os.system(f"cp public/audios/{prompt.split('/')[-1].split('.')[0]}_basic_pitch.mid public/audios/{file_name}.mid")
 
                 results.append({"sheet music": f"{file_name}.mid"})
@@ -612,4 +743,39 @@ class BasicSplice(BaseToolkit):
         audio.export(f"public/audios/{file_name}.wav", format="wav")
         results.append({"audio": f"{file_name}.wav"})
 
+        return results
+
+
+class AudioLDM(BaseToolkit):
+    def __init__(self, config):
+        super().__init__(config)
+        self.id = "cvssp/audioldm-m-full"
+        self.attributes = {
+            "description": "Text-to-Audio Generation: Generate audio given text input. "
+        }
+        self._init_toolkit(config)
+
+    def _init_toolkit(self, config):
+        repo_id = "models/cvssp/audioldm-m-full"
+        self.pipe = AudioLDMPipeline.from_pretrained(repo_id, torch_dtype=torch.float16)
+
+    def inference(self, args, task, device="cpu"):
+        results = []
+        self.mount_model(self.pipe, device)
+
+        for arg in args: 
+            if "description" in arg: 
+                prompt = arg["description"]
+                try:
+                    audio = self.pipe(prompt, num_inference_steps=10, audio_length_in_s=5.0).audios[0]
+                except:
+                    results.append({"error": "Text-to-Audio Error"})
+                    continue
+
+                file_name = str(uuid.uuid4())[:4]
+                sf.write(f"public/audios/{file_name}.wav", audio, 16000)
+
+                results.append({"audio": f"{file_name}.wav"})
+
+        self.detach_model(self.pipe)
         return results
