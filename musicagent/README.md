@@ -1,11 +1,9 @@
-<!-- <p align="center"> <b> Music Agent </b> </p> -->
+# Music Agent 
 
-<div align="center">
-
-[![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)]()
+[![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/abs/2310.11954)
 [![Open in Spaces](https://img.shields.io/badge/%F0%9F%A4%97-Open%20in%20Spaces-blue)]()
 
-</div>
+Music Agent stands as an LLM-powered autonomous agent within the realm of music. Its modular and highly extensible framework liberates you to focus on the most imaginative aspects of music comprehension and composition!
 
 ## Demo Video
 
@@ -16,9 +14,6 @@
 - Accessibility: Music Agent dynamically selects the most appropriate methods for each music-related task.
 - Unity: Music Agent unifies a wide array of tools into a single system, incorporating Huggingface models, GitHub projects, and Web APIs.
 - Modularity: Music Agent offers high modularity, allowing users to effortlessly enhance its capabilities by integrating new functions.
-
-## Skills
-
 
 ## Installation
 
@@ -163,5 +158,10 @@ No .env file setup is required for Gradio interaction selection, but it does sup
 If you use this code, please cite it as:
 
 ```
-To be published
+@article{yu2023musicagent,
+  title={MusicAgent: An AI Agent for Music Understanding and Generation with Large Language Models},
+  author={Yu, Dingyao and Song, Kaitao and Lu, Peiling and He, Tianyu and Tan, Xu and Ye, Wei and Zhang, Shikun and Bian, Jiang},
+  journal={arXiv preprint arXiv:2310.11954},
+  year={2023}
+}
 ```
