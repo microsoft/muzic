@@ -54,6 +54,7 @@ We are hiring both research FTEs and research interns on **AI music, speech, aud
 
 
 ### What is New?
++ [CLaMP](https://arxiv.org/abs/2304.11029) has won the Best Student Paper Award at ISMIR 2023! 
 + We release [MusicAgent](https://arxiv.org/abs/2310.11954), an AI agent for versatile music processing using large language models.
 + We release [MuseCoco](https://arxiv.org/abs/2306.00110), a music composition copilot to generate symbolic music from text.
 + We release [GETMusic](https://arxiv.org/abs/2305.10841), a versatile music copliot with a universal representation and diffusion framework to generate any music tracks.
@@ -87,10 +88,10 @@ If you find the Muzic project useful in your work, you can cite the papers as fo
 * [9] ***Museformer**: Transformer with Fine- and Coarse-Grained Attention for Music Generation*, Botao Yu, Peiling Lu, Rui Wang, Wei Hu, Xu Tan, Wei Ye, Shikun Zhang, Tao Qin, Tie-Yan Liu, **NeurIPS 2022**.
 * [10] ***PopMAG**: Pop Music Accompaniment Generation*, Yi Ren, Jinzheng He, Xu Tan, Tao Qin, Zhou Zhao, Tie-Yan Liu, **ACM Multimedia 2020**.
 * [11] ***HiFiSinger**: Towards High-Fidelity Neural Singing Voice Synthesis*, Jiawei Chen, Xu Tan, Jian Luan, Tao Qin, Tie-Yan Liu, arXiv 2020.
-* [12] ***CLaMP**: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval*, Shangda Wu, Dingyao Yu, Xu Tan, Maosong Sun, **ISMIR 2023**.
+* [12] ***CLaMP**: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval*, Shangda Wu, Dingyao Yu, Xu Tan, Maosong Sun, **ISMIR 2023**, ***Best Student Paper Award***.
 * [13] ***GETMusic**: Generating Any Music Tracks with a Unified Representation and Diffusion Framework*, Ang Lv, Xu Tan, Peiling Lu, Wei Ye, Shikun Zhang, Jiang Bian, Rui Yan, arXiv 2023.
 * [14] ***MuseCoco**: Generating Symbolic Music from Text*, Peiling Lu, Xin Xu, Chenfei Kang, Botao Yu, Chengyi Xing, Xu Tan, Jiang Bian, arXiv 2023.
-* [15] ***MusicAgent**: An AI Agent for Music Understanding and Generation with Large Language Models*, Dingyao Yu, Kaitao Song, Peiling Lu, Tianyu He, Xu Tan, Wei Ye, Shikun Zhang, Jiang Bian, EMNLP 2023 Demo.
+* [15] ***MusicAgent**: An AI Agent for Music Understanding and Generation with Large Language Models*, Dingyao Yu, Kaitao Song, Peiling Lu, Tianyu He, Xu Tan, Wei Ye, Shikun Zhang, Jiang Bian, **EMNLP 2023 Demo**.
 
 
 ## Contributing
