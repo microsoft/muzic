@@ -1,4 +1,4 @@
-# CLaMP: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval
+# CLaMP: Contrastive Language-Music Pre-training for Cross-Modal Symbolic Music Information Retrieval [ISMIR 2023, Best Student Paper Award]
 This project is initiated and owned by the [Central Conservatory of Music](http://en.ccom.edu.cn/2020/).
 ## Model description
 
