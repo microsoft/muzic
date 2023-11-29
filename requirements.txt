@@ -9,11 +9,12 @@ matplotlib
 pretty_midi
 PyYAML
 pypianoroll
-fairseq==0.10.0
 torch==1.7.1
 transformers==3.5.1
 pypinyin==0.39.1
 jieba==0.42.1
+git+https://github.com/pytorch/fairseq@336942734c85791a90baa373c212d27e7c722662#egg=fairseq
+tables==3.6.1
 tensorboard==2.4.0
 scipy==1.3.1
 librosa
