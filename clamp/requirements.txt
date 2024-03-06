@@ -1,4 +1,4 @@
-transformers==4.18.0
+transformers==4.30.0
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torch==1.9.1+cu111
 -f https://download.pytorch.org/whl/torch_stable.html
