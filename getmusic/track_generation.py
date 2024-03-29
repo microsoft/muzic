@@ -715,7 +715,7 @@ def main():
 
         midi_obj = encoding_to_MIDI(oct_final, tpc, args.decode_chord)
 
-        save_path = os.path.join(args.file_path, '{}2{}-{}'.format(conditional_name, content_name, file_name.split('/')[-1]))
+        save_path = os.path.join(args.file_path, '{}2{}-{}'.format(conditional_name, content_name, os.path.basename(file_name)))
 
         midi_obj.dump(save_path)    
 
