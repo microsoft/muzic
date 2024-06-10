@@ -50,7 +50,7 @@ The current work in [Muzic](https://www.microsoft.com/en-us/research/project/ai-
 For more speech related research, you can find from this page: https://speechresearch.github.io/ and https://github.com/microsoft/NeuralSpeech.
 
 ### We are hiring! 
-We are hiring both research FTEs and research interns on **Speech/Audio/Music/Video and LLMs**. Please get in touch with Xu Tan (xuta@microsoft.com) if you are interested. 
+We are hiring both research FTEs and research interns on **Speech/Audio/Music/Video and LLMs**. Please get in touch with Xu Tan (tanxu2012@gmail.com) if you are interested. 
 
 
 ### What is New?
