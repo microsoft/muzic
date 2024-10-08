@@ -409,7 +409,7 @@ def encoding_to_MIDI(encoding, tpc, decode_chord):
 
     def get_tick(bar, pos):
         return (bar_to_pos[bar] + pos) * midi_obj.ticks_per_beat // pos_resolution
-    midi_obj.instruments = [miditoolkit.containers.Instrument(program=(
+    midi_obj.instruments = [miditoolkit.midi.containers.Instrument(program=(
         0 if i == 128 else i), is_drum=(i == 128), name=str(i)) for i in range(128 + 1)]
 
     for i in encoding:
@@ -423,7 +423,7 @@ def encoding_to_MIDI(encoding, tpc, decode_chord):
             end = start + get_tick(0, e2d(1))
             for kind_shift in _CHORD_KIND_PITCHES[kind_name]:
                 pitch = 36 + root_pitch_shift + kind_shift
-                midi_obj.instruments[1].notes.append(miditoolkit.containers.Note(
+                midi_obj.instruments[1].notes.append(miditoolkit.midi.containers.Note(
                 start=start, end=end, pitch=pitch, velocity=e2v(20)))
         elif program != 129:
             pitch = (i[3] - 128 if program == 128 else i[3])
@@ -435,7 +435,7 @@ def encoding_to_MIDI(encoding, tpc, decode_chord):
             end = start + duration
             velocity = e2v(i[5])
 
-            midi_obj.instruments[program].notes.append(miditoolkit.containers.Note(
+            midi_obj.instruments[program].notes.append(miditoolkit.midi.containers.Note(
                 start=start, end=end, pitch=pitch, velocity=velocity))
     midi_obj.instruments = [
         i for i in midi_obj.instruments if len(i.notes) > 0]
@@ -444,7 +444,7 @@ def encoding_to_MIDI(encoding, tpc, decode_chord):
         new_ts = bar_to_timesig[i]
         if new_ts != cur_ts:
             numerator, denominator = e2t(new_ts)
-            midi_obj.time_signature_changes.append(miditoolkit.containers.TimeSignature(
+            midi_obj.time_signature_changes.append(miditoolkit.midi.containers.TimeSignature(
                 numerator=numerator, denominator=denominator, time=get_tick(i, 0)))
             cur_ts = new_ts
     cur_tp = None
@@ -453,7 +453,7 @@ def encoding_to_MIDI(encoding, tpc, decode_chord):
         if new_tp != cur_tp:
             tempo = e2b(new_tp)
             midi_obj.tempo_changes.append(
-                miditoolkit.containers.TempoChange(tempo=tempo, time=get_tick(0, i)))
+                miditoolkit.midi.containers.TempoChange(tempo=tempo, time=get_tick(0, i)))
             cur_tp = new_tp
     return midi_obj
 
@@ -715,7 +715,7 @@ def main():
 
         midi_obj = encoding_to_MIDI(oct_final, tpc, args.decode_chord)
 
-        save_path = os.path.join(args.file_path, '{}2{}-{}'.format(conditional_name, content_name, file_name.split('/')[-1]))
+        save_path = os.path.join(args.file_path, '{}2{}-{}'.format(conditional_name, content_name, os.path.basename(file_name)))
 
         midi_obj.dump(save_path)    
 
