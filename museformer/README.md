@@ -125,6 +125,10 @@ The number `10240` indicates the maximum sequence length for calculation.
 
 ## 5. Inference
 
+**To run inference only**, the [Dataset](https://github.com/microsoft/muzic/tree/main/museformer#1-dataset) and [Train](https://github.com/microsoft/muzic/tree/main/museformer#3-train) steps are unnecessary. Only these two steps are required:
+- Ensure the environment settings of [Muzic](https://github.com/microsoft/muzic#requirements) and [Museformer](https://github.com/microsoft/muzic/tree/main/museformer#2-environment).
+- Download the checkpoint [here](https://1drv.ms/u/s!Aq3YEPZCcV5ibz9ySjjNsEB74CQ) and put it in `checkpoints/mf-lmd6remi-1` for inference.
+
 Use the following command to generate 5 music pieces, with the random seed set to 1:
 
 ```bash
