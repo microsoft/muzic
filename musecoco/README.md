@@ -124,7 +124,7 @@ Switch to `1-text2attribute_model` folder
     The `infer_test.bin` is obtained as the inference input of the attribute-to-music generation stage.
 ## II. Attribute-to-Music Generation
 Switch to `2-attribute2music_model` folder
-1. Download the [checkpoint](https://drive.google.com/file/d/1HJvrOi_cli48RDm7ni5VAafVEi8qcTGN/view?usp=sharing) and Prepare it in `checkpoint/linear_mask-1billion`
+1. Download the [checkpoint](https://huggingface.co/XinXuNLPer/MuseCoco_attribute2music/tree/main) and Prepare it in `checkpoint/linear_mask-1billion`
 
 2. Prepare the input for inference in the folder `data/infer_input/infer_test.bin` from the output of text-to-attribute understanding stage (`infer_test.bin`). 
 
