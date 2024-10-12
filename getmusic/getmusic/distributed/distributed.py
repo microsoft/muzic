@@ -81,7 +81,13 @@ def all_gather(data):
     if world_size == 1:
         return [data]
 
-    buffer = pickle.dumps(data)
+    
+    # Due to security concerns, the use of pickle has been commented out.
+    # Pickle can be unsafe when used with untrusted data, as it may execute arbitrary code.
+    # If you understand the associated risks and wish to run this code, please uncomment the following line.
+    # It is recommended to use this only in a controlled environment and with trusted data sources.
+    # buffer = pickle.dumps(data) 
+    
     storage = torch.ByteStorage.from_buffer(buffer)
     tensor = torch.ByteTensor(storage).to("cuda")
 
