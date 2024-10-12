@@ -17,8 +17,6 @@ pip install einops
 pip install miditoolkit
 pip install scipy
 ```
-Click [here](https://1drv.ms/u/s!ArHNvccy1VzPkWGKXZDQY5k-kDi4?e=fFxcEq) to download the model checkpoint.
-
 
 ## 2. Inference
 
